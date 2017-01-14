@@ -1,0 +1,23 @@
+.jumbotron {
+	background-color: #000000; /* Orange */
+    color: #ffffff;
+    padding: 80px 20px;
+    margin: 0px;
+}
+
+.container-fluid {
+    padding: 80px 50px;
+}
+
+.grey-container {
+	background-color: rgb(234, 234, 232);
+	margin: 0px;
+}
+
+#mapContainer {
+	height: 500px;
+}
+
+#map {
+	height: 100%;
+}
