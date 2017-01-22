@@ -1,12 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {FancyContainer, Map} from './utils.jsx'
-
-class PlanStepTitle extends React.Component {
-	render() {
-		return <h2>{this.props.title}</h2>
-	}
-}
+import {FancyContainer, Map, ContainerTitle} from './utils.jsx'
 
 class PlanToolTitle extends React.Component {
 	render() {
@@ -20,12 +14,39 @@ class PlanToolTitle extends React.Component {
 }
 
 class Marker extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.handleBtnClick = this.handleBtnClick.bind(this)
+	}
+
+	handleBtnClick(e) {
+		window.markerIconLink = this.props.marker.iconLink
+	}
+
 	render() {
 		return (
-    		<select id='marker'>
-				<option value='styles/images/provider.jpg'>Service Provider</option>
-				<option value='styles/images/newUser.jpg'>New User</option>
-			</select>
+			<button type="button" onClick={this.handleBtnClick} className="btn btn-success btn-block ">{this.props.marker.name}</button>
+		)
+	}
+}
+
+class MarkerList extends React.Component {
+	render() {
+		var serviceProvider = {}
+		serviceProvider.name = 'Service Provider'
+		serviceProvider.iconLink = 'styles/images/provider.jpg'
+
+		var newUser = {}
+		newUser.name = 'New User'
+		newUser.iconLink = 'styles/images/newUser.jpg'
+
+		return (
+			<div>
+				<h3 className='text-center'>Markers</h3><br/>
+				<Marker marker={serviceProvider} /><br/>
+				<Marker marker={newUser} />
+			</div>
 		)
 	}
 }
@@ -34,14 +55,14 @@ class MapLegends extends React.Component {
 	render() {
 		return (
 			<div>
-            	<h3>Map Legends:</h3>
+            	<h3>Map Legends</h3><br/>
             	<ul>
             		<li>Service Provider: <br/>
-            			<img src='styles/images/provider.jpg' />
+            			<img src='styles/images/provider.jpg' className='img-responsive' />
             		</li>
             		<br/>
             		<li>New User: <br/>
-            			<img src='styles/images/newUser.jpg' />
+            			<img src='styles/images/newUser.jpg' className='img-responsive' />
             		</li>
             	</ul>
             </div>
@@ -53,11 +74,13 @@ class MapLegends extends React.Component {
 class MapContainer extends React.Component {
 	render() {
 		return (
-			<FancyContainer>
-				<PlanStepTitle title='Put Your Network Elements on the Map'/>
+			<FancyContainer styles='bigMapContainer'>
+				<ContainerTitle title='Put Your Network Elements on the Map'/>
 				<div className='row'>
-					<div id='mapContainer' className='col-sm-10'>
-						<Marker />
+					<div className='col-sm-2'>
+						<MarkerList />
+					</div>
+					<div className='col-sm-8 smallMapContainer'>
 						<Map mapScriptSrc='mapjs/index.js'/>
 					</div>
 					<div className='col-sm-2'>
@@ -87,16 +110,29 @@ class RequirementsContainer extends React.Component {
 	render() {
 		return (
 			<FancyContainer styles='grey-container'>
-				<PlanStepTitle title='Input Your Requirements'/>
-				<form method='POST' action='http://localhost:8080/submitNetworkRawData'>
-        			Bandwidth: <input type='text' name='bandwidth' value={this.props.bandwidth}
-        						ref={(input) => this.bandwidth = input} onChange={this.handleChange} />
-        			Costs: <input type='text' name='costs' value={this.props.costs}
-        					ref={(input) => this.costs = input} onChange={this.handleChange} />
-        			<input type='hidden' name='serviceProviders' value={JSON.stringify(window.coordinates)} />
-        			<input type='hidden' name='newUsers' value={JSON.stringify(window.coordinates)} /><br/>
-        			<input type='submit' name='GO!' />
-      			</form>
+				<ContainerTitle title='Input Your Requirements'/>
+				<form className='form-horizontal' method='POST' action='http://localhost:8000/submitNetworkRawData'>
+					<div className='form-group'>
+						<label className='col-sm-2 control-label'>Bandwidth</label>
+						<div className='col-sm-9'>
+		        			<input type='text' className='form-control' name='bandwidth' value={this.props.bandwidth}
+		        						ref={(input) => this.bandwidth = input} onChange={this.handleChange} />
+		        		</div>
+		        	</div>
+		        	<div className='form-group'>
+		        		<label className='col-sm-2 control-label'>Costs</label>
+		        		<div className='col-sm-9'>
+		        			<input type='text' className='form-control' name='costs' value={this.props.costs}
+		        					ref={(input) => this.costs = input} onChange={this.handleChange} />
+		        		</div>
+		        	</div>
+        			<input type='hidden' name='coordinates' value={JSON.stringify(window.coordinates)} />
+        			<div className='form-group'>
+        				<div className='col-sm-offset-4 col-sm-4'>
+        					<button className='btn btn-primary btn-block' type='submit'>GO!</button>
+        				</div>
+        			</div>
+	      		</form>
         	</FancyContainer>
 		)
 	}

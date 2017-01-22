@@ -1,29 +1,40 @@
 var labelIndex = 1;
-var markerIconLink;
+var markerIconLink = undefined;
 var coordinates = {
                 provider: [],
                 newUser: []
             }
 
 function initMap() {
-    var bangalore = { lat: 12.97, lng: 77.59 };
     
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: bangalore
-    });
-
-    // Set up marker icon, and change icon image once the option is changed
-    var marker = document.getElementById('marker');
-    markerIconLink = marker.options[marker.selectedIndex].value
-    google.maps.event.addDomListener(marker, 'change', function() {
-        markerIconLink = marker.options[marker.selectedIndex].value
-    });
+        center: data[30]
+    })
 
     // This event listener calls addMarker() when the map is clicked.
     google.maps.event.addListener(map, 'click', function(event) {
-        addMarker(event.latLng, map);
-    });
+        if (chooseMarkerOrNot()) {
+            addMarker(event.latLng, map);
+        }
+    })
+
+    for (var i in data) {
+        var marker = new google.maps.Marker({
+            position: data[i],
+            title: 'boundary',
+            map: map,
+            icon: 'styles/images/boundary.jpg'
+        })
+    }
+}
+
+function chooseMarkerOrNot() {
+    if (markerIconLink == undefined) {
+        window.alert('Please choose a marker first')
+        return false
+    }
+    return true
 }
 
 // Determine which marker is being used

@@ -21,31 +21,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PlanStepTitle = function (_React$Component) {
-	_inherits(PlanStepTitle, _React$Component);
-
-	function PlanStepTitle() {
-		_classCallCheck(this, PlanStepTitle);
-
-		return _possibleConstructorReturn(this, (PlanStepTitle.__proto__ || Object.getPrototypeOf(PlanStepTitle)).apply(this, arguments));
-	}
-
-	_createClass(PlanStepTitle, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'h2',
-				null,
-				this.props.title
-			);
-		}
-	}]);
-
-	return PlanStepTitle;
-}(_react2.default.Component);
-
-var PlanToolTitle = function (_React$Component2) {
-	_inherits(PlanToolTitle, _React$Component2);
+var PlanToolTitle = function (_React$Component) {
+	_inherits(PlanToolTitle, _React$Component);
 
 	function PlanToolTitle() {
 		_classCallCheck(this, PlanToolTitle);
@@ -77,36 +54,74 @@ var PlanToolTitle = function (_React$Component2) {
 	return PlanToolTitle;
 }(_react2.default.Component);
 
-var Marker = function (_React$Component3) {
-	_inherits(Marker, _React$Component3);
+var Marker = function (_React$Component2) {
+	_inherits(Marker, _React$Component2);
 
-	function Marker() {
+	function Marker(props) {
 		_classCallCheck(this, Marker);
 
-		return _possibleConstructorReturn(this, (Marker.__proto__ || Object.getPrototypeOf(Marker)).apply(this, arguments));
+		var _this2 = _possibleConstructorReturn(this, (Marker.__proto__ || Object.getPrototypeOf(Marker)).call(this, props));
+
+		_this2.handleBtnClick = _this2.handleBtnClick.bind(_this2);
+		return _this2;
 	}
 
 	_createClass(Marker, [{
+		key: 'handleBtnClick',
+		value: function handleBtnClick(e) {
+			window.markerIconLink = this.props.marker.iconLink;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				'select',
-				{ id: 'marker' },
-				_react2.default.createElement(
-					'option',
-					{ value: 'styles/images/provider.jpg' },
-					'Service Provider'
-				),
-				_react2.default.createElement(
-					'option',
-					{ value: 'styles/images/newUser.jpg' },
-					'New User'
-				)
+				'button',
+				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
+				this.props.marker.name
 			);
 		}
 	}]);
 
 	return Marker;
+}(_react2.default.Component);
+
+var MarkerList = function (_React$Component3) {
+	_inherits(MarkerList, _React$Component3);
+
+	function MarkerList() {
+		_classCallCheck(this, MarkerList);
+
+		return _possibleConstructorReturn(this, (MarkerList.__proto__ || Object.getPrototypeOf(MarkerList)).apply(this, arguments));
+	}
+
+	_createClass(MarkerList, [{
+		key: 'render',
+		value: function render() {
+			var serviceProvider = {};
+			serviceProvider.name = 'Service Provider';
+			serviceProvider.iconLink = 'styles/images/provider.jpg';
+
+			var newUser = {};
+			newUser.name = 'New User';
+			newUser.iconLink = 'styles/images/newUser.jpg';
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h3',
+					{ className: 'text-center' },
+					'Markers'
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(Marker, { marker: serviceProvider }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(Marker, { marker: newUser })
+			);
+		}
+	}]);
+
+	return MarkerList;
 }(_react2.default.Component);
 
 var MapLegends = function (_React$Component4) {
@@ -127,8 +142,9 @@ var MapLegends = function (_React$Component4) {
 				_react2.default.createElement(
 					'h3',
 					null,
-					'Map Legends:'
+					'Map Legends'
 				),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'ul',
 					null,
@@ -137,7 +153,7 @@ var MapLegends = function (_React$Component4) {
 						null,
 						'Service Provider: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/provider.jpg' })
+						_react2.default.createElement('img', { src: 'styles/images/provider.jpg', className: 'img-responsive' })
 					),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
@@ -145,7 +161,7 @@ var MapLegends = function (_React$Component4) {
 						null,
 						'New User: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/newUser.jpg' })
+						_react2.default.createElement('img', { src: 'styles/images/newUser.jpg', className: 'img-responsive' })
 					)
 				)
 			);
@@ -172,15 +188,19 @@ var MapContainer = function (_React$Component5) {
 		value: function render() {
 			return _react2.default.createElement(
 				_utils.FancyContainer,
-				null,
-				_react2.default.createElement(PlanStepTitle, { title: 'Put Your Network Elements on the Map' }),
+				{ styles: 'bigMapContainer' },
+				_react2.default.createElement(_utils.ContainerTitle, { title: 'Put Your Network Elements on the Map' }),
 				_react2.default.createElement(
 					'div',
 					{ className: 'row' },
 					_react2.default.createElement(
 						'div',
-						{ id: 'mapContainer', className: 'col-sm-10' },
-						_react2.default.createElement(Marker, null),
+						{ className: 'col-sm-2' },
+						_react2.default.createElement(MarkerList, null)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-sm-8 smallMapContainer' },
 						_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/index.js' })
 					),
 					_react2.default.createElement(
@@ -224,24 +244,58 @@ var RequirementsContainer = function (_React$Component6) {
 			return _react2.default.createElement(
 				_utils.FancyContainer,
 				{ styles: 'grey-container' },
-				_react2.default.createElement(PlanStepTitle, { title: 'Input Your Requirements' }),
+				_react2.default.createElement(_utils.ContainerTitle, { title: 'Input Your Requirements' }),
 				_react2.default.createElement(
 					'form',
-					{ method: 'POST', action: 'http://localhost:8080/submitNetworkRawData' },
-					'Bandwidth: ',
-					_react2.default.createElement('input', { type: 'text', name: 'bandwidth', value: this.props.bandwidth,
-						ref: function ref(input) {
-							return _this7.bandwidth = input;
-						}, onChange: this.handleChange }),
-					'Costs: ',
-					_react2.default.createElement('input', { type: 'text', name: 'costs', value: this.props.costs,
-						ref: function ref(input) {
-							return _this7.costs = input;
-						}, onChange: this.handleChange }),
-					_react2.default.createElement('input', { type: 'hidden', name: 'serviceProviders', value: JSON.stringify(window.coordinates) }),
-					_react2.default.createElement('input', { type: 'hidden', name: 'newUsers', value: JSON.stringify(window.coordinates) }),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement('input', { type: 'submit', name: 'GO!' })
+					{ className: 'form-horizontal', method: 'POST', action: 'http://localhost:8000/submitNetworkRawData' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'label',
+							{ className: 'col-sm-2 control-label' },
+							'Bandwidth'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-9' },
+							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'bandwidth', value: this.props.bandwidth,
+								ref: function ref(input) {
+									return _this7.bandwidth = input;
+								}, onChange: this.handleChange })
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'label',
+							{ className: 'col-sm-2 control-label' },
+							'Costs'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-9' },
+							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'costs', value: this.props.costs,
+								ref: function ref(input) {
+									return _this7.costs = input;
+								}, onChange: this.handleChange })
+						)
+					),
+					_react2.default.createElement('input', { type: 'hidden', name: 'coordinates', value: JSON.stringify(window.coordinates) }),
+					_react2.default.createElement(
+						'div',
+						{ className: 'form-group' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-offset-4 col-sm-4' },
+							_react2.default.createElement(
+								'button',
+								{ className: 'btn btn-primary btn-block', type: 'submit' },
+								'GO!'
+							)
+						)
+					)
 				)
 			);
 		}
@@ -305,7 +359,7 @@ _reactDom2.default.render(_react2.default.createElement(PlanningToolContainer, n
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.Map = exports.FancyContainer = undefined;
+exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -379,6 +433,33 @@ var Map = exports.Map = function (_React$Component2) {
 	}]);
 
 	return Map;
+}(_react2.default.Component);
+
+var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
+	_inherits(ContainerTitle, _React$Component3);
+
+	function ContainerTitle() {
+		_classCallCheck(this, ContainerTitle);
+
+		return _possibleConstructorReturn(this, (ContainerTitle.__proto__ || Object.getPrototypeOf(ContainerTitle)).apply(this, arguments));
+	}
+
+	_createClass(ContainerTitle, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'text-center stepTitle' },
+				_react2.default.createElement(
+					'h2',
+					null,
+					this.props.title
+				)
+			);
+		}
+	}]);
+
+	return ContainerTitle;
 }(_react2.default.Component);
 
 },{"react":179}],3:[function(require,module,exports){

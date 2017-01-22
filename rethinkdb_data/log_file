@@ -1,0 +1,33 @@
+2017-01-19T13:37:19.801489250 0.156069s notice: Recursively removing directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data/tmp
+2017-01-19T13:37:19.859892688 0.214474s notice: Initializing directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
+2017-01-19T13:37:19.860024812 0.214603s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/tailiu/project/WISPFrontEnd/rethinkdb_data' did not already exist or is empty.)
+2017-01-19T13:37:19.860043099 0.214621s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-19T13:37:19.886216366 0.240797s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-19T13:37:19.886347922 0.240926s notice: Loading data from directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
+2017-01-19T13:37:20.042448521 0.397028s info: Automatically using cache size of 2617 MB
+2017-01-19T13:37:20.044023964 0.398602s notice: Listening for intracluster connections on port 29015
+2017-01-19T13:37:20.047030771 0.401609s notice: Listening for client driver connections on port 28015
+2017-01-19T13:37:20.047206109 0.401784s notice: Listening for administrative HTTP connections on port 8080
+2017-01-19T13:37:20.047209128 0.401787s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T13:37:20.047212072 0.401790s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T13:37:20.047213697 0.401791s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T13:37:20.047215661 0.401793s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-19T13:37:20.047217858 0.401796s notice: Server ready, "ubuntu_stq" 2d70257b-8f88-4d0d-9865-fc0e5f01c677
+2017-01-19T13:38:04.528922375 44.883510s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Starting a new Raft election for term 1.
+2017-01-19T13:38:04.540108046 44.894686s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Added replica on this server.
+2017-01-19T13:38:04.541722101 44.896300s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T14:04:27.731198636 1628.085777s notice: Removing file /home/tailiu/project/WISPFrontEnd/rethinkdb_data/e2e3cb28-8140-4c3c-9fcd-9b85efac332e
+2017-01-19T14:04:27.731260184 1628.085838s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Deleted the table.
+2017-01-19T14:11:03.511405257 2023.865983s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Starting a new Raft election for term 1.
+2017-01-19T14:11:03.511565906 2023.866144s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Added replica on this server.
+2017-01-19T14:11:03.512292753 2023.866871s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T16:28:43.984953911 7922.147525s notice: Removing file /home/tailiu/project/WISPFrontEnd/rethinkdb_data/c6c59819-dcc5-48e1-947d-7495aea15043
+2017-01-19T16:28:43.984985426 7922.147556s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Deleted the table.
+2017-01-19T16:29:02.160851190 7940.323422s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: Starting a new Raft election for term 1.
+2017-01-19T16:29:02.161030203 7940.323601s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: Added replica on this server.
+2017-01-19T16:29:02.161714407 7940.324285s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T16:38:00.121830247 8478.284401s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-01-19T16:38:00.122039620 8478.284610s notice: Shutting down client connections...
+2017-01-19T16:38:00.122123392 8478.284694s notice: All client connections closed.
+2017-01-19T16:38:00.122149117 8478.284719s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-01-19T16:38:00.124812223 8478.287383s notice: Storage engine shut down.

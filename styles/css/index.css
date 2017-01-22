@@ -6,18 +6,26 @@
 }
 
 .container-fluid {
-    padding: 80px 50px;
+    padding: 20px 30px;
+    margin: 0px;
+}
+
+.bigMapContainer {
+	height: 750px;
 }
 
 .grey-container {
 	background-color: rgb(234, 234, 232);
-	margin: 0px;
 }
 
-#mapContainer {
+.smallMapContainer {
 	height: 500px;
 }
 
 #map {
 	height: 100%;
+}
+
+.stepTitle {
+	padding: 40px;
 }

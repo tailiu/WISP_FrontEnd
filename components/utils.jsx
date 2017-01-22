@@ -33,3 +33,14 @@ export class Map extends React.Component {
 		)
 	}
 }
+
+export class ContainerTitle extends React.Component {
+	render() {
+		return (
+			<div className='text-center stepTitle'>
+				<h2>{this.props.title}</h2>
+			</div>
+		) 
+		
+	}
+}

@@ -21,7 +21,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//Contains a map and its corresponding map legends
+//Contain a map and its corresponding map legends
 var MapContainer = function (_React$Component) {
 	_inherits(MapContainer, _React$Component);
 
@@ -36,14 +36,22 @@ var MapContainer = function (_React$Component) {
 		value: function render() {
 			return _react2.default.createElement(
 				'div',
-				{ id: 'mapContainer' },
-				_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js' })
+				null,
+				_react2.default.createElement(_utils.ContainerTitle, { title: 'The Planned Networks on the Map' }),
+				_react2.default.createElement(
+					'div',
+					{ className: 'smallMapContainer' },
+					_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js' })
+				)
 			);
 		}
 	}]);
 
 	return MapContainer;
 }(_react2.default.Component);
+
+//Contain a network parameter table
+
 
 var NetworkParameters = function (_React$Component2) {
 	_inherits(NetworkParameters, _React$Component2);
@@ -60,25 +68,45 @@ var NetworkParameters = function (_React$Component2) {
 			return _react2.default.createElement(
 				'div',
 				null,
+				_react2.default.createElement(_utils.ContainerTitle, { title: 'Network Setup Parameters' }),
 				_react2.default.createElement(
-					'h2',
-					null,
-					'Network Setup Parameters:'
-				),
-				_react2.default.createElement(
-					'ul',
-					null,
+					'div',
+					{ className: 'row' },
 					_react2.default.createElement(
-						'li',
-						null,
-						'Bandwidth: ',
-						this.props.paras.bandwidth
-					),
-					_react2.default.createElement(
-						'li',
-						null,
-						'Costs: ',
-						this.props.paras.costs
+						'table',
+						{ className: 'table-hover table-striped col-sm-offset-3 col-sm-6' },
+						_react2.default.createElement(
+							'tbody',
+							null,
+							_react2.default.createElement(
+								'tr',
+								null,
+								_react2.default.createElement(
+									'td',
+									null,
+									'Bandwith'
+								),
+								_react2.default.createElement(
+									'td',
+									null,
+									this.props.paras.bandwidth
+								)
+							),
+							_react2.default.createElement(
+								'tr',
+								null,
+								_react2.default.createElement(
+									'td',
+									null,
+									'Costs'
+								),
+								_react2.default.createElement(
+									'td',
+									null,
+									this.props.paras.costs
+								)
+							)
+						)
 					)
 				)
 			);
@@ -105,7 +133,7 @@ var PlannedNetworkContainer = function (_React$Component3) {
 				null,
 				_react2.default.createElement(
 					_utils.FancyContainer,
-					{ styles: 'grey-container' },
+					{ styles: 'grey-container bigMapContainer' },
 					_react2.default.createElement(MapContainer, null)
 				),
 				_react2.default.createElement(
@@ -128,7 +156,7 @@ _reactDom2.default.render(_react2.default.createElement(PlannedNetworkContainer,
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.Map = exports.FancyContainer = undefined;
+exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -202,6 +230,33 @@ var Map = exports.Map = function (_React$Component2) {
 	}]);
 
 	return Map;
+}(_react2.default.Component);
+
+var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
+	_inherits(ContainerTitle, _React$Component3);
+
+	function ContainerTitle() {
+		_classCallCheck(this, ContainerTitle);
+
+		return _possibleConstructorReturn(this, (ContainerTitle.__proto__ || Object.getPrototypeOf(ContainerTitle)).apply(this, arguments));
+	}
+
+	_createClass(ContainerTitle, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'text-center stepTitle' },
+				_react2.default.createElement(
+					'h2',
+					null,
+					this.props.title
+				)
+			);
+		}
+	}]);
+
+	return ContainerTitle;
 }(_react2.default.Component);
 
 },{"react":179}],3:[function(require,module,exports){

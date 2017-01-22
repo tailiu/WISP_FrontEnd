@@ -1,10 +1,11 @@
 function initMap() {
-    var coordinates = window.data.serviceProviders
+    var boundary = JSON.parse(window.data.boundary)
+    var coordinates = window.data.coordinates
     var providerArr = JSON.parse(coordinates).provider
     var newUserArr = JSON.parse(coordinates).newUser
 
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
+        zoom: 13,
         center: providerArr[0]
     })
 
@@ -27,4 +28,13 @@ function initMap() {
     })  
 
     newUserlinks.setMap(map)
+
+    for (var i in boundary) {
+        var marker = new google.maps.Marker({
+            position: boundary[i],
+            title: 'boundary',
+            map: map,
+            icon: 'styles/images/boundary.jpg'
+        })
+    }
 }

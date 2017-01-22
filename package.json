@@ -1,20 +1,21 @@
 {
   "name": "planning-tool-front-end",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A front end for the WISP planning tool",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "./build.sh"
   },
   "keywords": [
     "WISP",
-    "front",
-    "end",
-    "planning"
+    "network",
+    "planning",
+    "front"
   ],
   "author": "Tai Liu",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.1.4",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babelify": "^7.3.0",
@@ -24,6 +25,8 @@
     "querystring": "^0.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "rethinkdb": "^2.3.3",
+    "underscore": "^1.8.3",
     "vinyl-source-stream": "^1.1.0"
   }
 }
