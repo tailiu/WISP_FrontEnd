@@ -1,5 +1,5 @@
 var labelIndex = 1;
-var markerIconLink = undefined;
+var buttonID = undefined;
 var coordinates = {
                 provider: [],
                 newUser: []
@@ -30,7 +30,7 @@ function initMap() {
 }
 
 function chooseMarkerOrNot() {
-    if (markerIconLink == undefined) {
+    if (buttonID == undefined) {
         window.alert('Please choose a marker first')
         return false
     }
@@ -39,7 +39,7 @@ function chooseMarkerOrNot() {
 
 // Determine which marker is being used
 function determineMarker() {
-    var parts = markerIconLink.split('/')
+    var parts = buttonID.split('/')
     var iconFileName = parts[parts.length - 1]
     parts = iconFileName.split('.')
     return parts[0]
@@ -58,8 +58,12 @@ function addMarker(location, map) {
         position: location,
         label: '' + labelIndex++,
         map: map,
-        icon: markerIconLink
+        icon: buttonID
     });
 
     addCoordinate(location)
+}
+
+window.onload = function() {
+    initMap()
 }

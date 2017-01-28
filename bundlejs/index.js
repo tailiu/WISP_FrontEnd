@@ -54,39 +54,8 @@ var PlanToolTitle = function (_React$Component) {
 	return PlanToolTitle;
 }(_react2.default.Component);
 
-var Marker = function (_React$Component2) {
-	_inherits(Marker, _React$Component2);
-
-	function Marker(props) {
-		_classCallCheck(this, Marker);
-
-		var _this2 = _possibleConstructorReturn(this, (Marker.__proto__ || Object.getPrototypeOf(Marker)).call(this, props));
-
-		_this2.handleBtnClick = _this2.handleBtnClick.bind(_this2);
-		return _this2;
-	}
-
-	_createClass(Marker, [{
-		key: 'handleBtnClick',
-		value: function handleBtnClick(e) {
-			window.markerIconLink = this.props.marker.iconLink;
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'button',
-				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
-				this.props.marker.name
-			);
-		}
-	}]);
-
-	return Marker;
-}(_react2.default.Component);
-
-var MarkerList = function (_React$Component3) {
-	_inherits(MarkerList, _React$Component3);
+var MarkerList = function (_React$Component2) {
+	_inherits(MarkerList, _React$Component2);
 
 	function MarkerList() {
 		_classCallCheck(this, MarkerList);
@@ -99,11 +68,13 @@ var MarkerList = function (_React$Component3) {
 		value: function render() {
 			var serviceProvider = {};
 			serviceProvider.name = 'Service Provider';
-			serviceProvider.iconLink = 'styles/images/provider.jpg';
+			serviceProvider.id = 'styles/images/provider.jpg';
+			serviceProvider.invokeEvent = false;
 
 			var newUser = {};
 			newUser.name = 'New User';
-			newUser.iconLink = 'styles/images/newUser.jpg';
+			newUser.id = 'styles/images/newUser.jpg';
+			newUser.invokeEvent = false;
 
 			return _react2.default.createElement(
 				'div',
@@ -114,9 +85,9 @@ var MarkerList = function (_React$Component3) {
 					'Markers'
 				),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(Marker, { marker: serviceProvider }),
+				_react2.default.createElement(_utils.MyButton, { button: serviceProvider }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(Marker, { marker: newUser })
+				_react2.default.createElement(_utils.MyButton, { button: newUser })
 			);
 		}
 	}]);
@@ -124,8 +95,8 @@ var MarkerList = function (_React$Component3) {
 	return MarkerList;
 }(_react2.default.Component);
 
-var MapLegends = function (_React$Component4) {
-	_inherits(MapLegends, _React$Component4);
+var MapLegends = function (_React$Component3) {
+	_inherits(MapLegends, _React$Component3);
 
 	function MapLegends() {
 		_classCallCheck(this, MapLegends);
@@ -174,8 +145,8 @@ var MapLegends = function (_React$Component4) {
 //Contains a map and its corresponding map legends
 
 
-var MapContainer = function (_React$Component5) {
-	_inherits(MapContainer, _React$Component5);
+var MapContainer = function (_React$Component4) {
+	_inherits(MapContainer, _React$Component4);
 
 	function MapContainer() {
 		_classCallCheck(this, MapContainer);
@@ -201,7 +172,7 @@ var MapContainer = function (_React$Component5) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'col-sm-8 smallMapContainer' },
-						_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/index.js' })
+						_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/index.js', needWebSocket: false })
 					),
 					_react2.default.createElement(
 						'div',
@@ -219,16 +190,16 @@ var MapContainer = function (_React$Component5) {
 //Contains a requirement form
 
 
-var RequirementsContainer = function (_React$Component6) {
-	_inherits(RequirementsContainer, _React$Component6);
+var RequirementsContainer = function (_React$Component5) {
+	_inherits(RequirementsContainer, _React$Component5);
 
 	function RequirementsContainer(props) {
 		_classCallCheck(this, RequirementsContainer);
 
-		var _this6 = _possibleConstructorReturn(this, (RequirementsContainer.__proto__ || Object.getPrototypeOf(RequirementsContainer)).call(this, props));
+		var _this5 = _possibleConstructorReturn(this, (RequirementsContainer.__proto__ || Object.getPrototypeOf(RequirementsContainer)).call(this, props));
 
-		_this6.handleChange = _this6.handleChange.bind(_this6);
-		return _this6;
+		_this5.handleChange = _this5.handleChange.bind(_this5);
+		return _this5;
 	}
 
 	_createClass(RequirementsContainer, [{
@@ -239,7 +210,7 @@ var RequirementsContainer = function (_React$Component6) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this7 = this;
+			var _this6 = this;
 
 			return _react2.default.createElement(
 				_utils.FancyContainer,
@@ -261,7 +232,7 @@ var RequirementsContainer = function (_React$Component6) {
 							{ className: 'col-sm-9' },
 							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'bandwidth', value: this.props.bandwidth,
 								ref: function ref(input) {
-									return _this7.bandwidth = input;
+									return _this6.bandwidth = input;
 								}, onChange: this.handleChange })
 						)
 					),
@@ -278,7 +249,7 @@ var RequirementsContainer = function (_React$Component6) {
 							{ className: 'col-sm-9' },
 							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'costs', value: this.props.costs,
 								ref: function ref(input) {
-									return _this7.costs = input;
+									return _this6.costs = input;
 								}, onChange: this.handleChange })
 						)
 					),
@@ -307,21 +278,21 @@ var RequirementsContainer = function (_React$Component6) {
 //Contains the entirety of the tool
 
 
-var PlanningToolContainer = function (_React$Component7) {
-	_inherits(PlanningToolContainer, _React$Component7);
+var PlanningToolContainer = function (_React$Component6) {
+	_inherits(PlanningToolContainer, _React$Component6);
 
 	function PlanningToolContainer(props) {
 		_classCallCheck(this, PlanningToolContainer);
 
-		var _this8 = _possibleConstructorReturn(this, (PlanningToolContainer.__proto__ || Object.getPrototypeOf(PlanningToolContainer)).call(this, props));
+		var _this7 = _possibleConstructorReturn(this, (PlanningToolContainer.__proto__ || Object.getPrototypeOf(PlanningToolContainer)).call(this, props));
 
-		_this8.state = {
+		_this7.state = {
 			bandwidth: '',
 			costs: ''
 		};
 
-		_this8.handleUserInput = _this8.handleUserInput.bind(_this8);
-		return _this8;
+		_this7.handleUserInput = _this7.handleUserInput.bind(_this7);
+		return _this7;
 	}
 
 	_createClass(PlanningToolContainer, [{
@@ -359,7 +330,7 @@ _reactDom2.default.render(_react2.default.createElement(PlanningToolContainer, n
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
+exports.MyButton = exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -412,18 +383,22 @@ var Map = exports.Map = function (_React$Component2) {
 
 		// Load Google Map APIs and the map scripts from the server
 		value: function componentDidMount() {
+			var googleMapAPI = document.createElement('script');
+			googleMapAPI.setAttribute('type', 'text/javascript');
+			googleMapAPI.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDK76FwuJJgha95vSjgK8lUG_oNegAZVC0');
+			document.body.appendChild(googleMapAPI);
+
 			var mapScript = document.createElement('script');
 			mapScript.setAttribute('type', 'text/javascript');
 			mapScript.setAttribute('src', this.props.mapScriptSrc);
-
 			var map = document.getElementById('map');
 			map.appendChild(mapScript);
 
-			var googleMapAPI = document.createElement('script');
-			googleMapAPI.setAttribute('type', 'text/javascript');
-			googleMapAPI.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDK76FwuJJgha95vSjgK8lUG_oNegAZVC0&callback=initMap');
-
-			document.body.appendChild(googleMapAPI);
+			if (this.props.needWebSocket) {
+				var socketScript = document.createElement('script');
+				socketScript.setAttribute('src', 'http://' + this.props.serverAddr + ':' + this.props.serverPort + '/socket.io/socket.io.js');
+				document.body.appendChild(socketScript);
+			}
 		}
 	}, {
 		key: 'render',
@@ -460,6 +435,39 @@ var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
 	}]);
 
 	return ContainerTitle;
+}(_react2.default.Component);
+
+var MyButton = exports.MyButton = function (_React$Component4) {
+	_inherits(MyButton, _React$Component4);
+
+	function MyButton(props) {
+		_classCallCheck(this, MyButton);
+
+		var _this4 = _possibleConstructorReturn(this, (MyButton.__proto__ || Object.getPrototypeOf(MyButton)).call(this, props));
+
+		_this4.handleBtnClick = _this4.handleBtnClick.bind(_this4);
+		return _this4;
+	}
+
+	_createClass(MyButton, [{
+		key: 'handleBtnClick',
+		value: function handleBtnClick(e) {
+			window.buttonID = this.props.button.id;
+
+			window.callAlgorithm();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'button',
+				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
+				this.props.button.name
+			);
+		}
+	}]);
+
+	return MyButton;
 }(_react2.default.Component);
 
 },{"react":179}],3:[function(require,module,exports){

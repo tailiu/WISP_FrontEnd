@@ -21,40 +21,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//Contain a map and its corresponding map legends
-var MapContainer = function (_React$Component) {
-	_inherits(MapContainer, _React$Component);
-
-	function MapContainer() {
-		_classCallCheck(this, MapContainer);
-
-		return _possibleConstructorReturn(this, (MapContainer.__proto__ || Object.getPrototypeOf(MapContainer)).apply(this, arguments));
-	}
-
-	_createClass(MapContainer, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(_utils.ContainerTitle, { title: 'The Planned Networks on the Map' }),
-				_react2.default.createElement(
-					'div',
-					{ className: 'smallMapContainer' },
-					_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js' })
-				)
-			);
-		}
-	}]);
-
-	return MapContainer;
-}(_react2.default.Component);
-
 //Contain a network parameter table
-
-
-var NetworkParameters = function (_React$Component2) {
-	_inherits(NetworkParameters, _React$Component2);
+var NetworkParameters = function (_React$Component) {
+	_inherits(NetworkParameters, _React$Component);
 
 	function NetworkParameters() {
 		_classCallCheck(this, NetworkParameters);
@@ -116,6 +85,47 @@ var NetworkParameters = function (_React$Component2) {
 	return NetworkParameters;
 }(_react2.default.Component);
 
+var Algorithms = function (_React$Component2) {
+	_inherits(Algorithms, _React$Component2);
+
+	function Algorithms() {
+		_classCallCheck(this, Algorithms);
+
+		return _possibleConstructorReturn(this, (Algorithms.__proto__ || Object.getPrototypeOf(Algorithms)).apply(this, arguments));
+	}
+
+	_createClass(Algorithms, [{
+		key: 'render',
+		value: function render() {
+			var a1 = {};
+			a1.name = 'A1';
+			a1.id = 'A1';
+			a1.invokeEvent = true;
+
+			var a2 = {};
+			a2.name = 'A2';
+			a2.id = 'A2';
+			a2.invokeEvent = true;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h3',
+					{ className: 'text-center' },
+					'Algorithms'
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: a1 }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: a2 })
+			);
+		}
+	}]);
+
+	return Algorithms;
+}(_react2.default.Component);
+
 var PlannedNetworkContainer = function (_React$Component3) {
 	_inherits(PlannedNetworkContainer, _React$Component3);
 
@@ -134,7 +144,21 @@ var PlannedNetworkContainer = function (_React$Component3) {
 				_react2.default.createElement(
 					_utils.FancyContainer,
 					{ styles: 'grey-container bigMapContainer' },
-					_react2.default.createElement(MapContainer, null)
+					_react2.default.createElement(_utils.ContainerTitle, { title: 'Planned Networks on the Map' }),
+					_react2.default.createElement(
+						'div',
+						{ className: 'row' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-2' },
+							_react2.default.createElement(Algorithms, null)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-10 smallMapContainer' },
+							_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js', needWebSocket: true, serverAddr: 'localhost', serverPort: '8000' })
+						)
+					)
 				),
 				_react2.default.createElement(
 					_utils.FancyContainer,
@@ -156,7 +180,7 @@ _reactDom2.default.render(_react2.default.createElement(PlannedNetworkContainer,
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
+exports.MyButton = exports.ContainerTitle = exports.Map = exports.FancyContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -209,18 +233,22 @@ var Map = exports.Map = function (_React$Component2) {
 
 		// Load Google Map APIs and the map scripts from the server
 		value: function componentDidMount() {
+			var googleMapAPI = document.createElement('script');
+			googleMapAPI.setAttribute('type', 'text/javascript');
+			googleMapAPI.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDK76FwuJJgha95vSjgK8lUG_oNegAZVC0');
+			document.body.appendChild(googleMapAPI);
+
 			var mapScript = document.createElement('script');
 			mapScript.setAttribute('type', 'text/javascript');
 			mapScript.setAttribute('src', this.props.mapScriptSrc);
-
 			var map = document.getElementById('map');
 			map.appendChild(mapScript);
 
-			var googleMapAPI = document.createElement('script');
-			googleMapAPI.setAttribute('type', 'text/javascript');
-			googleMapAPI.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDK76FwuJJgha95vSjgK8lUG_oNegAZVC0&callback=initMap');
-
-			document.body.appendChild(googleMapAPI);
+			if (this.props.needWebSocket) {
+				var socketScript = document.createElement('script');
+				socketScript.setAttribute('src', 'http://' + this.props.serverAddr + ':' + this.props.serverPort + '/socket.io/socket.io.js');
+				document.body.appendChild(socketScript);
+			}
 		}
 	}, {
 		key: 'render',
@@ -257,6 +285,39 @@ var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
 	}]);
 
 	return ContainerTitle;
+}(_react2.default.Component);
+
+var MyButton = exports.MyButton = function (_React$Component4) {
+	_inherits(MyButton, _React$Component4);
+
+	function MyButton(props) {
+		_classCallCheck(this, MyButton);
+
+		var _this4 = _possibleConstructorReturn(this, (MyButton.__proto__ || Object.getPrototypeOf(MyButton)).call(this, props));
+
+		_this4.handleBtnClick = _this4.handleBtnClick.bind(_this4);
+		return _this4;
+	}
+
+	_createClass(MyButton, [{
+		key: 'handleBtnClick',
+		value: function handleBtnClick(e) {
+			window.buttonID = this.props.button.id;
+
+			window.callAlgorithm();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'button',
+				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
+				this.props.button.name
+			);
+		}
+	}]);
+
+	return MyButton;
 }(_react2.default.Component);
 
 },{"react":179}],3:[function(require,module,exports){

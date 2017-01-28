@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {FancyContainer, Map, ContainerTitle} from './utils.jsx'
+import {FancyContainer, Map, ContainerTitle, MyButton} from './utils.jsx'
 
 class PlanToolTitle extends React.Component {
 	render() {
@@ -13,39 +13,23 @@ class PlanToolTitle extends React.Component {
 	}
 }
 
-class Marker extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.handleBtnClick = this.handleBtnClick.bind(this)
-	}
-
-	handleBtnClick(e) {
-		window.markerIconLink = this.props.marker.iconLink
-	}
-
-	render() {
-		return (
-			<button type="button" onClick={this.handleBtnClick} className="btn btn-success btn-block ">{this.props.marker.name}</button>
-		)
-	}
-}
-
 class MarkerList extends React.Component {
 	render() {
 		var serviceProvider = {}
 		serviceProvider.name = 'Service Provider'
-		serviceProvider.iconLink = 'styles/images/provider.jpg'
+		serviceProvider.id = 'styles/images/provider.jpg'
+		serviceProvider.invokeEvent = false
 
 		var newUser = {}
 		newUser.name = 'New User'
-		newUser.iconLink = 'styles/images/newUser.jpg'
+		newUser.id = 'styles/images/newUser.jpg'
+		newUser.invokeEvent = false
 
 		return (
 			<div>
 				<h3 className='text-center'>Markers</h3><br/>
-				<Marker marker={serviceProvider} /><br/>
-				<Marker marker={newUser} />
+				<MyButton button={serviceProvider} /><br/>
+				<MyButton button={newUser} />
 			</div>
 		)
 	}
@@ -81,7 +65,7 @@ class MapContainer extends React.Component {
 						<MarkerList />
 					</div>
 					<div className='col-sm-8 smallMapContainer'>
-						<Map mapScriptSrc='mapjs/index.js'/>
+						<Map mapScriptSrc='mapjs/index.js' needWebSocket={false} />
 					</div>
 					<div className='col-sm-2'>
 		            	<MapLegends />
