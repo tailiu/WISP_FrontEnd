@@ -65,7 +65,7 @@ class PlannedNetworkContainer extends React.Component {
 		            </div>
 				</FancyContainer>
 				<FancyContainer>
-					<NetworkParameters paras={window.data}/>
+					<NetworkParameters paras={window.data.result}/>
 				</FancyContainer>
 			</div>
 		)

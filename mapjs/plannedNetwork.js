@@ -4,56 +4,29 @@ const serverPort = 8000
 var buttonID = 'A1'
 var socket
 var map
-var providerlinks
-var newUserlinks
-var providerMarkers = []
-var newUserMarkers = []
-var oldMarkerPosition
+var lines = []
+var markers = []
+
+function addClass(element, newClass) {
+    if (element.classList == undefined) {
+        for (var i in element) {
+            var classList = element[i].classList
+            classList.add(newClass)
+        }
+    } else {
+        var classList = element.classList
+        classList.add(newClass)
+    }   
+}
 
 function callAlgorithm() {
     var args = {}
     args.algorithm = buttonID
-    args.pixels = window.data.pixels
-
+    args.input = window.data.input
     socket.emit('callAlgorithm', args)
-}
 
-function recalculateNetworkPlan(newMarkerPosition) {
-    var oldLat = oldMarkerPosition.lat().toFixed(6)
-    var oldLng = oldMarkerPosition.lng().toFixed(6)
-    var newLat = newMarkerPosition.lat()
-    var newLng = newMarkerPosition.lng()
-    var newPosition = {}
-    newPosition.lat = newLat
-    newPosition.lng = newLng
-
-    var coordinates = window.data.coordinates
-    var providerArr = coordinates[0]
-    var newUserArr = coordinates[1]
-
-    var args = {}
-    args.algorithm = buttonID
-    args.coordinates = {}
-    args.coordinates.provider = []
-    args.coordinates.newUser = []
-
-    for (var i in providerArr) {
-        if (providerArr[i].lat == oldLat && providerArr[i].lng == oldLng) {
-            args.coordinates.provider.push(newPosition)
-        } else {
-            args.coordinates.provider.push(providerArr[i])
-        }
-    }
-
-    for (var j in newUserArr) {
-        if (newUserArr[j].lat == oldLat && newUserArr[j].lng == oldLng) {
-            args.coordinates.newUser.push(newPosition)
-        } else {
-            args.coordinates.newUser.push(newUserArr[j])
-        }
-    }
-
-    socket.emit('recalculateNetworkPlan', args)
+    addClass(document.querySelector('body'), 'wait')
+    addClass(document.getElementsByTagName('button'), 'wait')
 }
 
 function drawBoundary() {
@@ -69,95 +42,66 @@ function drawBoundary() {
     }
 }
 
-function drawNetwork() {
-    var coordinates = window.data.coordinates
-    var providerArr = coordinates[0]
-    var newUserArr = coordinates[1]
+function infoWindowContent(properties) {
+    var content = '<ul>'
 
-    providerlinks = new google.maps.Polyline({
-        path: providerArr,
-        geodesic: true,
-        strokeColor: '#FF0000', //red
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-    })  
-
-    providerlinks.setMap(map)
-
-    for (var i in providerArr) {
-        var providerMarker = new google.maps.Marker({
-            position: providerArr[i],
-            title: 'Provider Markers',
-            map: map,
-            icon: 'styles/images/provider.jpg',
-            draggable: true
-        })
-
-        providerMarker.addListener('dragstart', function() {
-            oldMarkerPosition = this.getPosition()
-        })
-
-        providerMarker.addListener('dragend', function() {
-            var newMarkerPosition = this.getPosition()
-
-            recalculateNetworkPlan(newMarkerPosition)
-        })
-
-        providerMarkers.push(providerMarker)
+    for (var key in properties) {
+        var entry = '<li>'
+        entry += key + ': ' + properties[key]
+        entry += '</li>'
+        content += entry
     }
 
+    content += '</ul>'
 
-    newUserlinks = new google.maps.Polyline({
-        path: newUserArr,
-        geodesic: true,
-        strokeColor: '#000000', //black
-        strokeOpacity: 1.0,
-        strokeWeight: 3
-    })  
-
-    newUserlinks.setMap(map)
-    
-    for (var i in newUserArr) {
-        var newUserMarker = new google.maps.Marker({
-            position: newUserArr[i],
-            title: 'New User Markers',
-            map: map,
-            icon: 'styles/images/newUser.jpg',
-            draggable: true
-        })
-
-        newUserMarker.addListener('dragstart', function() {
-            oldMarkerPosition = this.getPosition()
-        })
-
-        newUserMarker.addListener('dragend', function() {
-            var newMarkerPosition = this.getPosition()
-
-            recalculateNetworkPlan(newMarkerPosition)
-        })
-
-        newUserMarkers.push(newUserMarker)
-    }
+    return content
 }
+ 
+function drawNetwork() {
+    var nodes = window.data.result.nodes
+    var edges = window.data.result.edges
+    var marker
+    var line
 
-function removeNetwork() {
-    providerlinks.setMap(null)
-
-    newUserlinks.setMap(null)
-
-    for (var i = 0; i < providerMarkers.length; i++) {
-        providerMarkers[i].setMap(null);
+    for (var i in nodes) {
+        marker = new google.maps.Marker({
+            position: nodes[i].node,
+            map: map,
+            title: 'Network Node',
+            clickable: true
+        })
+        marker.infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent(nodes[i].nodeProperty)
+        })
+        google.maps.event.addListener(marker, 'click', function() {
+            this.infoWindow.open(map, this)
+        })
+        markers.push(marker)
     }
-    providerMarkers = []
 
-    for (var i = 0; i < newUserMarkers.length; i++) {
-        newUserMarkers[i].setMap(null);
+    for (var i in edges) {
+        line = new google.maps.Polyline({
+            path: edges[i].nodes,
+            geodesic: true,
+            strokeColor: '#000000',
+            strokeOpacity: 1.0,
+            strokeWeight: 5,
+            clickable: true
+        })
+        line.infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent(edges[i].edgeProperty)
+        })
+        google.maps.event.addListener(line, 'click', function(event) {
+            this.infoWindow.open(map)
+            this.infoWindow.setPosition(event.latLng)
+        })
+        line.setMap(map)
+        lines.push(line)
     }
-    newUserMarkers = []
 }
 
 function initMap() {
-    var center = window.data.coordinates[0][0]
+    var center = window.data.result.nodes[0].node
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
@@ -168,25 +112,44 @@ function initMap() {
     drawBoundary()
 }
 
+function removeNetwork() {
+    for (var j in lines) {
+        lines[j].setMap(null)
+    }
+    lines = []
+
+    for (var i in markers) {
+        markers[i].setMap(null)
+    }
+    markers = []
+}
+
+function removeClass(element, oldClass) {
+    if (element.classList == undefined) {
+        for (var i in element) {
+            var classList = element[i].classList
+            classList.remove(oldClass)
+        }
+    } else {
+        var classList = element.classList
+        classList.remove(oldClass)
+    }   
+}
+
 function initSocket(){
     socket = io('http://' + serverAddr + ':' + serverPort)
 
-    socket.on('getResults', function(results) {
-        window.data.coordinates = results
+    socket.on('getResults', function(output) {
+        window.data.result = output
         removeNetwork()
         drawNetwork()
-    })
 
-    socket.on('newNetworkPlan', function(results) {
-        window.data.coordinates = results.coordinates
-        window.data.pixels = results.pixels
-        removeNetwork()
-        drawNetwork()
+        removeClass(document.querySelector('body'), 'wait')
+        removeClass(document.getElementsByTagName('button'), 'wait')
     })
 }
 
 window.onload = function() {
     initMap()
-
     initSocket()
 }

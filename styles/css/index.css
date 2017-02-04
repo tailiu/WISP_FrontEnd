@@ -29,3 +29,7 @@
 .stepTitle {
 	padding: 40px;
 }
+
+.wait {
+	cursor: wait;
+}

@@ -6,6 +6,7 @@ var ejs = require('ejs')
 var r = require('rethinkdb')
 var async = require('async')
 var _ = require('underscore')
+var childProcess = require('child_process')
 
 //Fixed port server listens to
 const serverPort = 8000
@@ -166,59 +167,110 @@ function transformCoordinatesToPixels(coordinates, callback) {
     })
 }
 
-function algorithmTwo(pixels) {
-    var pArr = [13100, 12300, 11500, 2350, 2100]
-    var nArr = [900, 1300, 1500, 1700, 1900]
+function algorithmOne(input, callback) {
+    var path = './algorithms/A1.py'
 
-    pixels[0] = _.union(pixels[0], pArr)
-    pixels[1] = _.union(pixels[1], nArr)
+    console.log('**************** Input ******************')
+    console.dir(input, 2)
+    console.log('**********************************')
+    console.log()
 
-    return pixels
+    childProcess.execFile('python', [path, JSON.stringify(input)], function(error, output, stderr){
+        if (error) {
+            throw error
+        }
+        
+        console.log('**************** Output ******************')
+        console.log(output)
+        console.log('**********************************')
+
+        callback(null, JSON.parse(output))
+    })
 }
 
-function algorithmOne(pixels) {
-    var pArr = [6950, 15050, 23050]
-    var nArr = [300, 500, 700]
+function algorithmTwo(input, callback) {
+    var path = './algorithms/A2'
 
-    pixels[0] = _.union(pixels[0], pArr)
-    pixels[1] = _.union(pixels[1], nArr)
+    console.log('**************** Input ******************')
+    console.dir(input, 2)
+    console.log('**********************************')
+    console.log()
 
-    return pixels
+    childProcess.execFile(path, [JSON.stringify(input)], function(error, output, stderr){
+        if (error) {
+            throw error
+        }
+        
+        console.log('**************** Output ******************')
+        console.log(output)
+        console.log('**********************************')
+
+        callback(null, JSON.parse(output))
+    })
 }
 
-function callAlgorithm(algorithm, pixels, callback) {
-    var results
-
+function callAlgorithm(algorithm, input, callback) {
     switch(algorithm) {
         case 'A1': 
-            results = algorithmOne(pixels)
+            algorithmOne(input, callback)
             break
 
         case 'A2':
-            results = algorithmTwo(pixels)
+            algorithmTwo(input, callback)
             break
     }
-
-    callback(null, results)
 }
 
-function transformPixelsToCoordinates(pixels, callback) {
-    async.parallel([
-        function(callback) {
-            getCoordinatesByPixels(pixels[0], function(providerCoordinates) {
-                callback(null, providerCoordinates);
-            })
-        },
-        function(callback) {
-            getCoordinatesByPixels(pixels[1], function(newUserCoordinates) {
-                callback(null, newUserCoordinates);
-            })
+function collectPixelsFromOutput(output) {
+    var pixels = []
+    var nodes = output.nodes
+
+    for (var i in nodes) {
+        pixels.push(nodes[i].node)
+    }
+
+    return pixels
+}
+
+function replacePixelsWithCoordinates(output, coordinates) {
+    var nodes = output.nodes
+    var edges = output.edges
+    var index = coordinates.length - 1
+
+    for (var i in nodes) {
+        var pixel = nodes[i].node
+
+        for (var j in edges) {
+            if (edges[j].nodes[0] == pixel) {
+                edges[j].nodes[0] = coordinates[index - i]
+            }
+            if (edges[j].nodes[1] == pixel) {
+                edges[j].nodes[1] = coordinates[index - i]
+            }
         }
-    ],
-    function(err, allCoordinates) {
-        //Return coordinates in an array: [ [provider coord arr], [new user coordinate arr] ]
-        callback(null, allCoordinates)
+
+        nodes[i].node = coordinates[index - i]
+
+    }
+}
+
+function transformPixelsToCoordinates(output, callback) {
+    var pixels = collectPixelsFromOutput(output)
+
+    getCoordinatesByPixels(pixels, function(coordinates) {
+        
+        replacePixelsWithCoordinates(output, coordinates)
+
+        callback(null, output)
     })
+}
+
+function packageAlgorithmInput(data, pixels) {
+    data.coordinates = {}
+    data.coordinates.providers = pixels[0]
+    data.coordinates.newUsers = pixels[1]
+
+    return data   
 }
 
 //Handle network planning request
@@ -231,36 +283,35 @@ function handleNetworkPlanRequest(req, res) {
 
     req.on('end', function(){
         var rawData = qs.parse(body)
-        
+
         var defaultAlgorithm = 'A1'
         var coordinates = JSON.parse(rawData.coordinates)
-        var rawPixels
+        var input
 
         //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
         async.waterfall([
             function(callback) {
                 transformCoordinatesToPixels(coordinates, function(err, results){
-                    rawPixels = results.slice()
                     callback(null, defaultAlgorithm, results)
                 })
             },
             function(algorithm, pixels, callback) {
-                callAlgorithm(algorithm, pixels, callback)
+                input = packageAlgorithmInput(rawData, pixels)
+
+                callAlgorithm(algorithm, input, callback)
             },
-            function(pixels, callback) {
-                transformPixelsToCoordinates(pixels, callback)
+            function(output, callback) {
+                transformPixelsToCoordinates(output, callback)
             }
-        ], function (err, coordinates) {
+        ], function (err, output) {
             fs.readFile('bundlejs/plannedNetwork.js', function(err, bundlejs) {
                 if (err) throw err
 
                 //Get boundary coordinates from the database
                 getBoundaryCoordinates(function(boundary){
                     var processedData = {}
-                    processedData.bandwidth = rawData.bandwidth
-                    processedData.costs = rawData.costs
-                    processedData.coordinates = coordinates
-                    processedData.pixels = rawPixels
+                    processedData.result = output
+                    processedData.input = input
                     processedData.boundary = boundary
                     
                     //Render the index.ejs file with bundled script file
@@ -319,38 +370,13 @@ io.on('connection', function (socket) {
     socket.on('callAlgorithm', function(args) {
         async.waterfall([
             function(callback) {
-                callAlgorithm(args.algorithm, args.pixels, callback)
+                callAlgorithm(args.algorithm, args.input, callback)
             },
-            function(pixels, callback) {
-                transformPixelsToCoordinates(pixels, callback)
+            function(output, callback) {
+                transformPixelsToCoordinates(output, callback)
             }
-        ], function (err, coordinates) {
-            socket.emit('getResults', coordinates)
-        })
-    })
-
-    socket.on('recalculateNetworkPlan', function(args) {
-        var rawPixels
-
-        async.waterfall([
-            function(callback) {
-                transformCoordinatesToPixels(args.coordinates, function(err, results){
-                    rawPixels = results.slice()
-                    callback(null, args.algorithm, results)
-                })
-            },
-            function(algorithm, pixels, callback) {
-                callAlgorithm(algorithm, pixels, callback)
-            },
-            function(pixels, callback) {
-                transformPixelsToCoordinates(pixels, callback)
-            }
-        ], function (err, coordinates) {
-            var results = {}
-            results.pixels = rawPixels
-            results.coordinates = coordinates
-
-            socket.emit('newNetworkPlan', results)
+        ], function (err, output) {
+            socket.emit('getResults', output)
         })
     })
 })

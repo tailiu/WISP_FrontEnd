@@ -5,6 +5,7 @@
 /data: coordinates and pixels<br />
 /processData: process data in advance<br />
 /rethinkdb_data: some temporary rethink database file<br />
+/algorithms: two example algorithms<br />
 index.html: html template<br />
 server.js: server file<br />
 

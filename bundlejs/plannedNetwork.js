@@ -163,7 +163,7 @@ var PlannedNetworkContainer = function (_React$Component3) {
 				_react2.default.createElement(
 					_utils.FancyContainer,
 					null,
-					_react2.default.createElement(NetworkParameters, { paras: window.data })
+					_react2.default.createElement(NetworkParameters, { paras: window.data.result })
 				)
 			);
 		}
