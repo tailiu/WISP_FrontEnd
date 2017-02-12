@@ -48,49 +48,8 @@ var PlanToolTitle = function (_React$Component) {
 	return PlanToolTitle;
 }(_react2.default.Component);
 
-var MarkerList = function (_React$Component2) {
-	_inherits(MarkerList, _React$Component2);
-
-	function MarkerList() {
-		_classCallCheck(this, MarkerList);
-
-		return _possibleConstructorReturn(this, (MarkerList.__proto__ || Object.getPrototypeOf(MarkerList)).apply(this, arguments));
-	}
-
-	_createClass(MarkerList, [{
-		key: 'render',
-		value: function render() {
-			var serviceProvider = {};
-			serviceProvider.name = 'Source';
-			serviceProvider.id = 'styles/images/provider.png';
-			serviceProvider.invokeEvent = false;
-
-			var newUser = {};
-			newUser.name = 'Sink';
-			newUser.id = 'styles/images/newUser.png';
-			newUser.invokeEvent = false;
-
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'h4',
-					{ className: 'text-center' },
-					'Markers'
-				),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: serviceProvider }),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: newUser })
-			);
-		}
-	}]);
-
-	return MarkerList;
-}(_react2.default.Component);
-
-var MapLegends = function (_React$Component3) {
-	_inherits(MapLegends, _React$Component3);
+var MapLegends = function (_React$Component2) {
+	_inherits(MapLegends, _React$Component2);
 
 	function MapLegends() {
 		_classCallCheck(this, MapLegends);
@@ -137,8 +96,8 @@ var MapLegends = function (_React$Component3) {
 //Contains a map and its corresponding map legends
 
 
-var MapContainer = function (_React$Component4) {
-	_inherits(MapContainer, _React$Component4);
+var MapContainer = function (_React$Component3) {
+	_inherits(MapContainer, _React$Component3);
 
 	function MapContainer() {
 		_classCallCheck(this, MapContainer);
@@ -179,134 +138,105 @@ var MapContainer = function (_React$Component4) {
 	return MapContainer;
 }(_react2.default.Component);
 
-//Contains a requirement form
+var MarkerList = function (_React$Component4) {
+	_inherits(MarkerList, _React$Component4);
 
+	function MarkerList(props) {
+		_classCallCheck(this, MarkerList);
 
-var RequirementsContainer = function (_React$Component5) {
-	_inherits(RequirementsContainer, _React$Component5);
+		var _this4 = _possibleConstructorReturn(this, (MarkerList.__proto__ || Object.getPrototypeOf(MarkerList)).call(this, props));
 
-	function RequirementsContainer(props) {
-		_classCallCheck(this, RequirementsContainer);
-
-		var _this5 = _possibleConstructorReturn(this, (RequirementsContainer.__proto__ || Object.getPrototypeOf(RequirementsContainer)).call(this, props));
-
-		_this5.handleChange = _this5.handleChange.bind(_this5);
-		return _this5;
+		_this4.state = { nodes: '' };
+		_this4.handleSubmit = _this4.handleSubmit.bind(_this4);
+		return _this4;
 	}
 
-	_createClass(RequirementsContainer, [{
-		key: 'handleChange',
-		value: function handleChange() {
-			this.props.onUserInput(this.bandwidth.value, this.costs.value);
+	_createClass(MarkerList, [{
+		key: 'handleSubmit',
+		value: function handleSubmit(event) {
+			this.setState({ nodes: JSON.stringify(window.nodes) });
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this6 = this;
+			var serviceProvider = {};
+			serviceProvider.name = 'Source';
+			serviceProvider.id = 'styles/images/provider.png';
+			serviceProvider.invokeEvent = false;
+
+			var newUser = {};
+			newUser.name = 'Sink';
+			newUser.id = 'styles/images/newUser.png';
+			newUser.invokeEvent = false;
 
 			return _react2.default.createElement(
-				_utils.FancyContainer,
-				{ styles: 'grey-container' },
-				_react2.default.createElement(_utils.ContainerTitle, { title: 'Input Your Requirements' }),
+				'div',
+				null,
+				_react2.default.createElement(
+					'h4',
+					{ className: 'text-center' },
+					'Markers'
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: serviceProvider }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: newUser }),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'form',
-					{ className: 'form-horizontal', method: 'POST', action: window.serverURL },
+					{ className: 'form-horizontal', method: 'POST', id: 'requirementsForm', onSubmit: this.handleSubmit },
 					_react2.default.createElement(
 						'div',
 						{ className: 'form-group' },
 						_react2.default.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Bandwidth'
-						),
-						_react2.default.createElement(
 							'div',
 							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'text', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: 'Disable Input For now',
-								ref: function ref(input) {
-									return _this6.bandwidth = input;
-								}, onChange: this.handleChange })
+							_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: '2342342342' })
 						)
 					),
 					_react2.default.createElement(
 						'div',
 						{ className: 'form-group' },
 						_react2.default.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Costs'
-						),
-						_react2.default.createElement(
 							'div',
 							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'text', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: 'Disable Input For now',
-								ref: function ref(input) {
-									return _this6.costs = input;
-								}, onChange: this.handleChange })
+							_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: '123123123' })
 						)
 					),
-					_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: JSON.stringify(window.nodes) }),
+					_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
 					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-sm-offset-4 col-sm-4' },
-							_react2.default.createElement(
-								'button',
-								{ className: 'btn btn-primary btn-block', type: 'submit' },
-								'GO!'
-							)
-						)
+						'button',
+						{ className: 'btn btn-primary btn-block', type: 'submit' },
+						'GO!'
 					)
 				)
 			);
 		}
 	}]);
 
-	return RequirementsContainer;
+	return MarkerList;
 }(_react2.default.Component);
 
 //Contains the entirety of the tool
 
 
-var PlanningToolContainer = function (_React$Component6) {
-	_inherits(PlanningToolContainer, _React$Component6);
+var PlanningToolContainer = function (_React$Component5) {
+	_inherits(PlanningToolContainer, _React$Component5);
 
 	function PlanningToolContainer(props) {
 		_classCallCheck(this, PlanningToolContainer);
 
-		var _this7 = _possibleConstructorReturn(this, (PlanningToolContainer.__proto__ || Object.getPrototypeOf(PlanningToolContainer)).call(this, props));
-
-		_this7.state = {
-			bandwidth: '',
-			costs: ''
-		};
-
-		_this7.handleUserInput = _this7.handleUserInput.bind(_this7);
-		return _this7;
+		return _possibleConstructorReturn(this, (PlanningToolContainer.__proto__ || Object.getPrototypeOf(PlanningToolContainer)).call(this, props));
 	}
 
 	_createClass(PlanningToolContainer, [{
-		key: 'handleUserInput',
-		value: function handleUserInput(bandwidth, costs) {
-			this.setState({
-				bandwidth: bandwidth,
-				costs: costs
-			});
-		}
-	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(PlanToolTitle, null),
-				_react2.default.createElement(MapContainer, null),
-				_react2.default.createElement(RequirementsContainer, {
-					bandwidth: this.state.bandwidth,
-					costs: this.state.costs,
-					onUserInput: this.handleUserInput })
+				_react2.default.createElement(MapContainer, null)
 			);
 		}
 	}]);

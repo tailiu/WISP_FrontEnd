@@ -5,6 +5,11 @@ var center = {lat: 38.924280, lng: -122.907255}
 
 var serverURL = 'http://' + window.data.serverAddr + ':' +  window.data.serverPort + '/submitNetworkRawData'
 
+function setRequirementsFormAction() {
+    var form = document.getElementById('requirementsForm')
+    form.action = serverURL
+}
+
 function initMap() {
     var boundary = window.data.boundary
 
@@ -93,4 +98,5 @@ function addMarker(location, map) {
 
 window.onload = function() {
     initMap()
+    setRequirementsFormAction()
 }

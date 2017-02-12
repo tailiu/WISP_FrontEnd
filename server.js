@@ -208,6 +208,7 @@ function transformCoordinatesToPixels(nodes, callback) {
 function algorithmOne(input, callback) {
     console.log('**************** Input ******************')
     console.dir(input, 2)
+    console.log(JSON.stringify(input.nodes[0].nodeProperty))
     console.log('**********************************')
     console.log()
 
@@ -307,6 +308,14 @@ function packageAlgorithmInput(data, pixels) {
     return data   
 }
 
+function addIndexToNodeProperty(output) {
+    var nodes = output.nodes
+
+    for (var i in nodes) {
+        nodes[i].nodeProperty.id = nodes[i].node
+    }
+}
+
 //Handle network planning request
 function handleNetworkPlanRequest(req, res) {
     var body = ''
@@ -333,6 +342,7 @@ function handleNetworkPlanRequest(req, res) {
                 callAlgorithm(algorithm, rawData, callback)
             },
             function(output, callback) {
+                addIndexToNodeProperty(output)
                 transformPixelsToCoordinates(output, callback)
             }
         ], function (err, output) {
@@ -419,6 +429,7 @@ fs.readFile(configFilePath, function (err, data) {
                     callAlgorithm(args.algorithm, args.input, callback)
                 },
                 function(output, callback) {
+                    addIndexToNodeProperty(output)
                     transformPixelsToCoordinates(output, callback)
                 }
             ], function (err, output) {

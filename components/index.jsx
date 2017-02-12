@@ -12,28 +12,6 @@ class PlanToolTitle extends React.Component {
 	}
 }
 
-class MarkerList extends React.Component {
-	render() {
-		var serviceProvider = {}
-		serviceProvider.name = 'Source'
-		serviceProvider.id = 'styles/images/provider.png'
-		serviceProvider.invokeEvent = false
-
-		var newUser = {}
-		newUser.name = 'Sink'
-		newUser.id = 'styles/images/newUser.png'
-		newUser.invokeEvent = false
-
-		return (
-			<div>
-				<h4 className='text-center'>Markers</h4><br/>
-				<MyButton button={serviceProvider} /><br/>
-				<MyButton button={newUser} />
-			</div>
-		)
-	}
-}
-
 class MapLegends extends React.Component {
 	render() {
 		return (
@@ -74,48 +52,51 @@ class MapContainer extends React.Component {
 	}
 }
 
-//Contains a requirement form
-class RequirementsContainer extends React.Component {
+class MarkerList extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.handleChange = this.handleChange.bind(this)
+		this.state = {nodes: ''}
+		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
-	handleChange() {
-		this.props.onUserInput(
-			this.bandwidth.value,
-			this.costs.value
-		)
+	handleSubmit(event) {
+		 this.setState({nodes: JSON.stringify(window.nodes)});
 	}
 
 	render() {
+		var serviceProvider = {}
+		serviceProvider.name = 'Source'
+		serviceProvider.id = 'styles/images/provider.png'
+		serviceProvider.invokeEvent = false
+
+		var newUser = {}
+		newUser.name = 'Sink'
+		newUser.id = 'styles/images/newUser.png'
+		newUser.invokeEvent = false
+
 		return (
-			<FancyContainer styles='grey-container'>
-				<ContainerTitle title='Input Your Requirements'/>
-				<form className='form-horizontal' method='POST' action={window.serverURL}>
-					<div className='form-group'>
-						<label className='col-sm-2 control-label'>Bandwidth</label>
+			<div>
+				<h4 className='text-center'>Markers</h4><br/>
+				<MyButton button={serviceProvider} /><br/>
+				<MyButton button={newUser} /><br/>
+
+				<form className='form-horizontal' method='POST' id='requirementsForm' onSubmit={this.handleSubmit}>
+        			<div className='form-group'>
 						<div className='col-sm-9'>
-		        			<input type='text' id='disabledTextInput' className='form-control' name='bandwidth' value='Disable Input For now'
-		        						ref={(input) => this.bandwidth = input} onChange={this.handleChange} />
+		        			<input type='hidden' id='disabledTextInput' className='form-control' name='bandwidth' value='2342342342'/>
 		        		</div>
 		        	</div>
 		        	<div className='form-group'>
-		        		<label className='col-sm-2 control-label'>Costs</label>
 		        		<div className='col-sm-9'>
-		        			<input type='text' id='disabledTextInput' className='form-control' name='costs' value='Disable Input For now'
-		        					ref={(input) => this.costs = input} onChange={this.handleChange} />
+		        			<input type='hidden' id='disabledTextInput' className='form-control' name='costs' value='123123123' />
 		        		</div>
 		        	</div>
-        			<input type='hidden' name='nodes' value={JSON.stringify(window.nodes)} />
-        			<div className='form-group'>
-        				<div className='col-sm-offset-4 col-sm-4'>
-        					<button className='btn btn-primary btn-block' type='submit'>GO!</button>
-        				</div>
-        			</div>
+        			<input type='hidden' name='nodes' value={this.state.nodes} />
+        			<button className='btn btn-primary btn-block' type='submit'>GO!</button>
 	      		</form>
-        	</FancyContainer>
+
+			</div>
 		)
 	}
 }
@@ -124,31 +105,13 @@ class RequirementsContainer extends React.Component {
 class PlanningToolContainer extends React.Component {
 	constructor(props) {
 		super(props)
-
-		this.state = {
-			bandwidth:'',
-			costs:''
-		}
-
-		this.handleUserInput = this.handleUserInput.bind(this)
 	}
-
-	handleUserInput(bandwidth, costs) {
-		this.setState({
-			bandwidth: bandwidth,
-			costs: costs
-		})
-	}
-
+	
 	render() {
 		return (
 			<div>
 				<PlanToolTitle />
 				<MapContainer />
-				<RequirementsContainer
-					 bandwidth={this.state.bandwidth}
-					 costs={this.state.costs}
-					 onUserInput={this.handleUserInput} />
 			</div>
 		)
 	}
