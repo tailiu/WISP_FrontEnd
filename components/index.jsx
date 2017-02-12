@@ -6,8 +6,7 @@ class PlanToolTitle extends React.Component {
 	render() {
 		return (
 			<div className='jumbotron text-center'>
-	            <h1>Network Planning Tool</h1><br />
-	            <h3>Helping the Lone Operator in the Vast Frontier</h3> 
+	            <h1>Network Planning Tool</h1>
 	        </div>
 		)
 	}
@@ -16,18 +15,18 @@ class PlanToolTitle extends React.Component {
 class MarkerList extends React.Component {
 	render() {
 		var serviceProvider = {}
-		serviceProvider.name = 'Service Provider'
-		serviceProvider.id = 'styles/images/provider.jpg'
+		serviceProvider.name = 'Source'
+		serviceProvider.id = 'styles/images/provider.png'
 		serviceProvider.invokeEvent = false
 
 		var newUser = {}
-		newUser.name = 'New User'
-		newUser.id = 'styles/images/newUser.jpg'
+		newUser.name = 'Sink'
+		newUser.id = 'styles/images/newUser.png'
 		newUser.invokeEvent = false
 
 		return (
 			<div>
-				<h3 className='text-center'>Markers</h3><br/>
+				<h4 className='text-center'>Markers</h4><br/>
 				<MyButton button={serviceProvider} /><br/>
 				<MyButton button={newUser} />
 			</div>
@@ -39,14 +38,13 @@ class MapLegends extends React.Component {
 	render() {
 		return (
 			<div>
-            	<h3>Map Legends</h3><br/>
-            	<ul>
-            		<li>Service Provider: <br/>
-            			<img src='styles/images/provider.jpg' className='img-responsive' />
+            	<h4>Legends</h4>
+            	<ul className = 'list-group'>
+            		<li className = 'list-group-item withoutBorder'>Source: <br/>
+            			<img src='styles/images/provider.png' className='img-responsive' />
             		</li>
-            		<br/>
-            		<li>New User: <br/>
-            			<img src='styles/images/newUser.jpg' className='img-responsive' />
+            		<li className = 'list-group-item withoutBorder'>Sink: <br/>
+            			<img src='styles/images/newUser.png' className='img-responsive' />
             		</li>
             	</ul>
             </div>
@@ -61,13 +59,13 @@ class MapContainer extends React.Component {
 			<FancyContainer styles='bigMapContainer'>
 				<ContainerTitle title='Put Your Network Elements on the Map'/>
 				<div className='row'>
-					<div className='col-sm-2'>
+					<div className='col-sm-1'>
 						<MarkerList />
 					</div>
-					<div className='col-sm-8 smallMapContainer'>
-						<Map mapScriptSrc='mapjs/index.js' needWebSocket={false} />
+					<div className='col-sm-10 smallMapContainer'>
+						<Map mapScriptSrc='mapjs/index.js'/>
 					</div>
-					<div className='col-sm-2'>
+					<div className='col-sm-1'>
 		            	<MapLegends />
 		            </div>
 	            </div>
@@ -95,22 +93,22 @@ class RequirementsContainer extends React.Component {
 		return (
 			<FancyContainer styles='grey-container'>
 				<ContainerTitle title='Input Your Requirements'/>
-				<form className='form-horizontal' method='POST' action='http://localhost:8000/submitNetworkRawData'>
+				<form className='form-horizontal' method='POST' action={window.serverURL}>
 					<div className='form-group'>
 						<label className='col-sm-2 control-label'>Bandwidth</label>
 						<div className='col-sm-9'>
-		        			<input type='text' className='form-control' name='bandwidth' value={this.props.bandwidth}
+		        			<input type='text' id='disabledTextInput' className='form-control' name='bandwidth' value='Disable Input For now'
 		        						ref={(input) => this.bandwidth = input} onChange={this.handleChange} />
 		        		</div>
 		        	</div>
 		        	<div className='form-group'>
 		        		<label className='col-sm-2 control-label'>Costs</label>
 		        		<div className='col-sm-9'>
-		        			<input type='text' className='form-control' name='costs' value={this.props.costs}
+		        			<input type='text' id='disabledTextInput' className='form-control' name='costs' value='Disable Input For now'
 		        					ref={(input) => this.costs = input} onChange={this.handleChange} />
 		        		</div>
 		        	</div>
-        			<input type='hidden' name='coordinates' value={JSON.stringify(window.coordinates)} />
+        			<input type='hidden' name='nodes' value={JSON.stringify(window.nodes)} />
         			<div className='form-group'>
         				<div className='col-sm-offset-4 col-sm-4'>
         					<button className='btn btn-primary btn-block' type='submit'>GO!</button>

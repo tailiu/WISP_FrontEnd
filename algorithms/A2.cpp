@@ -5,10 +5,15 @@
 using json = nlohmann::json;
 using namespace std;
 
-int main()
+int main(int argc, char** argv)
 {
-	usleep(8000000);
+	usleep(4000000);
 
+	// An example: deal with input, 
+	// and get the first node in the input
+	json::parse(argv[1])["nodes"][0];
+
+	// Output format
 	json output;
 	output["bandwidth"] = 12323232;
 	output["costs"] = 78787878;
@@ -35,7 +40,7 @@ int main()
 				{"nodeProperty", {
 					{"capacity", 658768768},
 					{"mountingHeight", 786549787},
-					{"type", "sink"}}
+					{"type", "intermediate"}}
 				}
 			}
 		}

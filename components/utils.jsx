@@ -23,12 +23,6 @@ export class Map extends React.Component {
         mapScript.setAttribute('src', this.props.mapScriptSrc)
         var map = document.getElementById('map')
 		map.appendChild(mapScript)
-
-		if (this.props.needWebSocket) {
-			var socketScript = document.createElement('script')
-	        socketScript.setAttribute('src', 'http://' + this.props.serverAddr + ':' + this.props.serverPort + '/socket.io/socket.io.js')
-	        document.body.appendChild(socketScript)
-		}
 	}
 
 	render() {

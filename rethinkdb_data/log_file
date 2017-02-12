@@ -1,33 +1,232 @@
-2017-01-19T13:37:19.801489250 0.156069s notice: Recursively removing directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data/tmp
-2017-01-19T13:37:19.859892688 0.214474s notice: Initializing directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
-2017-01-19T13:37:19.860024812 0.214603s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/tailiu/project/WISPFrontEnd/rethinkdb_data' did not already exist or is empty.)
-2017-01-19T13:37:19.860043099 0.214621s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
-2017-01-19T13:37:19.886216366 0.240797s notice: Running on Linux 3.19.0-25-generic x86_64
-2017-01-19T13:37:19.886347922 0.240926s notice: Loading data from directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
-2017-01-19T13:37:20.042448521 0.397028s info: Automatically using cache size of 2617 MB
-2017-01-19T13:37:20.044023964 0.398602s notice: Listening for intracluster connections on port 29015
-2017-01-19T13:37:20.047030771 0.401609s notice: Listening for client driver connections on port 28015
-2017-01-19T13:37:20.047206109 0.401784s notice: Listening for administrative HTTP connections on port 8080
-2017-01-19T13:37:20.047209128 0.401787s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
-2017-01-19T13:37:20.047212072 0.401790s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
-2017-01-19T13:37:20.047213697 0.401791s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
-2017-01-19T13:37:20.047215661 0.401793s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
-2017-01-19T13:37:20.047217858 0.401796s notice: Server ready, "ubuntu_stq" 2d70257b-8f88-4d0d-9865-fc0e5f01c677
-2017-01-19T13:38:04.528922375 44.883510s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Starting a new Raft election for term 1.
-2017-01-19T13:38:04.540108046 44.894686s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Added replica on this server.
-2017-01-19T13:38:04.541722101 44.896300s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: This server is Raft leader for term 1. Latest log index is 0.
-2017-01-19T14:04:27.731198636 1628.085777s notice: Removing file /home/tailiu/project/WISPFrontEnd/rethinkdb_data/e2e3cb28-8140-4c3c-9fcd-9b85efac332e
-2017-01-19T14:04:27.731260184 1628.085838s info: Table e2e3cb28-8140-4c3c-9fcd-9b85efac332e: Deleted the table.
-2017-01-19T14:11:03.511405257 2023.865983s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Starting a new Raft election for term 1.
-2017-01-19T14:11:03.511565906 2023.866144s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Added replica on this server.
-2017-01-19T14:11:03.512292753 2023.866871s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: This server is Raft leader for term 1. Latest log index is 0.
-2017-01-19T16:28:43.984953911 7922.147525s notice: Removing file /home/tailiu/project/WISPFrontEnd/rethinkdb_data/c6c59819-dcc5-48e1-947d-7495aea15043
-2017-01-19T16:28:43.984985426 7922.147556s info: Table c6c59819-dcc5-48e1-947d-7495aea15043: Deleted the table.
-2017-01-19T16:29:02.160851190 7940.323422s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: Starting a new Raft election for term 1.
-2017-01-19T16:29:02.161030203 7940.323601s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: Added replica on this server.
-2017-01-19T16:29:02.161714407 7940.324285s info: Table f4e62223-d2d3-46a6-9ab3-01a4c571dceb: This server is Raft leader for term 1. Latest log index is 0.
-2017-01-19T16:38:00.121830247 8478.284401s notice: Server got SIGINT from pid 0, uid 0; shutting down...
-2017-01-19T16:38:00.122039620 8478.284610s notice: Shutting down client connections...
-2017-01-19T16:38:00.122123392 8478.284694s notice: All client connections closed.
-2017-01-19T16:38:00.122149117 8478.284719s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
-2017-01-19T16:38:00.124812223 8478.287383s notice: Storage engine shut down.
+2017-01-03T17:44:01.719373778 0.035340s notice: Recursively removing directory /home/tailiu/rethinkdb_data/tmp
+2017-01-03T17:44:01.723141231 0.039109s notice: Initializing directory /home/tailiu/rethinkdb_data
+2017-01-03T17:44:01.723237553 0.039203s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/tailiu/rethinkdb_data' did not already exist or is empty.)
+2017-01-03T17:44:01.723252309 0.039217s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-03T17:44:01.726378467 0.042345s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-03T17:44:01.726424369 0.042389s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-03T17:44:01.876437847 0.192405s info: Automatically using cache size of 2834 MB
+2017-01-03T17:44:01.877270637 0.193236s notice: Listening for intracluster connections on port 29015
+2017-01-03T17:44:01.878535494 0.194501s notice: Listening for client driver connections on port 28015
+2017-01-03T17:44:01.878692931 0.194658s notice: Listening for administrative HTTP connections on port 8080
+2017-01-03T17:44:01.878694445 0.194660s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T17:44:01.878696848 0.194662s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T17:44:01.878698406 0.194663s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T17:44:01.878700567 0.194666s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-03T17:44:01.878702981 0.194668s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-03T17:50:00.261232944 358.577198s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 1.
+2017-01-03T17:50:00.261625191 358.577590s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Added replica on this server.
+2017-01-03T17:50:00.271004662 358.586970s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-03T18:00:06.620634143 964.936600s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-01-03T18:00:06.620759088 964.936724s notice: Shutting down client connections...
+2017-01-03T18:00:06.620796296 964.936761s notice: All client connections closed.
+2017-01-03T18:00:06.620797805 964.936763s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-01-03T18:00:06.622006598 964.937972s notice: Storage engine shut down.
+2017-01-03T22:02:54.935384696 0.060220s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-03T22:02:54.939147304 0.063981s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-03T22:02:54.939214591 0.064046s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-03T22:02:54.960721672 0.085556s info: Automatically using cache size of 2816 MB
+2017-01-03T22:02:54.964484732 0.089317s notice: Listening for intracluster connections on port 29015
+2017-01-03T22:02:54.979557274 0.104390s notice: Listening for client driver connections on port 28015
+2017-01-03T22:02:54.982089836 0.106922s notice: Listening for administrative HTTP connections on port 8080
+2017-01-03T22:02:54.982091873 0.106924s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T22:02:54.982093350 0.106925s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T22:02:54.982094741 0.106926s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-03T22:02:54.982100935 0.106933s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-03T22:02:54.982102431 0.106934s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-03T22:02:56.087973927 1.212806s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 2.
+2017-01-03T22:02:56.091927201 1.216759s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 2. Latest log index is 3.
+2017-01-03T22:13:47.957270784 653.082103s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Starting a new Raft election for term 1.
+2017-01-03T22:13:47.957642636 653.082474s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Added replica on this server.
+2017-01-03T22:13:47.958879778 653.083712s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-06T20:36:35.382781971 36139.914189s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-01-06T20:36:35.386444570 36139.917824s notice: Shutting down client connections...
+2017-01-06T20:36:35.387940365 36139.919320s notice: All client connections closed.
+2017-01-06T20:36:35.388122387 36139.919502s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-01-06T20:36:35.422883167 36139.954263s notice: Storage engine shut down.
+2017-01-06T20:36:37.004712473 0.114582s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-06T20:36:37.030693902 0.140563s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-06T20:36:37.030771250 0.140637s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-06T20:36:37.092268482 0.202137s info: Automatically using cache size of 2773 MB
+2017-01-06T20:36:37.093736429 0.203603s notice: Listening for intracluster connections on port 29015
+2017-01-06T20:36:37.158879578 0.268746s notice: Listening for client driver connections on port 28015
+2017-01-06T20:36:37.159161837 0.269028s notice: Listening for administrative HTTP connections on port 8080
+2017-01-06T20:36:37.159163458 0.269030s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-06T20:36:37.159170472 0.269037s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-06T20:36:37.159171789 0.269038s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-06T20:36:37.159173042 0.269039s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-06T20:36:37.159174233 0.269040s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-06T20:36:38.391293128 1.501160s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 3.
+2017-01-06T20:36:38.392731044 1.502597s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 3. Latest log index is 6.
+2017-01-06T20:36:39.067104479 2.176971s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Starting a new Raft election for term 2.
+2017-01-06T20:36:39.068885878 2.178752s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: This server is Raft leader for term 2. Latest log index is 3.
+2017-01-19T16:43:23.834726040 0.101511s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-19T16:43:23.864062539 0.130847s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-19T16:43:23.864163366 0.130945s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-19T16:43:23.942455316 0.209239s info: Automatically using cache size of 2605 MB
+2017-01-19T16:43:23.943823596 0.210605s notice: Listening for intracluster connections on port 29015
+2017-01-19T16:43:24.038400625 0.305183s notice: Listening for client driver connections on port 28015
+2017-01-19T16:43:24.038543338 0.305325s notice: Listening for administrative HTTP connections on port 8080
+2017-01-19T16:43:24.038544971 0.305327s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:43:24.038546516 0.305328s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:43:24.038548125 0.305330s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:43:24.038551308 0.305333s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-19T16:43:24.038552744 0.305334s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-19T16:43:25.408215696 1.674998s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 4.
+2017-01-19T16:43:25.409966561 1.676748s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 4. Latest log index is 9.
+2017-01-19T16:43:25.738015491 2.004798s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Starting a new Raft election for term 3.
+2017-01-19T16:43:25.739952091 2.006734s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: This server is Raft leader for term 3. Latest log index is 6.
+2017-01-19T16:47:28.523091830 244.789874s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-01-19T16:47:28.523264665 244.790046s notice: Shutting down client connections...
+2017-01-19T16:47:28.523331342 244.790113s notice: All client connections closed.
+2017-01-19T16:47:28.523353936 244.790135s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-01-19T16:47:28.525879489 244.792661s notice: Storage engine shut down.
+2017-01-19T16:47:40.605807336 0.089102s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-19T16:47:40.636083089 0.119377s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-19T16:47:40.636167053 0.119458s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-19T16:47:40.753404285 0.236698s info: Automatically using cache size of 2542 MB
+2017-01-19T16:47:40.754825355 0.238116s notice: Listening for intracluster connections on port 29015
+2017-01-19T16:47:40.814304027 0.297595s notice: Listening for client driver connections on port 28015
+2017-01-19T16:47:40.814532752 0.297824s notice: Listening for administrative HTTP connections on port 8080
+2017-01-19T16:47:40.814619068 0.297910s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:47:40.814621042 0.297912s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:47:40.814622746 0.297914s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-19T16:47:40.814624444 0.297915s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-19T16:47:40.814625925 0.297917s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-19T16:47:41.770498350 1.253790s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 5.
+2017-01-19T16:47:41.772506916 1.255798s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 5. Latest log index is 12.
+2017-01-19T16:47:41.895450134 1.378742s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Starting a new Raft election for term 4.
+2017-01-19T16:47:41.897270845 1.380562s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: This server is Raft leader for term 4. Latest log index is 9.
+2017-01-19T16:48:24.131178096 43.614469s info: Table 4554eaf6-1257-4f51-8c1c-0b42fd6c4246: Starting a new Raft election for term 1.
+2017-01-19T16:48:24.131346168 43.614637s info: Table 4554eaf6-1257-4f51-8c1c-0b42fd6c4246: Added replica on this server.
+2017-01-19T16:48:24.132187557 43.615479s info: Table 4554eaf6-1257-4f51-8c1c-0b42fd6c4246: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T16:54:26.575676636 406.058968s notice: Removing file /home/tailiu/rethinkdb_data/4554eaf6-1257-4f51-8c1c-0b42fd6c4246
+2017-01-19T16:54:26.575707186 406.058998s info: Table 4554eaf6-1257-4f51-8c1c-0b42fd6c4246: Deleted the table.
+2017-01-19T16:55:19.584770775 459.068062s info: Table c8e62bb2-ca0c-47f3-b940-9df66251df6e: Starting a new Raft election for term 1.
+2017-01-19T16:55:19.584947614 459.068239s info: Table c8e62bb2-ca0c-47f3-b940-9df66251df6e: Added replica on this server.
+2017-01-19T16:55:19.585874655 459.069166s info: Table c8e62bb2-ca0c-47f3-b940-9df66251df6e: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T17:00:13.395619804 752.878911s notice: Removing file /home/tailiu/rethinkdb_data/c8e62bb2-ca0c-47f3-b940-9df66251df6e
+2017-01-19T17:00:13.395653590 752.878945s info: Table c8e62bb2-ca0c-47f3-b940-9df66251df6e: Deleted the table.
+2017-01-19T17:00:24.953948373 764.437240s info: Table 169c0328-49d4-444b-828c-ded35e147994: Starting a new Raft election for term 1.
+2017-01-19T17:00:24.954105115 764.437396s info: Table 169c0328-49d4-444b-828c-ded35e147994: Added replica on this server.
+2017-01-19T17:00:24.954886986 764.438178s info: Table 169c0328-49d4-444b-828c-ded35e147994: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T17:07:07.225885306 1166.709177s notice: Removing file /home/tailiu/rethinkdb_data/169c0328-49d4-444b-828c-ded35e147994
+2017-01-19T17:07:07.225941344 1166.709232s info: Table 169c0328-49d4-444b-828c-ded35e147994: Deleted the table.
+2017-01-19T17:07:23.687925457 1183.171217s info: Table 2bf56069-54ca-4c1c-93e1-5aadda94dfbb: Starting a new Raft election for term 1.
+2017-01-19T17:07:23.688113909 1183.171405s info: Table 2bf56069-54ca-4c1c-93e1-5aadda94dfbb: Added replica on this server.
+2017-01-19T17:07:23.688987757 1183.172279s info: Table 2bf56069-54ca-4c1c-93e1-5aadda94dfbb: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T17:11:11.774252043 1411.257543s notice: Removing file /home/tailiu/rethinkdb_data/2bf56069-54ca-4c1c-93e1-5aadda94dfbb
+2017-01-19T17:11:11.774282127 1411.257573s info: Table 2bf56069-54ca-4c1c-93e1-5aadda94dfbb: Deleted the table.
+2017-01-19T17:11:21.459195603 1420.942487s info: Table 1b043a3c-6d48-4567-9ba1-2edbb8750976: Starting a new Raft election for term 1.
+2017-01-19T17:11:21.459359057 1420.942650s info: Table 1b043a3c-6d48-4567-9ba1-2edbb8750976: Added replica on this server.
+2017-01-19T17:11:21.460089182 1420.943380s info: Table 1b043a3c-6d48-4567-9ba1-2edbb8750976: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T17:39:55.925328715 3135.408620s info: Table 35a4af5a-166c-44ea-8930-eaa363f7c610: Starting a new Raft election for term 1.
+2017-01-19T17:39:55.925685945 3135.408977s info: Table 35a4af5a-166c-44ea-8930-eaa363f7c610: Added replica on this server.
+2017-01-19T17:39:55.926441338 3135.409732s info: Table 35a4af5a-166c-44ea-8930-eaa363f7c610: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T22:13:47.236946956 13255.482263s notice: Removing file /home/tailiu/rethinkdb_data/1b043a3c-6d48-4567-9ba1-2edbb8750976
+2017-01-19T22:13:47.236978239 13255.482294s info: Table 1b043a3c-6d48-4567-9ba1-2edbb8750976: Deleted the table.
+2017-01-19T22:14:13.197868675 13281.443184s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: Starting a new Raft election for term 1.
+2017-01-19T22:14:13.198069812 13281.443385s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: Added replica on this server.
+2017-01-19T22:14:13.198927969 13281.444243s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-19T22:33:40.335524149 14448.580840s notice: Removing file /home/tailiu/rethinkdb_data/35a4af5a-166c-44ea-8930-eaa363f7c610
+2017-01-19T22:33:40.335545378 14448.580861s info: Table 35a4af5a-166c-44ea-8930-eaa363f7c610: Deleted the table.
+2017-01-19T22:33:51.555136118 14459.800451s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: Starting a new Raft election for term 1.
+2017-01-19T22:33:51.555315582 14459.800631s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: Added replica on this server.
+2017-01-19T22:33:51.556123845 14459.801439s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-22T11:27:10.571041688 31623.454539s info: Table bbc1da04-c508-419e-938e-100464e66b18: Starting a new Raft election for term 1.
+2017-01-22T11:27:10.571565192 31623.455061s info: Table bbc1da04-c508-419e-938e-100464e66b18: Added replica on this server.
+2017-01-22T11:27:10.572880424 31623.456376s info: Table bbc1da04-c508-419e-938e-100464e66b18: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-22T11:41:33.052853816 32485.936350s notice: Removing file /home/tailiu/rethinkdb_data/bbc1da04-c508-419e-938e-100464e66b18
+2017-01-22T11:41:33.052885574 32485.936381s info: Table bbc1da04-c508-419e-938e-100464e66b18: Deleted the table.
+2017-01-22T11:41:45.628621923 32498.512118s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Starting a new Raft election for term 1.
+2017-01-22T11:41:45.628856826 32498.512352s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Added replica on this server.
+2017-01-22T11:41:45.629886971 32498.513383s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-22T12:00:48.374222793 33641.257719s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Configuration is changing.
+2017-01-22T13:07:09.421906746 37622.305403s info: Table 951ddb85-4676-49a2-ba53-057d03a87382: Starting a new Raft election for term 1.
+2017-01-22T13:07:09.422056291 37622.305552s info: Table 951ddb85-4676-49a2-ba53-057d03a87382: Added replica on this server.
+2017-01-22T13:07:09.422755635 37622.306251s info: Table 951ddb85-4676-49a2-ba53-057d03a87382: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-22T13:12:06.458305592 37919.341802s notice: Removing file /home/tailiu/rethinkdb_data/951ddb85-4676-49a2-ba53-057d03a87382
+2017-01-22T13:12:06.458380181 37919.341876s info: Table 951ddb85-4676-49a2-ba53-057d03a87382: Deleted the table.
+2017-01-22T13:12:17.232044182 37930.115540s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: Starting a new Raft election for term 1.
+2017-01-22T13:12:17.232256187 37930.115752s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: Added replica on this server.
+2017-01-22T13:12:17.233065924 37930.116562s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: This server is Raft leader for term 1. Latest log index is 0.
+2017-01-25T11:41:34.971833154 54634.020484s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-01-25T11:41:34.974741142 54634.023373s notice: Shutting down client connections...
+2017-01-25T11:41:34.975889826 54634.024528s notice: All client connections closed.
+2017-01-25T11:41:34.975903942 54634.024539s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-01-25T11:41:35.114101659 54634.162734s notice: Storage engine shut down.
+2017-01-26T18:15:58.311316038 0.103639s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-01-26T18:15:58.341708712 0.134032s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-01-26T18:15:58.341790769 0.134111s notice: Loading data from directory /home/tailiu/rethinkdb_data
+2017-01-26T18:15:58.518050898 0.310373s info: Automatically using cache size of 2347 MB
+2017-01-26T18:15:58.521329195 0.313649s notice: Listening for intracluster connections on port 29015
+2017-01-26T18:15:58.849137490 0.641458s notice: Listening for client driver connections on port 28015
+2017-01-26T18:15:58.849693700 0.642014s notice: Listening for administrative HTTP connections on port 8080
+2017-01-26T18:15:58.849696425 0.642016s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-26T18:15:58.849732688 0.642053s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-26T18:15:58.849734989 0.642055s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-01-26T18:15:58.849737307 0.642057s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-01-26T18:15:58.849739122 0.642059s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-01-26T18:15:59.971021123 1.763342s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: Starting a new Raft election for term 2.
+2017-01-26T18:15:59.973150711 1.765471s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: This server is Raft leader for term 2. Latest log index is 3.
+2017-01-26T18:16:00.175072632 1.967393s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: Starting a new Raft election for term 2.
+2017-01-26T18:16:00.178255488 1.970576s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: This server is Raft leader for term 2. Latest log index is 3.
+2017-01-26T18:16:00.973094797 2.765415s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Starting a new Raft election for term 6.
+2017-01-26T18:16:00.973106914 2.765427s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Starting a new Raft election for term 2.
+2017-01-26T18:16:00.973112439 2.765432s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: Starting a new Raft election for term 2.
+2017-01-26T18:16:00.973117380 2.765437s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Starting a new Raft election for term 5.
+2017-01-26T18:16:01.004486261 2.796806s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: This server is Raft leader for term 6. Latest log index is 15.
+2017-01-26T18:16:01.009882324 2.802203s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: This server is Raft leader for term 2. Latest log index is 4.
+2017-01-26T18:16:01.009931440 2.802251s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: This server is Raft leader for term 2. Latest log index is 3.
+2017-01-26T18:16:01.016446915 2.808767s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: This server is Raft leader for term 5. Latest log index is 12.
+2017-02-06T16:55:31.211418277 99597.664967s notice: Removing file /home/tailiu/rethinkdb_data/2f7e0fc8-3396-4909-b5b1-b919e4c20a18
+2017-02-06T16:55:31.211786468 99597.665333s info: Table 2f7e0fc8-3396-4909-b5b1-b919e4c20a18: Deleted the table.
+2017-02-06T16:55:31.226801742 99597.680348s notice: Removing file /home/tailiu/rethinkdb_data/352aeee5-950a-41dd-8d7a-4960ffd9560a
+2017-02-06T16:55:31.226916982 99597.680463s info: Table 352aeee5-950a-41dd-8d7a-4960ffd9560a: Deleted the table.
+2017-02-06T16:55:31.235986831 99597.689533s notice: Removing file /home/tailiu/rethinkdb_data/55156fd3-82f0-4854-b4f1-9558aa4d6a3d
+2017-02-06T16:55:31.236109050 99597.689655s info: Table 55156fd3-82f0-4854-b4f1-9558aa4d6a3d: Deleted the table.
+2017-02-06T22:51:26.225151568 108712.581300s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-02-06T22:51:26.226548447 108712.582680s notice: Shutting down client connections...
+2017-02-06T22:51:26.227122951 108712.583254s notice: All client connections closed.
+2017-02-06T22:51:26.227156386 108712.583288s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-02-06T22:51:26.311525590 108712.667657s notice: Storage engine shut down.
+2017-02-08T16:10:00.870461528 0.342458s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-02-08T16:10:00.876444127 0.348440s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-02-08T16:10:00.876525473 0.348519s notice: Loading data from directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
+2017-02-08T16:10:00.961005272 0.433001s info: Automatically using cache size of 2108 MB
+2017-02-08T16:10:00.962576790 0.434570s notice: Listening for intracluster connections on port 29015
+2017-02-08T16:10:01.064694329 0.536688s notice: Listening for client driver connections on port 28015
+2017-02-08T16:10:01.065157777 0.537152s notice: Listening for administrative HTTP connections on port 8080
+2017-02-08T16:10:01.065159958 0.537153s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-08T16:10:01.065267826 0.537261s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-08T16:10:01.065269404 0.537263s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-08T16:10:01.065270829 0.537264s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-02-08T16:10:01.065279041 0.537273s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-02-08T16:10:02.120008739 1.592003s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: Starting a new Raft election for term 3.
+2017-02-08T16:10:02.121885653 1.593879s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: This server is Raft leader for term 3. Latest log index is 6.
+2017-02-08T16:10:02.509133659 1.981128s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Starting a new Raft election for term 3.
+2017-02-08T16:10:02.511336818 1.983331s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: This server is Raft leader for term 3. Latest log index is 7.
+2017-02-08T16:10:02.853156072 2.325150s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: Starting a new Raft election for term 3.
+2017-02-08T16:10:02.855181345 2.327175s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: This server is Raft leader for term 3. Latest log index is 6.
+2017-02-08T16:10:43.357097385 42.829091s notice: Server got SIGINT from pid 0, uid 0; shutting down...
+2017-02-08T16:10:43.357196200 42.829190s notice: Shutting down client connections...
+2017-02-08T16:10:43.361387305 42.833381s notice: All client connections closed.
+2017-02-08T16:10:43.361420552 42.833414s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-02-08T16:10:43.388790651 42.860784s notice: Storage engine shut down.
+2017-02-09T16:42:44.653244381 0.059512s notice: Running rethinkdb 2.3.5~0trusty (GCC 4.8.2)...
+2017-02-09T16:42:44.656343235 0.062608s notice: Running on Linux 3.19.0-25-generic x86_64
+2017-02-09T16:42:44.656407126 0.062670s notice: Loading data from directory /home/tailiu/project/WISPFrontEnd/rethinkdb_data
+2017-02-09T16:42:44.677817108 0.084082s info: Automatically using cache size of 2119 MB
+2017-02-09T16:42:44.678942468 0.085206s notice: Listening for intracluster connections on port 29015
+2017-02-09T16:42:44.743229694 0.149493s notice: Listening for client driver connections on port 28015
+2017-02-09T16:42:44.743341137 0.149604s notice: Listening for administrative HTTP connections on port 8080
+2017-02-09T16:42:44.743373554 0.149637s notice: Listening on cluster addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-09T16:42:44.743375123 0.149638s notice: Listening on driver addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-09T16:42:44.743376300 0.149639s notice: Listening on http addresses: 127.0.0.1, 127.0.1.1, ::1
+2017-02-09T16:42:44.743378156 0.149641s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-02-09T16:42:44.743379349 0.149642s notice: Server ready, "ubuntu_j1o" 0cc049f1-67bd-49b0-869c-075e4c4f9383
+2017-02-09T16:42:45.733271614 1.139535s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: Starting a new Raft election for term 4.
+2017-02-09T16:42:45.735216806 1.141480s info: Table f2173dff-600c-4d13-ac6d-389df8707e90: This server is Raft leader for term 4. Latest log index is 9.
+2017-02-09T16:42:45.822176633 1.228440s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: Starting a new Raft election for term 4.
+2017-02-09T16:42:45.824349322 1.230613s info: Table fd230a83-ffe6-45ce-b749-ee2609d1609d: This server is Raft leader for term 4. Latest log index is 9.
+2017-02-09T16:42:45.853832351 1.260096s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: Starting a new Raft election for term 4.
+2017-02-09T16:42:45.855883116 1.262147s info: Table 195bdd19-117e-414b-9e4d-85f64c695f6f: This server is Raft leader for term 4. Latest log index is 10.

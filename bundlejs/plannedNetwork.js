@@ -111,7 +111,7 @@ var Algorithms = function (_React$Component2) {
 				'div',
 				null,
 				_react2.default.createElement(
-					'h3',
+					'h4',
 					{ className: 'text-center' },
 					'Algorithms'
 				),
@@ -126,8 +126,60 @@ var Algorithms = function (_React$Component2) {
 	return Algorithms;
 }(_react2.default.Component);
 
-var PlannedNetworkContainer = function (_React$Component3) {
-	_inherits(PlannedNetworkContainer, _React$Component3);
+var MapLegends = function (_React$Component3) {
+	_inherits(MapLegends, _React$Component3);
+
+	function MapLegends() {
+		_classCallCheck(this, MapLegends);
+
+		return _possibleConstructorReturn(this, (MapLegends.__proto__ || Object.getPrototypeOf(MapLegends)).apply(this, arguments));
+	}
+
+	_createClass(MapLegends, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h4',
+					null,
+					'Legends'
+				),
+				_react2.default.createElement(
+					'ul',
+					{ className: 'list-group' },
+					_react2.default.createElement(
+						'li',
+						{ className: 'list-group-item grey-container withoutBorder' },
+						'Source: ',
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('img', { src: 'styles/images/source.png', className: 'img-responsive' })
+					),
+					_react2.default.createElement(
+						'li',
+						{ className: 'list-group-item grey-container withoutBorder' },
+						'Intermediate: ',
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('img', { src: 'styles/images/intermediate.png', className: 'img-responsive' })
+					),
+					_react2.default.createElement(
+						'li',
+						{ className: 'list-group-item grey-container withoutBorder' },
+						'Sink: ',
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('img', { src: 'styles/images/sink.png', className: 'img-responsive' })
+					)
+				)
+			);
+		}
+	}]);
+
+	return MapLegends;
+}(_react2.default.Component);
+
+var PlannedNetworkContainer = function (_React$Component4) {
+	_inherits(PlannedNetworkContainer, _React$Component4);
 
 	function PlannedNetworkContainer() {
 		_classCallCheck(this, PlannedNetworkContainer);
@@ -150,13 +202,18 @@ var PlannedNetworkContainer = function (_React$Component3) {
 						{ className: 'row' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'col-sm-2' },
+							{ className: 'col-sm-1' },
 							_react2.default.createElement(Algorithms, null)
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: 'col-sm-10 smallMapContainer' },
-							_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js', needWebSocket: true, serverAddr: 'localhost', serverPort: '8000' })
+							_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/plannedNetwork.js' })
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-sm-1' },
+							_react2.default.createElement(MapLegends, null)
 						)
 					)
 				),
@@ -243,12 +300,6 @@ var Map = exports.Map = function (_React$Component2) {
 			mapScript.setAttribute('src', this.props.mapScriptSrc);
 			var map = document.getElementById('map');
 			map.appendChild(mapScript);
-
-			if (this.props.needWebSocket) {
-				var socketScript = document.createElement('script');
-				socketScript.setAttribute('src', 'http://' + this.props.serverAddr + ':' + this.props.serverPort + '/socket.io/socket.io.js');
-				document.body.appendChild(socketScript);
-			}
 		}
 	}, {
 		key: 'render',

@@ -1,17 +1,28 @@
-const serverAddr = 'localhost'
-const serverPort = 8000
-
 var buttonID = 'A1'
 var socket
 var map
 var lines = []
 var markers = []
+var sourceMarker = 'styles/images/source.png'
+var sinkMarker = 'styles/images/sink.png'
+var intermediateMarker = 'styles/images/intermediate.png'
+var center = {lat: 38.924280, lng: -122.907255}
+
+var serverAddr = window.data.serverAddr
+var serverPort = window.data.serverPort
+
+var socketURL = 'http://' + serverAddr + ':' + serverPort + '/socket.io/socket.io.js'
+var socketScript = document.createElement('script')
+socketScript.setAttribute('src', socketURL)
+document.body.appendChild(socketScript)
 
 function addClass(element, newClass) {
     if (element.classList == undefined) {
         for (var i in element) {
             var classList = element[i].classList
-            classList.add(newClass)
+            if (classList != undefined) {
+                classList.add(newClass)
+            }
         }
     } else {
         var classList = element.classList
@@ -32,12 +43,19 @@ function callAlgorithm() {
 function drawBoundary() {
     var boundary = window.data.boundary
 
+    var icon = {
+        url: "styles/images/boundary.jpg",      // url
+        scaledSize: new google.maps.Size(2, 2), // scaled size
+        origin: new google.maps.Point(0, 0),    // origin
+        anchor: new google.maps.Point(0, 0)     // anchor
+    }
+
     for (var i in boundary) {
         new google.maps.Marker({
             position: boundary[i],
             title: 'boundary',
             map: map,
-            icon: 'styles/images/boundary.jpg'
+            icon: icon
         })
     }
 }
@@ -62,13 +80,28 @@ function drawNetwork() {
     var edges = window.data.result.edges
     var marker
     var line
+    var markerLink
 
     for (var i in nodes) {
+        switch (nodes[i].nodeProperty.type) {
+            case 'source':
+                markerLink = sourceMarker
+                break
+
+            case 'intermediate':
+                markerLink = intermediateMarker
+                break
+
+            case 'sink':
+                markerLink = sinkMarker
+                break
+        }
         marker = new google.maps.Marker({
             position: nodes[i].node,
             map: map,
             title: 'Network Node',
-            clickable: true
+            clickable: true,
+            icon: markerLink
         })
         marker.infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent(nodes[i].nodeProperty)
@@ -101,8 +134,6 @@ function drawNetwork() {
 }
 
 function initMap() {
-    var center = window.data.result.nodes[0].node
-
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: center
@@ -128,7 +159,9 @@ function removeClass(element, oldClass) {
     if (element.classList == undefined) {
         for (var i in element) {
             var classList = element[i].classList
-            classList.remove(oldClass)
+            if (classList != undefined) {
+                classList.remove(oldClass)
+            }
         }
     } else {
         var classList = element.classList
@@ -136,7 +169,7 @@ function removeClass(element, oldClass) {
     }   
 }
 
-function initSocket(){
+function initSocket() {
     socket = io('http://' + serverAddr + ':' + serverPort)
 
     socket.on('getResults', function(output) {

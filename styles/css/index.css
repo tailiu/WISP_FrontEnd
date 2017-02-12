@@ -1,17 +1,18 @@
 .jumbotron {
 	background-color: #000000; /* Orange */
     color: #ffffff;
-    padding: 80px 20px;
     margin: 0px;
+    height: 120px;
+    padding: 5px 0px 0px 0px;
 }
 
 .container-fluid {
-    padding: 20px 30px;
+    padding: 5px 0px 20px 20px;
     margin: 0px;
 }
 
 .bigMapContainer {
-	height: 750px;
+	height: 1100px;
 }
 
 .grey-container {
@@ -19,7 +20,7 @@
 }
 
 .smallMapContainer {
-	height: 500px;
+	height: 1000px;
 }
 
 #map {
@@ -27,9 +28,13 @@
 }
 
 .stepTitle {
-	padding: 40px;
+	padding: 0px;
 }
 
 .wait {
 	cursor: wait;
+}
+
+.withoutBorder {
+	border-style: none;
 }

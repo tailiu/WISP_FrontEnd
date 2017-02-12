@@ -40,12 +40,6 @@ var PlanToolTitle = function (_React$Component) {
 					'h1',
 					null,
 					'Network Planning Tool'
-				),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement(
-					'h3',
-					null,
-					'Helping the Lone Operator in the Vast Frontier'
 				)
 			);
 		}
@@ -67,20 +61,20 @@ var MarkerList = function (_React$Component2) {
 		key: 'render',
 		value: function render() {
 			var serviceProvider = {};
-			serviceProvider.name = 'Service Provider';
-			serviceProvider.id = 'styles/images/provider.jpg';
+			serviceProvider.name = 'Source';
+			serviceProvider.id = 'styles/images/provider.png';
 			serviceProvider.invokeEvent = false;
 
 			var newUser = {};
-			newUser.name = 'New User';
-			newUser.id = 'styles/images/newUser.jpg';
+			newUser.name = 'Sink';
+			newUser.id = 'styles/images/newUser.png';
 			newUser.invokeEvent = false;
 
 			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
-					'h3',
+					'h4',
 					{ className: 'text-center' },
 					'Markers'
 				),
@@ -111,28 +105,26 @@ var MapLegends = function (_React$Component3) {
 				'div',
 				null,
 				_react2.default.createElement(
-					'h3',
+					'h4',
 					null,
-					'Map Legends'
+					'Legends'
 				),
-				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'ul',
-					null,
+					{ className: 'list-group' },
 					_react2.default.createElement(
 						'li',
-						null,
-						'Service Provider: ',
+						{ className: 'list-group-item withoutBorder' },
+						'Source: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/provider.jpg', className: 'img-responsive' })
+						_react2.default.createElement('img', { src: 'styles/images/provider.png', className: 'img-responsive' })
 					),
-					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'li',
-						null,
-						'New User: ',
+						{ className: 'list-group-item withoutBorder' },
+						'Sink: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/newUser.jpg', className: 'img-responsive' })
+						_react2.default.createElement('img', { src: 'styles/images/newUser.png', className: 'img-responsive' })
 					)
 				)
 			);
@@ -166,17 +158,17 @@ var MapContainer = function (_React$Component4) {
 					{ className: 'row' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'col-sm-2' },
+						{ className: 'col-sm-1' },
 						_react2.default.createElement(MarkerList, null)
 					),
 					_react2.default.createElement(
 						'div',
-						{ className: 'col-sm-8 smallMapContainer' },
-						_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/index.js', needWebSocket: false })
+						{ className: 'col-sm-10 smallMapContainer' },
+						_react2.default.createElement(_utils.Map, { mapScriptSrc: 'mapjs/index.js' })
 					),
 					_react2.default.createElement(
 						'div',
-						{ className: 'col-sm-2' },
+						{ className: 'col-sm-1' },
 						_react2.default.createElement(MapLegends, null)
 					)
 				)
@@ -218,7 +210,7 @@ var RequirementsContainer = function (_React$Component5) {
 				_react2.default.createElement(_utils.ContainerTitle, { title: 'Input Your Requirements' }),
 				_react2.default.createElement(
 					'form',
-					{ className: 'form-horizontal', method: 'POST', action: 'http://localhost:8000/submitNetworkRawData' },
+					{ className: 'form-horizontal', method: 'POST', action: window.serverURL },
 					_react2.default.createElement(
 						'div',
 						{ className: 'form-group' },
@@ -230,7 +222,7 @@ var RequirementsContainer = function (_React$Component5) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'bandwidth', value: this.props.bandwidth,
+							_react2.default.createElement('input', { type: 'text', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: 'Disable Input For now',
 								ref: function ref(input) {
 									return _this6.bandwidth = input;
 								}, onChange: this.handleChange })
@@ -247,13 +239,13 @@ var RequirementsContainer = function (_React$Component5) {
 						_react2.default.createElement(
 							'div',
 							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'text', className: 'form-control', name: 'costs', value: this.props.costs,
+							_react2.default.createElement('input', { type: 'text', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: 'Disable Input For now',
 								ref: function ref(input) {
 									return _this6.costs = input;
 								}, onChange: this.handleChange })
 						)
 					),
-					_react2.default.createElement('input', { type: 'hidden', name: 'coordinates', value: JSON.stringify(window.coordinates) }),
+					_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: JSON.stringify(window.nodes) }),
 					_react2.default.createElement(
 						'div',
 						{ className: 'form-group' },
@@ -393,12 +385,6 @@ var Map = exports.Map = function (_React$Component2) {
 			mapScript.setAttribute('src', this.props.mapScriptSrc);
 			var map = document.getElementById('map');
 			map.appendChild(mapScript);
-
-			if (this.props.needWebSocket) {
-				var socketScript = document.createElement('script');
-				socketScript.setAttribute('src', 'http://' + this.props.serverAddr + ':' + this.props.serverPort + '/socket.io/socket.io.js');
-				document.body.appendChild(socketScript);
-			}
 		}
 	}, {
 		key: 'render',

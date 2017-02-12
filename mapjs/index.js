@@ -1,14 +1,16 @@
-var labelIndex = 1;
-var buttonID = undefined;
-var coordinates = {
-                provider: [],
-                newUser: []
-            }
+var labelIndex = 1
+var buttonID = undefined
+var nodes = []
+var center = {lat: 38.924280, lng: -122.907255}
+
+var serverURL = 'http://' + window.data.serverAddr + ':' +  window.data.serverPort + '/submitNetworkRawData'
 
 function initMap() {
+    var boundary = window.data.boundary
+
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: data[30]
+        center: center
     })
 
     // This event listener calls addMarker() when the map is clicked.
@@ -18,12 +20,19 @@ function initMap() {
         }
     })
 
-    for (var i in data) {
+    var icon = {
+        url: "styles/images/boundary.jpg",      // url
+        scaledSize: new google.maps.Size(2, 2), // scaled size
+        origin: new google.maps.Point(0, 0),    // origin
+        anchor: new google.maps.Point(0, 0)     // anchor
+    }
+
+    for (var i in boundary) {
         var marker = new google.maps.Marker({
-            position: data[i],
+            position: boundary[i],
             title: 'boundary',
             map: map,
-            icon: 'styles/images/boundary.jpg'
+            icon: icon
         })
     }
 }
@@ -41,13 +50,30 @@ function determineMarker() {
     var parts = buttonID.split('/')
     var iconFileName = parts[parts.length - 1]
     parts = iconFileName.split('.')
-    return parts[0]
+    var type
+
+    switch (parts[0]) {
+        case 'provider':
+            type = 'source'
+            break
+
+        case 'newUser':
+            type = 'sink'
+            break
+    }
+
+    return type
 }
 
 // Store the coordinate of the marker
-function addCoordinate(location) {
-    var marker = determineMarker()
-    coordinates[marker + ''].push(location)
+function addCoordinate(location, capacity) {
+    var marker = {}
+    marker.node = location
+    marker.nodeProperty = {}
+    marker.nodeProperty.type = determineMarker()
+    marker.nodeProperty.capacity = capacity
+
+    nodes.push(marker)
 }
 
 // Add a marker to the map.
@@ -60,7 +86,9 @@ function addMarker(location, map) {
         icon: buttonID
     });
 
-    addCoordinate(location)
+    var capacity = prompt("Please input the capacity of this node:");
+
+    addCoordinate(location, capacity)
 }
 
 window.onload = function() {

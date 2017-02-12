@@ -41,10 +41,31 @@ class Algorithms extends React.Component {
 
 		return (
 			<div>
-				<h3 className='text-center'>Algorithms</h3><br/>
+				<h4 className='text-center'>Algorithms</h4><br/>
 				<MyButton button={a1} /><br/>
 				<MyButton button={a2} />
 			</div>
+		)
+	}
+}
+
+class MapLegends extends React.Component {
+	render() {
+		return (
+			<div>
+            	<h4>Legends</h4>
+            	<ul className = 'list-group'>
+            		<li className = 'list-group-item grey-container withoutBorder'>Source: <br/>
+            			<img src='styles/images/source.png' className='img-responsive' />
+            		</li>
+            		<li className = 'list-group-item grey-container withoutBorder'>Intermediate: <br/>
+            			<img src='styles/images/intermediate.png' className='img-responsive' />
+            		</li>
+            		<li className = 'list-group-item grey-container withoutBorder'>Sink: <br/>
+            			<img src='styles/images/sink.png' className='img-responsive' />
+            		</li>
+            	</ul>
+            </div>
 		)
 	}
 }
@@ -56,12 +77,15 @@ class PlannedNetworkContainer extends React.Component {
 				<FancyContainer styles='grey-container bigMapContainer'>
 					<ContainerTitle title='Planned Networks on the Map'/>
 					<div className='row'>
-						<div className='col-sm-2'>
+						<div className='col-sm-1'>
 							<Algorithms />
 						</div>
 						<div className='col-sm-10 smallMapContainer'>
-							<Map mapScriptSrc='mapjs/plannedNetwork.js' needWebSocket={true} serverAddr='localhost' serverPort='8000' />
+							<Map mapScriptSrc='mapjs/plannedNetwork.js'/>
 						</div>
+						<div className='col-sm-1'>
+			            	<MapLegends />
+			            </div>
 		            </div>
 				</FancyContainer>
 				<FancyContainer>
