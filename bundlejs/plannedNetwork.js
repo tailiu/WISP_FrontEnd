@@ -67,8 +67,32 @@ var NetworkParameters = function (_React$Component) {
 	return NetworkParameters;
 }(_react2.default.Component);
 
-var Algorithms = function (_React$Component2) {
-	_inherits(Algorithms, _React$Component2);
+var State = function (_React$Component2) {
+	_inherits(State, _React$Component2);
+
+	function State() {
+		_classCallCheck(this, State);
+
+		return _possibleConstructorReturn(this, (State.__proto__ || Object.getPrototypeOf(State)).apply(this, arguments));
+	}
+
+	_createClass(State, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement('div', { className: 'text-center', id: 'currentAlgorithm' }),
+				_react2.default.createElement('div', { className: 'center-block', id: 'loader' })
+			);
+		}
+	}]);
+
+	return State;
+}(_react2.default.Component);
+
+var Algorithms = function (_React$Component3) {
+	_inherits(Algorithms, _React$Component3);
 
 	function Algorithms() {
 		_classCallCheck(this, Algorithms);
@@ -80,13 +104,11 @@ var Algorithms = function (_React$Component2) {
 		key: 'render',
 		value: function render() {
 			var a1 = {};
-			a1.name = 'A1';
-			a1.id = 'A1';
+			a1.name = 'Dummy Network';
 			a1.invokeEvent = true;
 
 			var a2 = {};
-			a2.name = 'A2';
-			a2.id = 'A2';
+			a2.name = 'Min Cost Flow';
 			a2.invokeEvent = true;
 
 			return _react2.default.createElement(
@@ -103,7 +125,7 @@ var Algorithms = function (_React$Component2) {
 				_react2.default.createElement(_utils.MyButton, { button: a2 }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement('div', { className: 'center-block', id: 'loader' })
+				_react2.default.createElement(State, null)
 			);
 		}
 	}]);
@@ -111,8 +133,8 @@ var Algorithms = function (_React$Component2) {
 	return Algorithms;
 }(_react2.default.Component);
 
-var MapLegends = function (_React$Component3) {
-	_inherits(MapLegends, _React$Component3);
+var MapLegends = function (_React$Component4) {
+	_inherits(MapLegends, _React$Component4);
 
 	function MapLegends() {
 		_classCallCheck(this, MapLegends);
@@ -163,8 +185,8 @@ var MapLegends = function (_React$Component3) {
 	return MapLegends;
 }(_react2.default.Component);
 
-var PlannedNetworkContainer = function (_React$Component4) {
-	_inherits(PlannedNetworkContainer, _React$Component4);
+var PlannedNetworkContainer = function (_React$Component5) {
+	_inherits(PlannedNetworkContainer, _React$Component5);
 
 	function PlannedNetworkContainer() {
 		_classCallCheck(this, PlannedNetworkContainer);
@@ -338,7 +360,7 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 	_createClass(MyButton, [{
 		key: 'handleBtnClick',
 		value: function handleBtnClick(e) {
-			window.buttonID = this.props.button.id;
+			window.buttonID = this.props.button.name;
 
 			if (this.props.button.invokeEvent) {
 				window.callAlgorithm();
@@ -349,7 +371,7 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 		value: function render() {
 			return _react2.default.createElement(
 				'button',
-				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
+				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block btn-responsive' },
 				this.props.button.name
 			);
 		}

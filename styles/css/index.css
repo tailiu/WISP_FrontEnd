@@ -7,7 +7,7 @@
 }
 
 .container-fluid {
-    padding: 5px 0px 20px 20px;
+    padding: 5px 0px 25px 25px;
     margin: 0px;
 }
 
@@ -57,4 +57,9 @@
 @keyframes spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
+}
+
+.btn-responsive {
+	white-space: normal !important;
+    word-wrap: break-word;
 }

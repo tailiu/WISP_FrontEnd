@@ -1,9 +1,9 @@
 var labelIndex = 1
 var buttonID = undefined
 var nodes = []
-var sourceNum = 0
-var sinkNum = 0
 var center = {lat: 38.924280, lng: -122.907255}
+var sourceImageURL = 'styles/images/provider.png'
+var sinkImageURL = 'styles/images/newUser.png'
 
 var serverURL = 'http://' + window.data.serverAddr + ':' +  window.data.serverPort + '/submitNetworkRawData'
 
@@ -49,35 +49,7 @@ function chooseMarkerOrNot() {
 
 // Determine which marker is being used
 function determineMarker() {
-    var parts = buttonID.split('/')
-    var iconFileName = parts[parts.length - 1]
-    parts = iconFileName.split('.')
-    var type
-
-    switch (parts[0]) {
-        case 'provider':
-            type = 'source'
-            sourceNum++
-            break
-
-        case 'newUser':
-            type = 'sink'
-            sinkNum++
-            break
-    }
-
-    return type
-}
-
-// Store the coordinate of the marker
-function addCoordinate(location, capacity) {
-    var marker = {}
-    marker.node = location
-    marker.nodeProperty = {}
-    marker.nodeProperty.type = determineMarker()
-    marker.nodeProperty.capacity = capacity
-
-    nodes.push(marker)
+    return buttonID.toLowerCase()
 }
 
 function validateCapacityInput(capacity) {
@@ -122,17 +94,28 @@ function infoWindowContent(capacity) {
     return content
 }
 
+function determineIconURL() {
+    var type = buttonID.toLowerCase()
+    if (type == 'source') {
+        return sourceImageURL
+    } else {
+        return sinkImageURL
+    }
+}
+
 // Add a marker to the map.
 function addMarker(location, map) {
     var capacity = prompt("Please input a positive integer capacity value of this node:")
 
     if (validateCapacityInput(capacity)) {
+        var iconURL = determineIconURL()
+
          // Add the marker at the clicked location
         var marker = new google.maps.Marker({
             position: location,
             label: '' + labelIndex++,
             map: map,
-            icon: buttonID,
+            icon: iconURL,
             clickable: true
         })
         marker.infoWindow = new google.maps.InfoWindow({
@@ -152,10 +135,44 @@ function addMarker(location, map) {
     }
 }
 
+// Store the coordinate of the marker
+function addCoordinate(location, capacity) {
+    var marker = {}
+    marker.node = location
+    marker.nodeProperty = {}
+    marker.nodeProperty.type = determineMarker()
+    marker.nodeProperty.capacity = capacity
+
+    nodes.push(marker)
+}
+
 function validateMapInput() {
+    var sourceNum = 0
+    var sinkNum = 0
+    var sourceCapacitySum = 0
+    var sinkCapacitySum = 0
+
+    for (var i in nodes) {
+        var node = nodes[i]
+        if (node.nodeProperty.type == 'source') {
+            sourceCapacitySum += node.nodeProperty.capacity
+            sourceNum++
+        } else {
+            sinkCapacitySum += node.nodeProperty.capacity
+            sinkNum++
+        }
+    }
+
     if (sinkNum == 0 || sourceNum == 0) {
+        alert('Please specify at least one source node and one sink node')
         return false
     }
+
+    if (sourceCapacitySum < sinkCapacitySum) {
+        alert('Please ensure total source capacity >= total sink capacity')
+        return false
+    }
+
     return true
 }
 
@@ -167,7 +184,6 @@ function setRequirementsFormAction() {
 function validateMapInputAndSubmit(event) {
     if(!validateMapInput()) {
         event.preventDefault()
-        alert('Please specify at least one source node and one sink node')
         return
     }
     setRequirementsFormAction()

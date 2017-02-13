@@ -162,12 +162,10 @@ var MarkerList = function (_React$Component4) {
 		value: function render() {
 			var serviceProvider = {};
 			serviceProvider.name = 'Source';
-			serviceProvider.id = 'styles/images/provider.png';
 			serviceProvider.invokeEvent = false;
 
 			var newUser = {};
 			newUser.name = 'Sink';
-			newUser.id = 'styles/images/newUser.png';
 			newUser.invokeEvent = false;
 
 			return _react2.default.createElement(
@@ -369,7 +367,7 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 	_createClass(MyButton, [{
 		key: 'handleBtnClick',
 		value: function handleBtnClick(e) {
-			window.buttonID = this.props.button.id;
+			window.buttonID = this.props.button.name;
 
 			if (this.props.button.invokeEvent) {
 				window.callAlgorithm();
@@ -380,7 +378,7 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 		value: function render() {
 			return _react2.default.createElement(
 				'button',
-				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block ' },
+				{ type: 'button', onClick: this.handleBtnClick, className: 'btn btn-success btn-block btn-responsive' },
 				this.props.button.name
 			);
 		}

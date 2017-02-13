@@ -205,7 +205,7 @@ function transformCoordinatesToPixels(nodes, callback) {
     })
 }
 
-function algorithmOne(input, callback) {
+function dummyNetwork(input, callback) {
     console.log('**************** Input ******************')
     console.dir(input, 2)
     console.log(JSON.stringify(input.nodes[0].nodeProperty))
@@ -225,7 +225,7 @@ function algorithmOne(input, callback) {
     })
 }
 
-function algorithmTwo(input, callback) {
+function minCostFlow(input, callback) {
     console.log('**************** Input ******************')
     console.dir(input, 2)
     console.log('**********************************')
@@ -246,12 +246,12 @@ function algorithmTwo(input, callback) {
 
 function callAlgorithm(algorithm, input, callback) {
     switch(algorithm) {
-        case 'A1': 
-            algorithmOne(input, callback)
+        case 'Dummy Network': 
+            dummyNetwork(input, callback)
             break
 
-        case 'A2':
-            algorithmTwo(input, callback)
+        case 'Min Cost Flow':
+            minCostFlow(input, callback)
             break
     }
 }
@@ -327,7 +327,7 @@ function handleNetworkPlanRequest(req, res) {
     req.on('end', function(){
         var rawData = qs.parse(body)
 
-        var defaultAlgorithm = 'A1'
+        var defaultAlgorithm = 'Dummy Network'
         var nodes = JSON.parse(rawData.nodes)
 
         //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
@@ -342,8 +342,7 @@ function handleNetworkPlanRequest(req, res) {
                 callAlgorithm(algorithm, rawData, callback)
             },
             function(output, callback) {
-                addIndexToNodeProperty(output)
-                transformPixelsToCoordinates(output, callback)
+                processAlgorithmOutput(output, defaultAlgorithm, callback)
             }
         ], function (err, output) {
             fs.readFile('bundlejs/plannedNetwork.js', function(err, bundlejs) {
@@ -408,6 +407,16 @@ function handleRequest(req, res) {
     }    
 }
 
+function addAlgorithmToOutput(output, algorithm) {
+    output.algorithm = algorithm
+}
+
+function processAlgorithmOutput(output, algorithm, callback) {
+    addAlgorithmToOutput(output, algorithm)
+    addIndexToNodeProperty(output)
+    transformPixelsToCoordinates(output, callback)
+}
+
 //First, read Configuration file
 fs.readFile(configFilePath, function (err, data) {
     var configData = JSON.parse(data.toString())
@@ -429,8 +438,7 @@ fs.readFile(configFilePath, function (err, data) {
                     callAlgorithm(args.algorithm, args.input, callback)
                 },
                 function(output, callback) {
-                    addIndexToNodeProperty(output)
-                    transformPixelsToCoordinates(output, callback)
+                    processAlgorithmOutput(output, args.algorithm, callback)
                 }
             ], function (err, output) {
                 socket.emit('getResults', output)

@@ -1,4 +1,4 @@
-var buttonID = 'A1'
+var buttonID = 'Dummy Network'
 var socket
 var map
 var lines = []
@@ -8,6 +8,7 @@ var sinkMarker = 'styles/images/sink.png'
 var intermediateMarker = 'styles/images/intermediate.png'
 var center = {lat: 38.924280, lng: -122.907255}
 var outstandingRequests = 0
+var currentAlgorithm
 
 var serverAddr = window.data.serverAddr
 var serverPort = window.data.serverPort
@@ -195,6 +196,8 @@ function initSocket() {
         drawNetwork()
         setOrUpdateParameters()
 
+        setCurrentAlgorithm()
+
         outstandingRequests--
         if (outstandingRequests == 0) {
             removeLoader()
@@ -204,9 +207,16 @@ function initSocket() {
     })
 }
 
+function setCurrentAlgorithm() {
+    var algorithm = document.getElementById('currentAlgorithm')
+    currentAlgorithm = data.result.algorithm
+    algorithm.innerHTML = '<p>Showing result:<br/><b>' + currentAlgorithm  + '</b></p>'
+}
+
 window.onload = function() {
     initMap()
     initSocket()
     setOrUpdateParameters()
+    setCurrentAlgorithm()
     removeLoader()
 }

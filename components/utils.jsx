@@ -51,7 +51,7 @@ export class MyButton extends React.Component {
 	}
 
 	handleBtnClick(e) {
-		window.buttonID = this.props.button.id
+		window.buttonID = this.props.button.name
 		
 		if (this.props.button.invokeEvent) {
 			window.callAlgorithm()
@@ -60,7 +60,7 @@ export class MyButton extends React.Component {
 
 	render() {
 		return (
-			<button type="button" onClick={this.handleBtnClick} className="btn btn-success btn-block ">{this.props.button.name}</button>
+			<button type="button" onClick={this.handleBtnClick} className="btn btn-success btn-block btn-responsive">{this.props.button.name}</button>
 		)
 	}
 }

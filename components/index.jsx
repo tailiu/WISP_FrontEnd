@@ -68,12 +68,10 @@ class MarkerList extends React.Component {
 	render() {
 		var serviceProvider = {}
 		serviceProvider.name = 'Source'
-		serviceProvider.id = 'styles/images/provider.png'
 		serviceProvider.invokeEvent = false
 
 		var newUser = {}
 		newUser.name = 'Sink'
-		newUser.id = 'styles/images/newUser.png'
 		newUser.invokeEvent = false
 
 		return (

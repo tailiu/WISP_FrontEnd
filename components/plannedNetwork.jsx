@@ -23,16 +23,25 @@ class NetworkParameters extends React.Component {
 	}
 }
 
+class State extends React.Component {
+	render () {
+		return (
+			<div>
+				<div className='text-center' id='currentAlgorithm' />
+				<div className='center-block' id='loader' />
+			</div>
+		)
+	}
+}
+
 class Algorithms extends React.Component {
 	render () {
 		var a1 = {}
-		a1.name = 'A1'
-		a1.id = 'A1'
+		a1.name = 'Dummy Network'
 		a1.invokeEvent = true
 
 		var a2 = {}
-		a2.name = 'A2'
-		a2.id = 'A2'
+		a2.name = 'Min Cost Flow'
 		a2.invokeEvent = true
 
 		return (
@@ -40,7 +49,7 @@ class Algorithms extends React.Component {
 				<h4 className='text-center'>Algorithms</h4><br/>
 				<MyButton button={a1} /><br/>
 				<MyButton button={a2} /><br/><br/>
-				<div className='center-block' id='loader' />
+				<State />
 			</div>
 		)
 	}
