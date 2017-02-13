@@ -155,6 +155,7 @@ var MarkerList = function (_React$Component4) {
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
 			this.setState({ nodes: JSON.stringify(window.nodes) });
+			window.validateMapInputAndSubmit(event);
 		}
 	}, {
 		key: 'render',
@@ -370,7 +371,9 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 		value: function handleBtnClick(e) {
 			window.buttonID = this.props.button.id;
 
-			window.callAlgorithm();
+			if (this.props.button.invokeEvent) {
+				window.callAlgorithm();
+			}
 		}
 	}, {
 		key: 'render',

@@ -12,12 +12,8 @@ class NetworkParameters extends React.Component {
 					<table className="table-hover table-striped col-sm-offset-3 col-sm-6">
 						<tbody>
 							<tr>
-	    						<td>Bandwith</td>
-	    						<td>{this.props.paras.bandwidth}</td>
-							</tr>
-							<tr>
 								<td>Costs</td>
-								<td>{this.props.paras.costs}</td>
+								<td id='costs'></td>
 							</tr>
 						</tbody>
 					</table>
@@ -43,7 +39,8 @@ class Algorithms extends React.Component {
 			<div>
 				<h4 className='text-center'>Algorithms</h4><br/>
 				<MyButton button={a1} /><br/>
-				<MyButton button={a2} />
+				<MyButton button={a2} /><br/><br/>
+				<div className='center-block' id='loader' />
 			</div>
 		)
 	}
@@ -89,7 +86,7 @@ class PlannedNetworkContainer extends React.Component {
 		            </div>
 				</FancyContainer>
 				<FancyContainer>
-					<NetworkParameters paras={window.data.result}/>
+					<NetworkParameters/>
 				</FancyContainer>
 			</div>
 		)

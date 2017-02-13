@@ -53,27 +53,9 @@ var NetworkParameters = function (_React$Component) {
 								_react2.default.createElement(
 									'td',
 									null,
-									'Bandwith'
-								),
-								_react2.default.createElement(
-									'td',
-									null,
-									this.props.paras.bandwidth
-								)
-							),
-							_react2.default.createElement(
-								'tr',
-								null,
-								_react2.default.createElement(
-									'td',
-									null,
 									'Costs'
 								),
-								_react2.default.createElement(
-									'td',
-									null,
-									this.props.paras.costs
-								)
+								_react2.default.createElement('td', { id: 'costs' })
 							)
 						)
 					)
@@ -118,7 +100,10 @@ var Algorithms = function (_React$Component2) {
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: a1 }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a2 })
+				_react2.default.createElement(_utils.MyButton, { button: a2 }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('div', { className: 'center-block', id: 'loader' })
 			);
 		}
 	}]);
@@ -220,7 +205,7 @@ var PlannedNetworkContainer = function (_React$Component4) {
 				_react2.default.createElement(
 					_utils.FancyContainer,
 					null,
-					_react2.default.createElement(NetworkParameters, { paras: window.data.result })
+					_react2.default.createElement(NetworkParameters, null)
 				)
 			);
 		}
@@ -355,7 +340,9 @@ var MyButton = exports.MyButton = function (_React$Component4) {
 		value: function handleBtnClick(e) {
 			window.buttonID = this.props.button.id;
 
-			window.callAlgorithm();
+			if (this.props.button.invokeEvent) {
+				window.callAlgorithm();
+			}
 		}
 	}, {
 		key: 'render',

@@ -7,6 +7,7 @@ var sourceMarker = 'styles/images/source.png'
 var sinkMarker = 'styles/images/sink.png'
 var intermediateMarker = 'styles/images/intermediate.png'
 var center = {lat: 38.924280, lng: -122.907255}
+var outstandingRequests = 0
 
 var serverAddr = window.data.serverAddr
 var serverPort = window.data.serverPort
@@ -30,14 +31,25 @@ function addClass(element, newClass) {
     }   
 }
 
+function addLoader () {
+    document.getElementById('loader').style.display = 'block'
+}
+
+function removeLoader () {
+    document.getElementById('loader').style.display = 'none'
+}
+
 function callAlgorithm() {
     var args = {}
     args.algorithm = buttonID
     args.input = window.data.input
     socket.emit('callAlgorithm', args)
+    outstandingRequests++
 
     addClass(document.querySelector('body'), 'wait')
     addClass(document.getElementsByTagName('button'), 'wait')
+
+    addLoader()
 }
 
 function drawBoundary() {
@@ -169,6 +181,11 @@ function removeClass(element, oldClass) {
     }   
 }
 
+function setOrUpdateParameters() {
+    var costs = document.getElementById('costs')
+    costs.innerHTML = data.result.costs
+}
+
 function initSocket() {
     socket = io('http://' + serverAddr + ':' + serverPort)
 
@@ -176,13 +193,20 @@ function initSocket() {
         window.data.result = output
         removeNetwork()
         drawNetwork()
+        setOrUpdateParameters()
 
-        removeClass(document.querySelector('body'), 'wait')
-        removeClass(document.getElementsByTagName('button'), 'wait')
+        outstandingRequests--
+        if (outstandingRequests == 0) {
+            removeLoader()
+            removeClass(document.querySelector('body'), 'wait')
+            removeClass(document.getElementsByTagName('button'), 'wait')
+        }
     })
 }
 
 window.onload = function() {
     initMap()
     initSocket()
+    setOrUpdateParameters()
+    removeLoader()
 }

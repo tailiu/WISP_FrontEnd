@@ -61,7 +61,8 @@ class MarkerList extends React.Component {
 	}
 
 	handleSubmit(event) {
-		 this.setState({nodes: JSON.stringify(window.nodes)});
+		 this.setState({nodes: JSON.stringify(window.nodes)})
+		 window.validateMapInputAndSubmit(event)
 	}
 
 	render() {
@@ -106,7 +107,7 @@ class PlanningToolContainer extends React.Component {
 	constructor(props) {
 		super(props)
 	}
-	
+
 	render() {
 		return (
 			<div>

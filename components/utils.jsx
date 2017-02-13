@@ -52,8 +52,10 @@ export class MyButton extends React.Component {
 
 	handleBtnClick(e) {
 		window.buttonID = this.props.button.id
-
-		window.callAlgorithm()
+		
+		if (this.props.button.invokeEvent) {
+			window.callAlgorithm()
+		}
 	}
 
 	render() {
