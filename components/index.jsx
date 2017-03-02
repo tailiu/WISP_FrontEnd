@@ -16,13 +16,13 @@ class MapLegends extends React.Component {
 	render() {
 		return (
 			<div>
-            	<h4>Legends</h4>
+            	<h4><b>Legends</b></h4>
             	<ul className = 'list-group'>
             		<li className = 'list-group-item withoutBorder'>Source: <br/>
-            			<img src='styles/images/provider.png' className='img-responsive' />
+            			<img src='styles/images/source.png' className='img-responsive' />
             		</li>
             		<li className = 'list-group-item withoutBorder'>Sink: <br/>
-            			<img src='styles/images/newUser.png' className='img-responsive' />
+            			<img src='styles/images/sink.png' className='img-responsive' />
             		</li>
             	</ul>
             </div>
@@ -52,7 +52,7 @@ class MapContainer extends React.Component {
 	}
 }
 
-class MarkerList extends React.Component {
+class GoButton extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -66,6 +66,29 @@ class MarkerList extends React.Component {
 	}
 
 	render() {
+		return (
+			<form className='form-horizontal' method='POST' id='requirementsForm' onSubmit={this.handleSubmit} >
+
+				<div className='form-group'>
+					<div className='col-sm-9'>
+	        			<input type='hidden' id='disabledTextInput' className='form-control' name='bandwidth' value='2342342342'/>
+	        		</div>
+	        	</div>
+	        	<div className='form-group'>
+	        		<div className='col-sm-9'>
+	        			<input type='hidden' id='disabledTextInput' className='form-control' name='costs' value='123123123' />
+	        		</div>
+	        	</div>
+
+				<input type='hidden' name='nodes' value={this.state.nodes} />
+				<button className='btn btn-primary btn-block' type='submit'>GO!</button>
+			</form>
+		)
+	}
+}
+
+class MarkerList extends React.Component {
+	render() {
 		var serviceProvider = {}
 		serviceProvider.name = 'Source'
 		serviceProvider.invokeEvent = false
@@ -76,25 +99,10 @@ class MarkerList extends React.Component {
 
 		return (
 			<div>
-				<h4 className='text-center'>Markers</h4><br/>
+				<h4 className='text-center'><b>Markers</b></h4><br/>
 				<MyButton button={serviceProvider} /><br/>
-				<MyButton button={newUser} /><br/>
-
-				<form className='form-horizontal' method='POST' id='requirementsForm' onSubmit={this.handleSubmit}>
-        			<div className='form-group'>
-						<div className='col-sm-9'>
-		        			<input type='hidden' id='disabledTextInput' className='form-control' name='bandwidth' value='2342342342'/>
-		        		</div>
-		        	</div>
-		        	<div className='form-group'>
-		        		<div className='col-sm-9'>
-		        			<input type='hidden' id='disabledTextInput' className='form-control' name='costs' value='123123123' />
-		        		</div>
-		        	</div>
-        			<input type='hidden' name='nodes' value={this.state.nodes} />
-        			<button className='btn btn-primary btn-block' type='submit'>GO!</button>
-	      		</form>
-
+				<MyButton button={newUser} /><br/><br/>
+				<GoButton />
 			</div>
 		)
 	}

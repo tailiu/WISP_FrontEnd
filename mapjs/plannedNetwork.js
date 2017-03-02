@@ -40,17 +40,36 @@ function removeLoader () {
     document.getElementById('loader').style.display = 'none'
 }
 
-function callAlgorithm() {
-    var args = {}
-    args.algorithm = buttonID
-    args.input = window.data.input
-    socket.emit('callAlgorithm', args)
+function addProcessingAnimation() {
     outstandingRequests++
 
     addClass(document.querySelector('body'), 'wait')
     addClass(document.getElementsByTagName('button'), 'wait')
 
     addLoader()
+}
+
+function callAlgorithm() {
+    var args = {}
+    args.algorithm = buttonID
+
+    if (buttonID != 'Input JSON Data Directly') {
+        args.input = window.data.input
+        socket.emit('callAlgorithm', args)
+        addProcessingAnimation()
+    } else {
+        bootbox.prompt({
+            title: 'Please input JSON data',
+            inputType: 'textarea',
+            callback: function (data) {
+                if (data !== null && data != '') {
+                    args.input = data
+                    socket.emit('callAlgorithm', args)
+                    addProcessingAnimation()
+                }
+            }
+        })
+    }
 }
 
 function drawBoundary() {
@@ -191,13 +210,16 @@ function initSocket() {
     socket = io('http://' + serverAddr + ':' + serverPort)
 
     socket.on('getResults', function(output) {
-        window.data.result = output
-        removeNetwork()
-        drawNetwork()
-        setOrUpdateParameters()
-
-        setCurrentAlgorithm()
-
+        if (output.errMsg != undefined) {
+            bootbox.alert(output.errMsg)
+        } else {
+            window.data.result = output
+            removeNetwork()
+            drawNetwork()
+            setOrUpdateParameters()
+            setCurrentAlgorithm()
+        }
+        
         outstandingRequests--
         if (outstandingRequests == 0) {
             removeLoader()
@@ -210,7 +232,7 @@ function initSocket() {
 function setCurrentAlgorithm() {
     var algorithm = document.getElementById('currentAlgorithm')
     currentAlgorithm = data.result.algorithm
-    algorithm.innerHTML = '<p>Showing result:<br/><b>' + currentAlgorithm  + '</b></p>'
+    algorithm.innerHTML = '<p>Showing result:</p><p><b>' + currentAlgorithm  + '</b></p>'
 }
 
 window.onload = function() {

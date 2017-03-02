@@ -66,7 +66,11 @@ var MapLegends = function (_React$Component2) {
 				_react2.default.createElement(
 					'h4',
 					null,
-					'Legends'
+					_react2.default.createElement(
+						'b',
+						null,
+						'Legends'
+					)
 				),
 				_react2.default.createElement(
 					'ul',
@@ -76,14 +80,14 @@ var MapLegends = function (_React$Component2) {
 						{ className: 'list-group-item withoutBorder' },
 						'Source: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/provider.png', className: 'img-responsive' })
+						_react2.default.createElement('img', { src: 'styles/images/source.png', className: 'img-responsive' })
 					),
 					_react2.default.createElement(
 						'li',
 						{ className: 'list-group-item withoutBorder' },
 						'Sink: ',
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('img', { src: 'styles/images/newUser.png', className: 'img-responsive' })
+						_react2.default.createElement('img', { src: 'styles/images/sink.png', className: 'img-responsive' })
 					)
 				)
 			);
@@ -138,26 +142,72 @@ var MapContainer = function (_React$Component3) {
 	return MapContainer;
 }(_react2.default.Component);
 
-var MarkerList = function (_React$Component4) {
-	_inherits(MarkerList, _React$Component4);
+var GoButton = function (_React$Component4) {
+	_inherits(GoButton, _React$Component4);
 
-	function MarkerList(props) {
-		_classCallCheck(this, MarkerList);
+	function GoButton(props) {
+		_classCallCheck(this, GoButton);
 
-		var _this4 = _possibleConstructorReturn(this, (MarkerList.__proto__ || Object.getPrototypeOf(MarkerList)).call(this, props));
+		var _this4 = _possibleConstructorReturn(this, (GoButton.__proto__ || Object.getPrototypeOf(GoButton)).call(this, props));
 
 		_this4.state = { nodes: '' };
 		_this4.handleSubmit = _this4.handleSubmit.bind(_this4);
 		return _this4;
 	}
 
-	_createClass(MarkerList, [{
+	_createClass(GoButton, [{
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
 			this.setState({ nodes: JSON.stringify(window.nodes) });
 			window.validateMapInputAndSubmit(event);
 		}
 	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'form',
+				{ className: 'form-horizontal', method: 'POST', id: 'requirementsForm', onSubmit: this.handleSubmit },
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-sm-9' },
+						_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: '2342342342' })
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-sm-9' },
+						_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: '123123123' })
+					)
+				),
+				_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
+				_react2.default.createElement(
+					'button',
+					{ className: 'btn btn-primary btn-block', type: 'submit' },
+					'GO!'
+				)
+			);
+		}
+	}]);
+
+	return GoButton;
+}(_react2.default.Component);
+
+var MarkerList = function (_React$Component5) {
+	_inherits(MarkerList, _React$Component5);
+
+	function MarkerList() {
+		_classCallCheck(this, MarkerList);
+
+		return _possibleConstructorReturn(this, (MarkerList.__proto__ || Object.getPrototypeOf(MarkerList)).apply(this, arguments));
+	}
+
+	_createClass(MarkerList, [{
 		key: 'render',
 		value: function render() {
 			var serviceProvider = {};
@@ -174,41 +224,19 @@ var MarkerList = function (_React$Component4) {
 				_react2.default.createElement(
 					'h4',
 					{ className: 'text-center' },
-					'Markers'
+					_react2.default.createElement(
+						'b',
+						null,
+						'Markers'
+					)
 				),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: serviceProvider }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: newUser }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(
-					'form',
-					{ className: 'form-horizontal', method: 'POST', id: 'requirementsForm', onSubmit: this.handleSubmit },
-					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: '2342342342' })
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'form-group' },
-						_react2.default.createElement(
-							'div',
-							{ className: 'col-sm-9' },
-							_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: '123123123' })
-						)
-					),
-					_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
-					_react2.default.createElement(
-						'button',
-						{ className: 'btn btn-primary btn-block', type: 'submit' },
-						'GO!'
-					)
-				)
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(GoButton, null)
 			);
 		}
 	}]);
@@ -219,8 +247,8 @@ var MarkerList = function (_React$Component4) {
 //Contains the entirety of the tool
 
 
-var PlanningToolContainer = function (_React$Component5) {
-	_inherits(PlanningToolContainer, _React$Component5);
+var PlanningToolContainer = function (_React$Component6) {
+	_inherits(PlanningToolContainer, _React$Component6);
 
 	function PlanningToolContainer(props) {
 		_classCallCheck(this, PlanningToolContainer);
@@ -343,7 +371,11 @@ var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
 				_react2.default.createElement(
 					'h2',
 					null,
-					this.props.title
+					_react2.default.createElement(
+						'b',
+						null,
+						this.props.title
+					)
 				)
 			);
 		}

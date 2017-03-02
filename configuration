@@ -1,1 +1,1 @@
-{"serverAddr":"localhost","serverPort":8000,"algorithmOnePath":"./algorithms/A1.py","algorithmTwoPath":"./algorithms/A2"}
+{"serverAddr":"localhost","serverPort":8000,"dummyNetworkPath":"./algorithms/A1.py","minCostFlowPath":"./algorithms/A2", "cplexPath":"./algorithms/A1.py"}

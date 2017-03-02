@@ -37,19 +37,18 @@ var NetworkParameters = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement(_utils.ContainerTitle, { title: 'Network Setup Parameters' }),
 				_react2.default.createElement(
 					'div',
-					{ className: 'row' },
+					{ className: 'table-responsive' },
 					_react2.default.createElement(
 						'table',
-						{ className: 'table-hover table-striped col-sm-offset-3 col-sm-6' },
+						{ className: 'table' },
 						_react2.default.createElement(
 							'tbody',
 							null,
 							_react2.default.createElement(
 								'tr',
-								null,
+								{ className: 'text-center' },
 								_react2.default.createElement(
 									'td',
 									null,
@@ -83,6 +82,8 @@ var State = function (_React$Component2) {
 				'div',
 				null,
 				_react2.default.createElement('div', { className: 'text-center', id: 'currentAlgorithm' }),
+				_react2.default.createElement(NetworkParameters, null),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement('div', { className: 'center-block', id: 'loader' })
 			);
 		}
@@ -108,8 +109,16 @@ var Algorithms = function (_React$Component3) {
 			a1.invokeEvent = true;
 
 			var a2 = {};
-			a2.name = 'Min Cost Flow';
+			a2.name = 'Min Cost Flow (Google OR tools)';
 			a2.invokeEvent = true;
+
+			var a3 = {};
+			a3.name = 'CPLEX Network Optimizer';
+			a3.invokeEvent = true;
+
+			var a4 = {};
+			a4.name = 'Input JSON Data Directly';
+			a4.invokeEvent = true;
 
 			return _react2.default.createElement(
 				'div',
@@ -117,12 +126,20 @@ var Algorithms = function (_React$Component3) {
 				_react2.default.createElement(
 					'h4',
 					{ className: 'text-center' },
-					'Algorithms'
+					_react2.default.createElement(
+						'b',
+						null,
+						'Algorithms'
+					)
 				),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: a1 }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: a2 }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: a3 }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: a4 }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(State, null)
@@ -151,7 +168,11 @@ var MapLegends = function (_React$Component4) {
 				_react2.default.createElement(
 					'h4',
 					null,
-					'Legends'
+					_react2.default.createElement(
+						'b',
+						null,
+						'Legends'
+					)
 				),
 				_react2.default.createElement(
 					'ul',
@@ -223,11 +244,6 @@ var PlannedNetworkContainer = function (_React$Component5) {
 							_react2.default.createElement(MapLegends, null)
 						)
 					)
-				),
-				_react2.default.createElement(
-					_utils.FancyContainer,
-					null,
-					_react2.default.createElement(NetworkParameters, null)
 				)
 			);
 		}
@@ -336,7 +352,11 @@ var ContainerTitle = exports.ContainerTitle = function (_React$Component3) {
 				_react2.default.createElement(
 					'h2',
 					null,
-					this.props.title
+					_react2.default.createElement(
+						'b',
+						null,
+						this.props.title
+					)
 				)
 			);
 		}

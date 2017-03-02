@@ -36,7 +36,7 @@ export class ContainerTitle extends React.Component {
 	render() {
 		return (
 			<div className='text-center stepTitle'>
-				<h2>{this.props.title}</h2>
+				<h2><b>{this.props.title}</b></h2>
 			</div>
 		) 
 		

@@ -4,13 +4,10 @@ import sys
 import json
 import time
 
-# Deal with input
-bandwidth = json.loads(sys.argv[1])['bandwidth']
-
 # Output format
 output = {
 	'bandwidth': 9787987987, 
-	'costs': 12312124142,
+	'costs': 12342,
 	'nodes': [
 		{
 			'node': 7899,

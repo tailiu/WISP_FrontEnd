@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 	// Output format
 	json output;
 	output["bandwidth"] = 12323232;
-	output["costs"] = 78787878;
+	output["costs"] = 7878;
 	output["nodes"] = json::array(
 		{
 			{

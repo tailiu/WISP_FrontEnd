@@ -7,11 +7,10 @@ class NetworkParameters extends React.Component {
 	render () {
 		return (
 			<div>
-				<ContainerTitle title='Network Setup Parameters'/>
-				<div className='row'>
-					<table className="table-hover table-striped col-sm-offset-3 col-sm-6">
+				<div className='table-responsive'>
+					<table className='table'>
 						<tbody>
-							<tr>
+							<tr className='text-center'>
 								<td>Costs</td>
 								<td id='costs'></td>
 							</tr>
@@ -28,6 +27,7 @@ class State extends React.Component {
 		return (
 			<div>
 				<div className='text-center' id='currentAlgorithm' />
+				<NetworkParameters /><br/>
 				<div className='center-block' id='loader' />
 			</div>
 		)
@@ -41,14 +41,25 @@ class Algorithms extends React.Component {
 		a1.invokeEvent = true
 
 		var a2 = {}
-		a2.name = 'Min Cost Flow'
+		a2.name = 'Min Cost Flow (Google OR tools)'
 		a2.invokeEvent = true
+
+		var a3 = {}
+		a3.name = 'CPLEX Network Optimizer'
+		a3.invokeEvent = true
+
+		var a4 = {}
+		a4.name = 'Input JSON Data Directly'
+		a4.invokeEvent = true
+
 
 		return (
 			<div>
-				<h4 className='text-center'>Algorithms</h4><br/>
+				<h4 className='text-center'><b>Algorithms</b></h4><br/>
 				<MyButton button={a1} /><br/>
-				<MyButton button={a2} /><br/><br/>
+				<MyButton button={a2} /><br/>
+				<MyButton button={a3} /><br/>
+				<MyButton button={a4} /><br/><br/>
 				<State />
 			</div>
 		)
@@ -59,7 +70,7 @@ class MapLegends extends React.Component {
 	render() {
 		return (
 			<div>
-            	<h4>Legends</h4>
+            	<h4><b>Legends</b></h4>
             	<ul className = 'list-group'>
             		<li className = 'list-group-item grey-container withoutBorder'>Source: <br/>
             			<img src='styles/images/source.png' className='img-responsive' />
@@ -93,9 +104,6 @@ class PlannedNetworkContainer extends React.Component {
 			            	<MapLegends />
 			            </div>
 		            </div>
-				</FancyContainer>
-				<FancyContainer>
-					<NetworkParameters/>
 				</FancyContainer>
 			</div>
 		)

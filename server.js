@@ -20,8 +20,9 @@ var serverAddr
 var serverPort
 
 //Algorithm File paths
-var algorithmOnePath 
-var algorithmTwoPath
+var dummyNetworkPath 
+var minCostFlowPath
+var cplexPath
 
 //Add script tags
 function preprocessBundle(str) {
@@ -44,18 +45,41 @@ function getBoundaryCoordinates(callback) {
             cursor.toArray(function(err, result) {
                 if (err) throw err
 
-                callback(result)
+                callback(err, result)
             })
         })
     })
 }
 
+function logErr(req, err, errMsg) {
+    var clientAddr
+    if (req.headers['x-forwarded-for'] == undefined) {
+        clientAddr = req.connection.remoteAddress
+    } else {
+        clientAddr = req.headers['x-forwarded-for']
+    }
+    var time = new Date()
+    if (errMsg == undefined) {
+        errMsg = null
+    }
+    console.error('Request from ' + clientAddr + ' at ' + time + ' causes errors:')
+    console.error(errMsg)
+    console.error(err)
+}
+
 //Handle the Homapage
 function handleHomePage(req, res) {
 	fs.readFile('bundlejs/index.js', function(err, bundlejs) {
-        if (err) throw err
+        if (err) {
+            logErr(req, err)
+            return
+        }
 
-        getBoundaryCoordinates(function(boundary){
+        getBoundaryCoordinates(function(err, boundary){
+            if (err) {
+                logErr(req, err)
+                return
+            }
 
             //Render the index.ejs file with bundled script file
             var data = {}
@@ -68,6 +92,11 @@ function handleHomePage(req, res) {
             data.variable = preprocessVar(processedData)
 
             ejs.renderFile('index.html', data, null, function(err, str){
+                if (err) {
+                    logErr(req, err)
+                    return
+                } 
+
                 res.end(str)
             })
         })
@@ -104,7 +133,10 @@ function getOnePixelByOneCoordinate(coordinate, pixels, callback) {
 
 function getOneCoordinateByOnePixel(pixel, coordinates, callback) {
     r.connect({ host: dbHost, port: dbPort }, function(err, conn) {
-        if(err) throw err
+        if(err) {
+            callback(err, null)
+            return
+        }
 
         r.db('networkPlanningTool').table('geo').filter({
 
@@ -112,7 +144,10 @@ function getOneCoordinateByOnePixel(pixel, coordinates, callback) {
 
             }).run(conn, function(err, cursor){
                 cursor.toArray(function(err, result) {
-                if (err) throw err;
+                if(err) {
+                    callback(err, null)
+                    return
+                }
 
                 var coordinate = result[0].location.coordinates
                 var coordinateObj = {}
@@ -140,7 +175,7 @@ function getCoordinatesByPixels(pixels, callback) {
         },
 
         function (err, coordinateArr) {
-            callback(coordinateArr)
+            callback(err, coordinateArr)
         }
     )
 }
@@ -208,11 +243,11 @@ function transformCoordinatesToPixels(nodes, callback) {
 function dummyNetwork(input, callback) {
     console.log('**************** Input ******************')
     console.dir(input, 2)
-    console.log(JSON.stringify(input.nodes[0].nodeProperty))
+    //console.log(JSON.stringify(input.nodes[0].nodeProperty))
     console.log('**********************************')
     console.log()
 
-    childProcess.execFile('python', [algorithmOnePath, JSON.stringify(input)], function(error, output, stderr){
+    childProcess.execFile('python', [dummyNetworkPath, JSON.stringify(input)], function(error, output, stderr){
         if (error) {
             throw error
         }
@@ -221,7 +256,7 @@ function dummyNetwork(input, callback) {
         console.log(output)
         console.log('**********************************')
 
-        callback(null, JSON.parse(output))
+        callback(error, JSON.parse(output))
     })
 }
 
@@ -231,7 +266,7 @@ function minCostFlow(input, callback) {
     console.log('**********************************')
     console.log()
 
-    childProcess.execFile(algorithmTwoPath, [JSON.stringify(input)], function(error, output, stderr){
+    childProcess.execFile(minCostFlowPath, [JSON.stringify(input)], function(error, output, stderr){
         if (error) {
             throw error
         }
@@ -240,7 +275,27 @@ function minCostFlow(input, callback) {
         console.log(output)
         console.log('**********************************')
 
-        callback(null, JSON.parse(output))
+        callback(error, JSON.parse(output))
+    })
+}
+
+function cplex(input, callback) {
+    console.log('**************** Input ******************')
+    console.dir(input, 2)
+    //console.log(JSON.stringify(input.nodes[0].nodeProperty))
+    console.log('**********************************')
+    console.log()
+
+    childProcess.execFile('python', [cplexPath, JSON.stringify(input)], function(error, output, stderr){
+        if (error) {
+            throw error
+        }
+        
+        console.log('**************** Output ******************')
+        console.log(output)
+        console.log('**********************************')
+
+        callback(error, JSON.parse(output))
     })
 }
 
@@ -250,8 +305,12 @@ function callAlgorithm(algorithm, input, callback) {
             dummyNetwork(input, callback)
             break
 
-        case 'Min Cost Flow':
+        case 'Min Cost Flow (Google OR tools)':
             minCostFlow(input, callback)
+            break
+
+        case 'CPLEX Network Optimizer':
+            cplex(input, callback)
             break
     }
 }
@@ -292,9 +351,18 @@ function replacePixelsWithCoordinates(output, coordinates) {
 function transformPixelsToCoordinates(output, callback) {
     var pixels = collectPixelsFromOutput(output)
 
-    getCoordinatesByPixels(pixels, function(coordinates) {
+    getCoordinatesByPixels(pixels, function(err, coordinates) {
+        if (err) {
+            callback(err, null)
+            return
+        }
         
-        replacePixelsWithCoordinates(output, coordinates)
+        try {
+            replacePixelsWithCoordinates(output, coordinates)
+        } catch (err) {
+            callback(err, null)
+            return
+        }
 
         callback(null, output)
     })
@@ -345,11 +413,24 @@ function handleNetworkPlanRequest(req, res) {
                 processAlgorithmOutput(output, defaultAlgorithm, callback)
             }
         ], function (err, output) {
+            if (err) {
+                logErr(req, err)
+                return
+            }
+
             fs.readFile('bundlejs/plannedNetwork.js', function(err, bundlejs) {
-                if (err) throw err
+                if (err) {
+                    logErr(req, err)
+                    return
+                }
 
                 //Get boundary coordinates from the database
-                getBoundaryCoordinates(function(boundary){
+                getBoundaryCoordinates(function(err, boundary) {
+                    if (err) {
+                        logErr(req, err)
+                        return
+                    }
+
                     var processedData = {}
                     processedData.serverAddr = serverAddr
                     processedData.serverPort = serverPort
@@ -364,6 +445,11 @@ function handleNetworkPlanRequest(req, res) {
                     data.variable = preprocessVar(processedData)
 
                     ejs.renderFile('index.html', data, null, function(err, str){
+                        if (err) {
+                            logErr(req, err)
+                            return
+                        }
+
                         res.end(str)
                     })
                 })
@@ -380,7 +466,7 @@ function handleDefault(req, res) {
 //This function handles requests and send a response
 function handleRequest(req, res) {
 	var path = req.url
-    
+
     switch(path) {
     	case '/':
     		handleHomePage(req, res)
@@ -412,9 +498,21 @@ function addAlgorithmToOutput(output, algorithm) {
 }
 
 function processAlgorithmOutput(output, algorithm, callback) {
-    addAlgorithmToOutput(output, algorithm)
-    addIndexToNodeProperty(output)
+    try {
+        addAlgorithmToOutput(output, algorithm)
+        addIndexToNodeProperty(output)
+    } catch (err) {
+        callback(err)
+        return
+    }
+
     transformPixelsToCoordinates(output, callback)
+}
+
+function sendErrRes(socket, errMsg) {
+    output = {}
+    output.errMsg = errMsg
+    socket.emit('getResults', output)
 }
 
 //First, read Configuration file
@@ -422,27 +520,53 @@ fs.readFile(configFilePath, function (err, data) {
     var configData = JSON.parse(data.toString())
     serverAddr = configData.serverAddr
     serverPort = configData.serverPort
-    algorithmOnePath = configData.algorithmOnePath
-    algorithmTwoPath = configData.algorithmTwoPath
+    dummyNetworkPath = configData.dummyNetworkPath
+    minCostFlowPath = configData.minCostFlowPath
+    cplexPath = configData.cplexPath
 
     //Then, start the server
     server.listen(serverPort, function(){
-        console.log('Server %d is listening on port: %d', process.pid, serverPort)
+        console.log('Server is listening on port: %d', serverPort)
     })
 
     //Initialize web socket
     io.on('connection', function (socket) {
         socket.on('callAlgorithm', function(args) {
-            async.waterfall([
-                function(callback) {
-                    callAlgorithm(args.algorithm, args.input, callback)
-                },
-                function(output, callback) {
-                    processAlgorithmOutput(output, args.algorithm, callback)
+            if (args.algorithm != 'Input JSON Data Directly') {
+                async.waterfall([
+                    function(callback) {
+                        callAlgorithm(args.algorithm, args.input, callback)
+                    },
+                    function(output, callback) {
+                        processAlgorithmOutput(output, args.algorithm, callback)
+                    }
+                ], function (err, output) {
+                    if (err) {
+                        logErr(socket.request, err)
+                        return
+                    }
+                    socket.emit('getResults', output)
+                })
+            } else {
+                try {
+                    var data = JSON.parse(args.input)
                 }
-            ], function (err, output) {
-                socket.emit('getResults', output)
-            })
+                catch (err) {
+                    var errMsg = 'Error: Invalid JSON data'
+                    logErr(socket.request, err, errMsg)
+                    sendErrRes(socket, errMsg)
+                    return
+                }
+                processAlgorithmOutput(data, args.algorithm, function(err, output) {
+                    if (err) {
+                        var errMsg = 'Error: Invalid JSON data'
+                        logErr(socket.request, err, errMsg)
+                        sendErrRes(socket, errMsg)
+                        return
+                    }
+                    socket.emit('getResults', output)
+                })
+            }
         })
     })
 })
