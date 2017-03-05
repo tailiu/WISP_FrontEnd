@@ -286,7 +286,7 @@ function cplex(input, callback) {
     console.log('**********************************')
     console.log()
 
-    childProcess.execFile('python', [cplexPath, JSON.stringify(input)], function(error, output, stderr){
+    childProcess.execFile(cplexPath, [JSON.stringify(input)], function(error, output, stderr){
         if (error) {
             throw error
         }
