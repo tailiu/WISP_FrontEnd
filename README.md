@@ -2,12 +2,7 @@
 
 Start the server
 ```
-forever start forever.json
-```
-
-Stop the server
-```
-forever stop server
+node forever.js
 ```
 
 If React components are changed, please rebuild

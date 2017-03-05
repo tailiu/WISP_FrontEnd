@@ -1,0 +1,36 @@
+Server is listening on port: 8000
+**************** Input ******************
+{ bandwidth: '2342342342',
+  costs: '123123123',
+  nodes: 
+   [ { node: 8885, nodeProperty: [Object] },
+     { node: 6432, nodeProperty: [Object] } ] }
+**********************************
+
+**************** Output ******************
+{"bandwidth": 9787987987, "costs": 12342, "nodes": [{"node": 7899, "nodeProperty": {"type": "source", "mountingHeight": 789787, "capacity": 8908098}}, {"node": 30010, "nodeProperty": {"type": "intermediate", "mountingHeight": 789787, "capacity": 8908098}}, {"node": 20090, "nodeProperty": {"type": "sink", "mountingHeight": 546456546, "capacity": 123123123}}], "edges": [{"nodes": [7899, 30010], "edgeProperty": {"length": 1231213, "frequency": 1321312312, "bandwidth": 88098098}}, {"nodes": [30010, 20090], "edgeProperty": {"length": 6546546456, "frequency": 1231231233123, "bandwidth": 7677777}}]}
+
+**********************************
+**************** Input ******************
+{ bandwidth: '2342342342',
+  costs: '123123123',
+  nodes: 
+   [ { node: 8885, nodeProperty: [Object] },
+     { node: 6432, nodeProperty: [Object] } ] }
+**********************************
+
+**************** Output ******************
+{"bandwidth": 9787987987, "costs": 12342, "nodes": [{"node": 7899, "nodeProperty": {"type": "source", "mountingHeight": 789787, "capacity": 8908098}}, {"node": 30010, "nodeProperty": {"type": "intermediate", "mountingHeight": 789787, "capacity": 8908098}}, {"node": 20090, "nodeProperty": {"type": "sink", "mountingHeight": 546456546, "capacity": 123123123}}], "edges": [{"nodes": [7899, 30010], "edgeProperty": {"length": 1231213, "frequency": 1321312312, "bandwidth": 88098098}}, {"nodes": [30010, 20090], "edgeProperty": {"length": 6546546456, "frequency": 1231231233123, "bandwidth": 7677777}}]}
+
+**********************************
+**************** Input ******************
+{ bandwidth: '2342342342',
+  costs: '123123123',
+  nodes: 
+   [ { node: 8885, nodeProperty: [Object] },
+     { node: 6432, nodeProperty: [Object] } ] }
+**********************************
+
+**************** Output ******************
+{"bandwidth":12323232,"costs":7878,"edges":[{"edgeProperty":{"bandwidth":123123,"frequency":3454654646,"length":4546546},"nodes":[1080,38989]},{"edgeProperty":{"bandwidth":1231231,"frequency":56565756,"length":123545345},"nodes":[38989,23890]}],"nodes":[{"node":1080,"nodeProperty":{"capacity":95675675,"mountingHeight":21123,"type":"sink"}},{"node":38989,"nodeProperty":{"capacity":1233454353,"mountingHeight":2342343,"type":"source"}},{"node":23890,"nodeProperty":{"capacity":658768768,"mountingHeight":786549787,"type":"intermediate"}}]}
+**********************************

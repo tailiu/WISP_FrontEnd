@@ -1,9 +1,0 @@
-{
-	"uid": "server",
-	"append": true,
-    "spinSleepTime": 100,
-    "script": "server.js",
-	"logFile": "/tmp/logs/forever.log",      
-	"outFile": "/tmp/logs/out.log",
-	"errFile": "/tmp/logs/err.log"
-}
