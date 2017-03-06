@@ -14,7 +14,7 @@ var serverURL = 'http://' + window.data.serverAddr + ':' +  window.data.serverPo
 
 var popoverForm = `<form>
                         <div class='form-group'>
-                            <label>Capacity (bit/s) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
+                            <label>Capacity (Mbit/s) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
                                 data-toggle='popover' data-placement='right' data-content='Capacity of the marker'></span></label>
                             <input type='text' class='form-control' name='capacity' aria-describedby='capacityHelpBlock' />
                             <span id='capacityHelpBlock' class='help-block'></span>
@@ -91,7 +91,7 @@ function determineMarkerType() {
 
 function setInfoWindowContent(capacity, mountingHeight, frequencies) {
     var content = ''
-    content += '<ul> Capacity: ' + capacity + ' bit/s </ul>'
+    content += '<ul> Capacity: ' + capacity + ' Mbit/s </ul>'
     content += '<ul> Mounting Height: ' + mountingHeight + ' m </ul>'
 
     if (frequencies.length == 1) {
