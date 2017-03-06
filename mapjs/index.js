@@ -361,8 +361,8 @@ function validateMapInput() {
         return false
     }
 
-    if (sourceCapacitySum < sinkCapacitySum) {
-        bootbox.alert('Please ensure total source capacity <b>>=</b> total sink capacity')
+    if (sourceCapacitySum != sinkCapacitySum) {
+        bootbox.alert('Please ensure total source capacity <b>=</b> total sink capacity')
         return false
     }
 
