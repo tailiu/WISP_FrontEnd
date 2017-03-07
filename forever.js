@@ -14,7 +14,7 @@ fs.readFile(configFilePath, function (err, data) {
 	    spinSleepTime: 500,
 	    logFile: logFilePath, 	// Path to log output from forever process (when daemonized)
 	    outFile: outFilePath, 	// Path to log output from child stdout
-	    errFile: errFile, 		// Path to log output from child stderr
+	    errFile: errFile 		// Path to log output from child stderr
 	})
 
 	child.on('restart', function() {

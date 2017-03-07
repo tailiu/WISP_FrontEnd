@@ -180,13 +180,15 @@ function modifyCoordinate(markerInfo, capacity, mountingHeight, frequencies) {
 function handleAddOrModifyMarker(map, markerInfo, option) {
     var capacity = document.getElementsByName('capacity')[0].value
     var mountingHeight = document.getElementsByName('mountingHeight')[0].value
-    var frequency = document.querySelectorAll('.frequency:checked')
+    var frequencies = document.querySelectorAll('.frequency:checked')
 
-    if(!validateInput(capacity, mountingHeight, frequency)) {
+    if(!validateInput(capacity, mountingHeight, frequencies)) {
         return false
     }
 
-    var frequencies = addToFrequencyArr(frequency)
+    frequencies = addToFrequencyArr(frequencies)
+    capacity = parseInt(capacity)
+    mountingHeight = parseInt(mountingHeight)
 
     if (option == 'create') {
         var iconURL = determineIconURL()
@@ -332,8 +334,8 @@ function addCoordinate(location, capacity, mountingHeight, frequencies) {
     marker.node = location
     marker.nodeProperty = {}
     marker.nodeProperty.type = determineMarkerType()
-    marker.nodeProperty.capacity = parseInt(capacity)
-    marker.nodeProperty.mountingHeight = parseInt(mountingHeight)
+    marker.nodeProperty.capacity = capacity
+    marker.nodeProperty.mountingHeight = mountingHeight
     marker.nodeProperty.frequencies = frequencies
 
     nodes.push(marker)
