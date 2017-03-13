@@ -56,11 +56,12 @@ class Algorithms extends React.Component {
 		return (
 			<div>
 				<h4 className='text-center'><b>Algorithms</b></h4><br/>
-				<MyButton button={a1} /><br/>
 				<MyButton button={a2} /><br/>
-				<MyButton button={a3} /><br/>
-				<MyButton button={a4} /><br/><br/>
+				<MyButton button={a3} /><br/><br/>
 				<State />
+				<br/><br/><br/><br/>
+				<h4 className='text-center'><b>Debugging</b></h4><br/>
+				<MyButton button={a4} />
 			</div>
 		)
 	}

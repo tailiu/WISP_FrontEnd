@@ -1,4 +1,4 @@
-var buttonID = 'Dummy Network'
+var buttonID
 var socket
 var map
 var lines = []
@@ -9,6 +9,8 @@ var intermediateMarker = 'styles/images/intermediate.png'
 var center = {lat: 38.924280, lng: -122.907255}
 var outstandingRequests = 0
 var currentAlgorithm
+
+var cachingResults = {}
 
 var serverAddr = window.data.serverAddr
 var serverPort = window.data.serverPort
@@ -49,14 +51,27 @@ function addProcessingAnimation() {
     addLoader()
 }
 
+function getCachingResults(algorithm) {
+    return cachingResults[algorithm]
+}
+
 function callAlgorithm() {
     var args = {}
     args.algorithm = buttonID
 
     if (buttonID != 'Input JSON Data Directly') {
         args.input = window.data.input
-        socket.emit('callAlgorithm', args)
+
         addProcessingAnimation()
+
+        var cachedResults = getCachingResults(args.algorithm)
+        if(cachedResults == undefined) {
+            socket.emit('callAlgorithm', args)
+        } else {
+            window.data.result = cachedResults
+            renderResults()
+            checkAndRemoveLoader()
+        }
     } else {
         bootbox.prompt({
             title: 'Please input JSON data',
@@ -206,6 +221,26 @@ function setOrUpdateParameters() {
     costs.innerHTML = data.result.costs
 }
 
+function setCachingResults() {
+    cachingResults[window.data.result.algorithm] = window.data.result
+}
+
+function renderResults() {
+    removeNetwork()
+    drawNetwork()
+    setOrUpdateParameters()
+    setCurrentAlgorithm()
+}
+
+function checkAndRemoveLoader() {
+    outstandingRequests--
+    if (outstandingRequests == 0) {
+        removeLoader()
+        removeClass(document.querySelector('body'), 'wait')
+        removeClass(document.getElementsByTagName('button'), 'wait')
+    }
+}
+
 function initSocket() {
     socket = io('http://' + serverAddr + ':' + serverPort)
 
@@ -214,18 +249,15 @@ function initSocket() {
             bootbox.alert(output.errMsg)
         } else {
             window.data.result = output
-            removeNetwork()
-            drawNetwork()
-            setOrUpdateParameters()
-            setCurrentAlgorithm()
+            
+            if (output.algorithm != 'Input JSON Data Directly') {
+                setCachingResults()
+            }
+
+            renderResults()
         }
         
-        outstandingRequests--
-        if (outstandingRequests == 0) {
-            removeLoader()
-            removeClass(document.querySelector('body'), 'wait')
-            removeClass(document.getElementsByTagName('button'), 'wait')
-        }
+        checkAndRemoveLoader()
     })
 }
 
@@ -240,5 +272,6 @@ window.onload = function() {
     initSocket()
     setOrUpdateParameters()
     setCurrentAlgorithm()
+    setCachingResults()
     removeLoader()
 }

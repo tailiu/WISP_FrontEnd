@@ -87,6 +87,37 @@ class GoButton extends React.Component {
 	}
 }
 
+class Examples extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {value: 'selectPrompt'};
+		this.handleChange = this.handleChange.bind(this)
+	}
+
+	handleChange(event) {
+		this.setState({value: event.target.value});
+		window.handleExample(event.target.value)
+	}
+
+	render() {
+		return (
+			<div> 
+				<h4 className='text-center'><b>Examples</b></h4><br/>
+				
+	        	<select className='form-control' value={this.state.value} onChange={this.handleChange}>
+	        		<option value='selectPrompt'>Please select</option>
+					<option value='example_1_9'>1 source, 9 sinks</option>
+					<option value='example_1_49'>1 source, 49 sinks</option>
+					<option value='example_5_5'>5 sources, 5 sinks</option>
+					<option value='example_10_40'>10 sources, 40 sinks</option>
+					<option value='clear'>Clear</option>
+				</select>
+			</div>
+		)
+	}
+}
+
 class MarkerList extends React.Component {
 	render() {
 		var serviceProvider = {}
@@ -102,6 +133,7 @@ class MarkerList extends React.Component {
 				<h4 className='text-center'><b>Markers</b></h4><br/>
 				<MyButton button={serviceProvider} /><br/>
 				<MyButton button={newUser} /><br/><br/>
+				<Examples /><br/><br/>
 				<GoButton />
 			</div>
 		)

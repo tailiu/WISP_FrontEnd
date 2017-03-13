@@ -133,16 +133,27 @@ var Algorithms = function (_React$Component3) {
 					)
 				),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a1 }),
-				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: a2 }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: a3 }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a4 }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(State, null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(State, null)
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'h4',
+					{ className: 'text-center' },
+					_react2.default.createElement(
+						'b',
+						null,
+						'Debugging'
+					)
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: a4 })
 			);
 		}
 	}]);

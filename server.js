@@ -15,6 +15,14 @@ const configFilePath = './configuration'
 const dbPort = 28015
 const dbHost = 'localhost'
 
+//Exmaple paths
+const examplePaths = {
+    'exampleOne': 'examples/example_1_9',
+    'exampleTwo': 'examples/example_1_49',
+    'exampleThree': 'examples/example_5_5',
+    'exampleFour': 'examples/example_10_40'
+}
+
 //Fixed port server listens to
 var serverAddr 
 var serverPort
@@ -23,6 +31,8 @@ var serverPort
 var dummyNetworkPath 
 var minCostFlowPath
 var cplexPath
+
+var defaultAlgorithm = 'Min Cost Flow (Google OR tools)'
 
 //Add script tags
 function preprocessBundle(str) {
@@ -67,6 +77,34 @@ function logErr(req, err, errMsg) {
     console.error(err)
 }
 
+function getExamples(callback) {
+    async.parallel({
+        'example_1_9': function(callback) {
+            fs.readFile(examplePaths.exampleOne, function(err, exampleOne) {
+                callback(err, exampleOne.toString())
+            })
+        },
+        'example_1_49': function(callback) {
+            fs.readFile(examplePaths.exampleTwo, function(err, exampleTwo) {
+                callback(err, exampleTwo.toString())
+            })
+        },
+        'example_5_5': function(callback) {
+            fs.readFile(examplePaths.exampleThree, function(err, exampleThree) {
+                callback(err, exampleThree.toString())
+            })
+        },
+        'example_10_40': function(callback) {
+            fs.readFile(examplePaths.exampleFour, function(err, exampleFour) {
+                callback(err, exampleFour.toString())
+            })
+        }
+    },
+    function(err, examples) {
+        callback(err, examples)
+    })
+}
+
 //Handle the Homapage
 function handleHomePage(req, res) {
 	fs.readFile('bundlejs/index.js', function(err, bundlejs) {
@@ -81,23 +119,31 @@ function handleHomePage(req, res) {
                 return
             }
 
-            //Render the index.ejs file with bundled script file
-            var data = {}
-            var processedData = {}
-            processedData.boundary = boundary
-            processedData.serverPort = serverPort
-            processedData.serverAddr = serverAddr
-
-            data.bundlejs = preprocessBundle(bundlejs)
-            data.variable = preprocessVar(processedData)
-
-            ejs.renderFile('index.html', data, null, function(err, str){
+            getExamples(function(err, examples) {
                 if (err) {
                     logErr(req, err)
                     return
-                } 
+                }
 
-                res.end(str)
+                //Render the index.ejs file with bundled script file
+                var data = {}
+                var processedData = {}
+                processedData.boundary = boundary
+                processedData.serverPort = serverPort
+                processedData.serverAddr = serverAddr
+                processedData.examples = examples
+
+                data.bundlejs = preprocessBundle(bundlejs)
+                data.variable = preprocessVar(processedData)
+
+                ejs.renderFile('index.html', data, null, function(err, str){
+                    if (err) {
+                        logErr(req, err)
+                        return
+                    } 
+
+                    res.end(str)
+                })
             })
         })
     })
@@ -394,9 +440,11 @@ function handleNetworkPlanRequest(req, res) {
 
     req.on('end', function(){
         var rawData = qs.parse(body)
-
-        var defaultAlgorithm = 'Dummy Network'
         var nodes = JSON.parse(rawData.nodes)
+
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^')
+        console.log(rawData.nodes)
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^')
 
         //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
         async.waterfall([

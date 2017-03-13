@@ -1,7 +1,10 @@
 var buttonID = undefined
 var startDragPosition
 var nodes = []
+var examples = {}
 
+var markers = []
+var map 
 var center = {lat: 38.924280, lng: -122.907255}
 
 var sourceImageURL = 'styles/images/source.png'
@@ -20,13 +23,14 @@ var popoverForm = `<form>
                             <span id='capacityHelpBlock' class='help-block'></span>
                         </div>
                         <div class='form-group'>
-                            <label>Mounting Height (m) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
-                                data-toggle='popover' data-placement='right' data-content='Mounting height of the marker'></span></label>
+                            <label>Mounting Height (m) <id style="color:red;">[Note: For Future Use Only]</id> <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
+                                data-toggle='popover' data-placement='right' data-content='Mounting height of the marker'></span>
+                            </label>
                             <input type='text' class='form-control' name='mountingHeight' aria-describedby='mountingHeightHelpBlock' />
                             <span id='mountingHeightHelpBlock' class='help-block'></span>
                         </div>
                         <div class='checkbox'>
-                            <b>Frequency (GHz) </b><span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
+                            <b>Frequency (GHz) <id style="color:red;">[Note: For Future Use Only]</id> </b><span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
                                 data-toggle='popover' data-placement='right' data-content='Frequency of the marker'></span><br />
                             <label class='checkbox-inline'>
                                 <input type='checkbox' class='frequency' value='2.4' /> 2.4
@@ -45,9 +49,11 @@ var popoverForm = `<form>
                     </form>`
 
 function initMap() {
+    examples = window.data.examples
+
     var boundary = window.data.boundary
 
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: center
     })
@@ -55,7 +61,7 @@ function initMap() {
     // This event listener calls addOrModifyMarker() when the map is clicked.
     google.maps.event.addListener(map, 'click', function(event) {
         if (chooseMarkerOrNot()) {
-            addOrModifyMarker(map, event.latLng, 'create');
+            addOrModifyMarker(event.latLng, 'create');
         }
     })
 
@@ -84,11 +90,6 @@ function chooseMarkerOrNot() {
     return true
 }
 
-// Determine which marker is being used
-function determineMarkerType() {
-    return buttonID.toLowerCase()
-}
-
 function setInfoWindowContent(capacity, mountingHeight, frequencies) {
     var content = ''
     content += '<ul> Capacity: ' + capacity + ' Mbit/s </ul>'
@@ -108,8 +109,7 @@ function setInfoWindowContent(capacity, mountingHeight, frequencies) {
     return content
 }
 
-function determineIconURL() {
-    var type = buttonID.toLowerCase()
+function determineIconURL(type) {
     if (type == 'source') {
         return sourceImageURL
     } else {
@@ -177,7 +177,45 @@ function modifyCoordinate(markerInfo, capacity, mountingHeight, frequencies) {
     nodes[index].nodeProperty.frequencies = frequencies
 }
 
-function handleAddOrModifyMarker(map, markerInfo, option) {
+function addMarker(position, capacity, mountingHeight, frequencies, type) {
+    var iconURL = determineIconURL(type)
+
+    // Add the marker at the clicked location
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        icon: iconURL,
+        clickable: true,
+        draggable:true
+    })
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: setInfoWindowContent(capacity, mountingHeight, frequencies)
+    })
+    google.maps.event.addListener(marker, 'click', function() {
+        modifyMarkerParameters(this.position, this.infoWindow)
+    })
+    google.maps.event.addListener(marker, 'mouseover', function() {
+        var index = determineMarker(this.position)
+        var markerParameters = nodes[index].nodeProperty
+        this.infoWindow.setContent(setInfoWindowContent(markerParameters.capacity, markerParameters.mountingHeight, markerParameters.frequencies))
+        this.infoWindow.open(map, this)
+    })
+    google.maps.event.addListener(marker, 'mouseout', function() {
+        this.infoWindow.close(map, this)
+    })
+    google.maps.event.addListener(marker,"dragstart",function() {
+        startDragPosition = this.position
+    })
+    google.maps.event.addListener(marker, 'dragend', function() {
+        handleMarkerDragged(this.position)
+    })
+
+    markers.push(marker)
+
+    addCoordinate(marker.position, capacity, mountingHeight, frequencies, type)
+}
+
+function handleAddOrModifyMarker(position, option) {
     var capacity = document.getElementsByName('capacity')[0].value
     var mountingHeight = document.getElementsByName('mountingHeight')[0].value
     var frequencies = document.querySelectorAll('.frequency:checked')
@@ -189,43 +227,12 @@ function handleAddOrModifyMarker(map, markerInfo, option) {
     frequencies = addToFrequencyArr(frequencies)
     capacity = parseInt(capacity)
     mountingHeight = parseInt(mountingHeight)
+    
 
     if (option == 'create') {
-        var iconURL = determineIconURL()
-
-        // Add the marker at the clicked location
-        var marker = new google.maps.Marker({
-            position: markerInfo,
-            map: map,
-            icon: iconURL,
-            clickable: true,
-            draggable:true
-        })
-        marker.infoWindow = new google.maps.InfoWindow({
-            content: setInfoWindowContent(capacity, mountingHeight, frequencies)
-        })
-        google.maps.event.addListener(marker, 'click', function() {
-            modifyMarkerParameters(map, this.position, this.infoWindow)
-        })
-        google.maps.event.addListener(marker, 'mouseover', function() {
-            var index = determineMarker(this.position)
-            var markerParameters = nodes[index].nodeProperty
-            this.infoWindow.setContent(setInfoWindowContent(markerParameters.capacity, markerParameters.mountingHeight, markerParameters.frequencies))
-            this.infoWindow.open(map, this)
-        })
-        google.maps.event.addListener(marker, 'mouseout', function() {
-            this.infoWindow.close(map, this)
-        })
-        google.maps.event.addListener(marker,"dragstart",function() {
-            startDragPosition = this.position
-        })
-        google.maps.event.addListener(marker, 'dragend', function() {
-            handleMarkerDragged(this.position)
-        })
-
-        addCoordinate(markerInfo, capacity, mountingHeight, frequencies)
+        addMarker(position, capacity, mountingHeight, frequencies, buttonID.toLowerCase())
     } else {
-        modifyCoordinate(markerInfo, capacity, mountingHeight, frequencies)
+        modifyCoordinate(position, capacity, mountingHeight, frequencies)
     }
 }
 
@@ -246,7 +253,7 @@ function renderMarkerParameters(markerInfo) {
 }
 
 // Add a marker to the map.
-function addOrModifyMarker(map, markerInfo, option) {
+function addOrModifyMarker(markerInfo, option) {
     var markerTitle
     var buttonLabelName
 
@@ -268,7 +275,7 @@ function addOrModifyMarker(map, markerInfo, option) {
                 label: buttonLabelName,
                 className: 'btn btn-primary pull-left',
                 callback: function() {
-                    return handleAddOrModifyMarker(map, markerInfo, option)
+                    return handleAddOrModifyMarker(markerInfo, option)
                 }
             },
             {
@@ -314,26 +321,26 @@ function determineMarker(position) {
     }
 }
 
-function modifyMarkerParameters(map, position, infoWindow) {
+function modifyMarkerParameters(position, infoWindow) {
     var index = determineMarker(position)
-    addOrModifyMarker(map, nodes[index], 'modify')
+    addOrModifyMarker(nodes[index], 'modify')
 }
 
 function addToFrequencyArr(frequency) {
     var frequencies = []
     for (var i = 0; i < frequency.length; i++) {
-        var intValue = parseFloat(frequency[i].value)
-        frequencies.push(intValue)
+        var value = parseFloat(frequency[i].value)
+        frequencies.push(value)
     }
     return frequencies
 }
 
 // Store the coordinate of the marker
-function addCoordinate(location, capacity, mountingHeight, frequencies) {
+function addCoordinate(location, capacity, mountingHeight, frequencies, type) {
     var marker = {}
     marker.node = location
     marker.nodeProperty = {}
-    marker.nodeProperty.type = determineMarkerType()
+    marker.nodeProperty.type = type
     marker.nodeProperty.capacity = capacity
     marker.nodeProperty.mountingHeight = mountingHeight
     marker.nodeProperty.frequencies = frequencies
@@ -382,6 +389,61 @@ function validateMapInputAndSubmit(event) {
         return
     }
     setRequirementsFormAction()
+}
+
+function removeNetwork() {
+    for (var i in markers) {
+        markers[i].setMap(null)
+    }
+    markers = []
+    nodes = []
+}
+
+function parseFrequencies(frequencies) {
+    var parsedfrequencies = []
+
+    for (var i in frequencies) {
+        var value = parseFloat(frequencies[i])
+        parsedfrequencies.push(value)
+    }
+    return parsedfrequencies
+}
+
+function drawNetwork(exampleNodes) {
+    for (var i in exampleNodes) {
+        var nodeProperty = exampleNodes[i].nodeProperty
+        var type = nodeProperty.type
+        var frequencies = parseFrequencies(nodeProperty.frequencies)
+        var capacity = parseInt(nodeProperty.capacity)
+        var mountingHeight = parseInt(nodeProperty.mountingHeight)
+
+        addMarker(exampleNodes[i].node, capacity, mountingHeight, frequencies, type)
+    }
+}
+
+function populateMap(example) {
+    removeNetwork()
+    drawNetwork(JSON.parse(example))
+}
+
+function handleExample(example) {
+    switch (example) {
+        case 'example_1_9':
+            populateMap(examples['example_1_9'])
+            break
+        case 'example_1_49':
+            populateMap(examples['example_1_49'])
+            break
+        case 'example_5_5':
+            populateMap(examples['example_5_5'])
+            break
+        case 'example_10_40':
+            populateMap(examples['example_10_40'])
+            break
+        case 'clear':
+            removeNetwork()
+            break
+    }
 }
 
 window.onload = function() {

@@ -4,8 +4,7 @@
   "description": "A front end for the WISP planning tool",
   "main": "server.js",
   "scripts": {
-    "build": "./build.sh",
-    "watch": "./watch.sh"
+    "build": "./build.sh"
   },
   "keywords": [
     "WISP",

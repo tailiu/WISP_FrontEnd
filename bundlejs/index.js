@@ -198,8 +198,84 @@ var GoButton = function (_React$Component4) {
 	return GoButton;
 }(_react2.default.Component);
 
-var MarkerList = function (_React$Component5) {
-	_inherits(MarkerList, _React$Component5);
+var Examples = function (_React$Component5) {
+	_inherits(Examples, _React$Component5);
+
+	function Examples(props) {
+		_classCallCheck(this, Examples);
+
+		var _this5 = _possibleConstructorReturn(this, (Examples.__proto__ || Object.getPrototypeOf(Examples)).call(this, props));
+
+		_this5.state = { value: 'selectPrompt' };
+		_this5.handleChange = _this5.handleChange.bind(_this5);
+		return _this5;
+	}
+
+	_createClass(Examples, [{
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.setState({ value: event.target.value });
+			window.handleExample(event.target.value);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h4',
+					{ className: 'text-center' },
+					_react2.default.createElement(
+						'b',
+						null,
+						'Examples'
+					)
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'select',
+					{ className: 'form-control', value: this.state.value, onChange: this.handleChange },
+					_react2.default.createElement(
+						'option',
+						{ value: 'selectPrompt' },
+						'Please select'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'example_1_9' },
+						'1 source, 9 sinks'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'example_1_49' },
+						'1 source, 49 sinks'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'example_5_5' },
+						'5 sources, 5 sinks'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'example_10_40' },
+						'10 sources, 40 sinks'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'clear' },
+						'Clear'
+					)
+				)
+			);
+		}
+	}]);
+
+	return Examples;
+}(_react2.default.Component);
+
+var MarkerList = function (_React$Component6) {
+	_inherits(MarkerList, _React$Component6);
 
 	function MarkerList() {
 		_classCallCheck(this, MarkerList);
@@ -236,6 +312,9 @@ var MarkerList = function (_React$Component5) {
 				_react2.default.createElement(_utils.MyButton, { button: newUser }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
+				_react2.default.createElement(Examples, null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(GoButton, null)
 			);
 		}
@@ -247,8 +326,8 @@ var MarkerList = function (_React$Component5) {
 //Contains the entirety of the tool
 
 
-var PlanningToolContainer = function (_React$Component6) {
-	_inherits(PlanningToolContainer, _React$Component6);
+var PlanningToolContainer = function (_React$Component7) {
+	_inherits(PlanningToolContainer, _React$Component7);
 
 	function PlanningToolContainer(props) {
 		_classCallCheck(this, PlanningToolContainer);
