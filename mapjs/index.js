@@ -383,12 +383,35 @@ function setRequirementsFormAction() {
     form.action = serverURL
 }
 
+function waitMessage() {
+    var message = 
+    `<h4 class='text-center'><b>Please wait...</b></h4><br>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">Please wait...</span>
+        </div>
+    </div>`
+
+    return message
+}
+
+function showWaitDialog() {
+    var waitDialog = bootbox.dialog({
+        message: waitMessage(),
+        size: 'large',
+        closeButton: false
+    })
+
+    waitDialog.modal("show")
+}
+
 function validateMapInputAndSubmit(event) {
     if(!validateMapInput()) {
         event.preventDefault()
         return
     }
     setRequirementsFormAction()
+    showWaitDialog()
 }
 
 function removeNetwork() {
