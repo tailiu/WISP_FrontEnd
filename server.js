@@ -19,7 +19,7 @@ const dbHost = 'localhost'
 const examplePaths = {
     'exampleOne': 'examples/example_1_9',
     'exampleTwo': 'examples/example_1_49',
-    'exampleThree': 'examples/example_5_5',
+    'exampleThree': 'examples/example_1_19',
     'exampleFour': 'examples/example_10_40'
 }
 
@@ -89,7 +89,7 @@ function getExamples(callback) {
                 callback(err, exampleTwo.toString())
             })
         },
-        'example_5_5': function(callback) {
+        'example_1_19': function(callback) {
             fs.readFile(examplePaths.exampleThree, function(err, exampleThree) {
                 callback(err, exampleThree.toString())
             })

@@ -108,9 +108,8 @@ class Examples extends React.Component {
 	        	<select className='form-control' value={this.state.value} onChange={this.handleChange}>
 	        		<option value='selectPrompt'>Please select</option>
 					<option value='example_1_9'>1 source, 9 sinks</option>
+					<option value='example_1_19'>1 source, 19 sinks</option>
 					<option value='example_1_49'>1 source, 49 sinks</option>
-					<option value='example_5_5'>5 sources, 5 sinks</option>
-					<option value='example_10_40'>10 sources, 40 sinks</option>
 					<option value='clear'>Clear</option>
 				</select>
 			</div>

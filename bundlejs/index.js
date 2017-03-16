@@ -248,18 +248,13 @@ var Examples = function (_React$Component5) {
 					),
 					_react2.default.createElement(
 						'option',
+						{ value: 'example_1_19' },
+						'1 source, 19 sinks'
+					),
+					_react2.default.createElement(
+						'option',
 						{ value: 'example_1_49' },
 						'1 source, 49 sinks'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'example_5_5' },
-						'5 sources, 5 sinks'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'example_10_40' },
-						'10 sources, 40 sinks'
 					),
 					_react2.default.createElement(
 						'option',

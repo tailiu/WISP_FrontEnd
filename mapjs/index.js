@@ -457,8 +457,8 @@ function handleExample(example) {
         case 'example_1_49':
             populateMap(examples['example_1_49'])
             break
-        case 'example_5_5':
-            populateMap(examples['example_5_5'])
+        case 'example_1_19':
+            populateMap(examples['example_1_19'])
             break
         case 'example_10_40':
             populateMap(examples['example_10_40'])
