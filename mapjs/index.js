@@ -10,13 +10,21 @@ var center = {lat: 38.924280, lng: -122.907255}
 var sourceImageURL = 'styles/images/source.png'
 var sinkImageURL = 'styles/images/sink.png'
 
+var defaultRevenue = 200
 var defaultCapacity = 100
 var defaultMountingHeight = 1
 
 var serverURL = 'http://' + window.data.serverAddr + ':' +  window.data.serverPort + '/submitNetworkRawData'
 
+var revenueField = `<div class='form-group'>
+                        <label>Revenue ($) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
+                            data-toggle='popover' data-placement='right' data-content='Revenue of the sink'></span></label>
+                        <input type='text' class='form-control' name='revenue' aria-describedby='revenueHelpBlock' />
+                        <span id='revenueHelpBlock' class='help-block'></span>
+                    </div>`
+
 var popoverForm = `<form>
-                        <div class='form-group'>
+                        <div class='form-group' id='capacity'>
                             <label>Capacity (Mbit/s) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
                                 data-toggle='popover' data-placement='right' data-content='Capacity of the marker'></span></label>
                             <input type='text' class='form-control' name='capacity' aria-describedby='capacityHelpBlock' />
@@ -90,8 +98,11 @@ function chooseMarkerOrNot() {
     return true
 }
 
-function setInfoWindowContent(capacity, mountingHeight, frequencies) {
+function setInfoWindowContent(capacity, mountingHeight, frequencies, type, revenue) {
     var content = ''
+    if (type == 'sink') {
+        content += '<ul> Revenue: $ ' + revenue + ' </ul>'
+    }
     content += '<ul> Capacity: ' + capacity + ' Mbit/s </ul>'
     content += '<ul> Mounting Height: ' + mountingHeight + ' m </ul>'
 
@@ -169,15 +180,35 @@ function validateInput(capacity, mountingHeight, frequency) {
     return (capacityInputResult && mountingHeightInputResult && frequencyInputResult)    
 }
 
-function modifyCoordinate(markerInfo, capacity, mountingHeight, frequencies) {
+function validateRevenue(revenue) {
+    var result = $.isNumeric(revenue)
+    if (!result) {
+        setHelpBlock('revenueHelpBlock', 'Please input an <b>non-negative integer or float</b>')
+        return false
+    }
+
+    var parsedResult = parseFloat(revenue)
+    if (parsedResult < 0) {
+        setHelpBlock('revenueHelpBlock', 'Please input an <b>non-negative integer or float</b>')
+        return false
+    } else {
+        setHelpBlock('revenueHelpBlock', '')
+        return true
+    }
+}
+
+function modifyCoordinate(markerInfo, capacity, mountingHeight, frequencies, revenue) {
     var index = determineMarker(markerInfo.node)
 
     nodes[index].nodeProperty.capacity = capacity
     nodes[index].nodeProperty.mountingHeight = mountingHeight
     nodes[index].nodeProperty.frequencies = frequencies
+    if (nodes[index].nodeProperty.type == 'sink') {
+        nodes[index].nodeProperty.revenue = revenue
+    }
 }
 
-function addMarker(position, capacity, mountingHeight, frequencies, type) {
+function addMarker(position, capacity, mountingHeight, frequencies, type, revenue) {
     var iconURL = determineIconURL(type)
 
     // Add the marker at the clicked location
@@ -189,7 +220,7 @@ function addMarker(position, capacity, mountingHeight, frequencies, type) {
         draggable:true
     })
     marker.infoWindow = new google.maps.InfoWindow({
-        content: setInfoWindowContent(capacity, mountingHeight, frequencies)
+        content: setInfoWindowContent(capacity, mountingHeight, frequencies, type, revenue)
     })
     google.maps.event.addListener(marker, 'click', function() {
         modifyMarkerParameters(this.position, this.infoWindow)
@@ -197,7 +228,7 @@ function addMarker(position, capacity, mountingHeight, frequencies, type) {
     google.maps.event.addListener(marker, 'mouseover', function() {
         var index = determineMarker(this.position)
         var markerParameters = nodes[index].nodeProperty
-        this.infoWindow.setContent(setInfoWindowContent(markerParameters.capacity, markerParameters.mountingHeight, markerParameters.frequencies))
+        this.infoWindow.setContent(setInfoWindowContent(markerParameters.capacity, markerParameters.mountingHeight, markerParameters.frequencies, markerParameters.type, markerParameters.revenue))
         this.infoWindow.open(map, this)
     })
     google.maps.event.addListener(marker, 'mouseout', function() {
@@ -212,13 +243,15 @@ function addMarker(position, capacity, mountingHeight, frequencies, type) {
 
     markers.push(marker)
 
-    addCoordinate(marker.position, capacity, mountingHeight, frequencies, type)
+    addCoordinate(marker.position, capacity, mountingHeight, frequencies, type, revenue)
 }
 
 function handleAddOrModifyMarker(position, option) {
     var capacity = document.getElementsByName('capacity')[0].value
     var mountingHeight = document.getElementsByName('mountingHeight')[0].value
     var frequencies = document.querySelectorAll('.frequency:checked')
+    var revenueElement = document.getElementsByName('revenue')[0]
+    var revenue
 
     if(!validateInput(capacity, mountingHeight, frequencies)) {
         return false
@@ -227,18 +260,27 @@ function handleAddOrModifyMarker(position, option) {
     frequencies = addToFrequencyArr(frequencies)
     capacity = parseInt(capacity)
     mountingHeight = parseInt(mountingHeight)
-    
+    if (revenueElement != undefined) {
+        revenue = revenueElement.value
+        if(!validateRevenue(revenue)) {
+            return false
+        }
+        revenue = parseFloat(revenue)
+    }
 
     if (option == 'create') {
-        addMarker(position, capacity, mountingHeight, frequencies, buttonID.toLowerCase())
+        addMarker(position, capacity, mountingHeight, frequencies, buttonID.toLowerCase(), revenue)
     } else {
-        modifyCoordinate(position, capacity, mountingHeight, frequencies)
+        modifyCoordinate(position, capacity, mountingHeight, frequencies, revenue)
     }
 }
 
 function renderMarkerParameters(markerInfo) {
     document.getElementsByName('capacity')[0].value = markerInfo.nodeProperty.capacity
     document.getElementsByName('mountingHeight')[0].value = markerInfo.nodeProperty.mountingHeight
+    if (markerInfo.nodeProperty.type == 'sink') {
+        document.getElementsByName('revenue')[0].value = markerInfo.nodeProperty.revenue
+    }
 
     var frequencies = markerInfo.nodeProperty.frequencies
     var checkboxes = document.getElementsByClassName('frequency')
@@ -252,10 +294,15 @@ function renderMarkerParameters(markerInfo) {
     }
 }
 
+function addRevenueToWindow() {
+    $('#capacity').before(revenueField)
+}
+
 // Add a marker to the map.
 function addOrModifyMarker(markerInfo, option) {
     var markerTitle
     var buttonLabelName
+    var type
 
     if (option == 'create') {
         markerTitle = 'Please specify the parameters of this marker'
@@ -292,20 +339,32 @@ function addOrModifyMarker(markerInfo, option) {
         }
     })
 
-    markerCreationOrModificationWindow.modal("show");
-
-    $('[data-toggle="popover"]').popover()
+    markerCreationOrModificationWindow.modal("show")    
 
     if (option == 'create') {
-        addDefaultParameters()
+        type = buttonID.toLowerCase()
+        if (type == 'sink') {
+            addRevenueToWindow()
+        }
+
+        addDefaultParameters(type)
     } else {
+        type = markerInfo.nodeProperty.type
+        if (type == 'sink') {
+            addRevenueToWindow()
+        }
+
         renderMarkerParameters(markerInfo)
     }
     
+    $('[data-toggle="popover"]').popover()
 }
 
-function addDefaultParameters() {
+function addDefaultParameters(type) {
     $('.frequency').prop('checked', true)
+    if (type == 'sink') {
+        document.getElementsByName('revenue')[0].value = defaultRevenue
+    }
     document.getElementsByName('capacity')[0].value = defaultCapacity
     document.getElementsByName('mountingHeight')[0].value = defaultMountingHeight
 }
@@ -336,7 +395,7 @@ function addToFrequencyArr(frequency) {
 }
 
 // Store the coordinate of the marker
-function addCoordinate(location, capacity, mountingHeight, frequencies, type) {
+function addCoordinate(location, capacity, mountingHeight, frequencies, type, revenue) {
     var marker = {}
     marker.node = location
     marker.nodeProperty = {}
@@ -344,6 +403,9 @@ function addCoordinate(location, capacity, mountingHeight, frequencies, type) {
     marker.nodeProperty.capacity = capacity
     marker.nodeProperty.mountingHeight = mountingHeight
     marker.nodeProperty.frequencies = frequencies
+    if (type == 'sink') {
+        marker.nodeProperty.revenue = revenue
+    }
 
     nodes.push(marker)
 }
@@ -439,8 +501,17 @@ function drawNetwork(exampleNodes) {
         var frequencies = parseFrequencies(nodeProperty.frequencies)
         var capacity = parseInt(nodeProperty.capacity)
         var mountingHeight = parseInt(nodeProperty.mountingHeight)
+        var revenue
 
-        addMarker(exampleNodes[i].node, capacity, mountingHeight, frequencies, type)
+        if (nodeProperty.revenue != undefined) {
+            revenue = nodeProperty.revenue
+        } else {
+            if (type == 'sink') {
+                revenue = defaultRevenue
+            } 
+        }
+
+        addMarker(exampleNodes[i].node, capacity, mountingHeight, frequencies, type, revenue)
     }
 }
 
