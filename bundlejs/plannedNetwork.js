@@ -104,21 +104,25 @@ var Algorithms = function (_React$Component3) {
 	_createClass(Algorithms, [{
 		key: 'render',
 		value: function render() {
-			var a1 = {};
-			a1.name = 'Dummy Network';
-			a1.invokeEvent = true;
+			var dummyNetwork = {};
+			dummyNetwork.name = 'Dummy Network';
+			dummyNetwork.invokeEvent = true;
 
-			var a2 = {};
-			a2.name = 'Min Cost Flow (Google OR tools)';
-			a2.invokeEvent = true;
+			var minCostFlow = {};
+			minCostFlow.name = 'Min Cost Flow (Google OR tools)';
+			minCostFlow.invokeEvent = true;
 
-			var a3 = {};
-			a3.name = 'CPLEX Network Optimizer';
-			a3.invokeEvent = true;
+			var minCostFlowPlus = {};
+			minCostFlowPlus.name = 'Min Cost Flow ++';
+			minCostFlowPlus.invokeEvent = true;
 
-			var a4 = {};
-			a4.name = 'Input JSON Data Directly';
-			a4.invokeEvent = true;
+			var CPLEX = {};
+			CPLEX.name = 'CPLEX Network Optimizer';
+			CPLEX.invokeEvent = true;
+
+			var inputDataDirectly = {};
+			inputDataDirectly.name = 'Input JSON Data Directly';
+			inputDataDirectly.invokeEvent = true;
 
 			return _react2.default.createElement(
 				'div',
@@ -133,9 +137,11 @@ var Algorithms = function (_React$Component3) {
 					)
 				),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a2 }),
+				_react2.default.createElement(_utils.MyButton, { button: minCostFlow }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a3 }),
+				_react2.default.createElement(_utils.MyButton, { button: minCostFlowPlus }),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(_utils.MyButton, { button: CPLEX }),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(State, null),
@@ -153,7 +159,7 @@ var Algorithms = function (_React$Component3) {
 					)
 				),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(_utils.MyButton, { button: a4 })
+				_react2.default.createElement(_utils.MyButton, { button: inputDataDirectly })
 			);
 		}
 	}]);

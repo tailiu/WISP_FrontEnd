@@ -24,13 +24,13 @@ var revenueField = `<div class='form-group'>
                     </div>`
 
 var popoverForm = `<form>
-                        <div class='form-group' id='capacity'>
+                        <div class='form-group'>
                             <label>Capacity (Mbit/s) <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
                                 data-toggle='popover' data-placement='right' data-content='Capacity of the marker'></span></label>
                             <input type='text' class='form-control' name='capacity' aria-describedby='capacityHelpBlock' />
                             <span id='capacityHelpBlock' class='help-block'></span>
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group' id='mountingHeight'>
                             <label>Mounting Height (m) <id style="color:red;">[Note: For Future Use Only]</id> <span class='glyphicon glyphicon-info-sign' aria-hidden='true' 
                                 data-toggle='popover' data-placement='right' data-content='Mounting height of the marker'></span>
                             </label>
@@ -100,10 +100,11 @@ function chooseMarkerOrNot() {
 
 function setInfoWindowContent(capacity, mountingHeight, frequencies, type, revenue) {
     var content = ''
+    
+    content += '<ul> Capacity: ' + capacity + ' Mbit/s </ul>'
     if (type == 'sink') {
         content += '<ul> Revenue: $ ' + revenue + ' </ul>'
     }
-    content += '<ul> Capacity: ' + capacity + ' Mbit/s </ul>'
     content += '<ul> Mounting Height: ' + mountingHeight + ' m </ul>'
 
     if (frequencies.length == 1) {
@@ -295,7 +296,7 @@ function renderMarkerParameters(markerInfo) {
 }
 
 function addRevenueToWindow() {
-    $('#capacity').before(revenueField)
+    $('#mountingHeight').before(revenueField)
 }
 
 // Add a marker to the map.

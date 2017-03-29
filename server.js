@@ -30,6 +30,7 @@ var serverPort
 //Algorithm File paths
 var dummyNetworkPath 
 var minCostFlowPath
+var minCostFlowPlusPath
 var cplexPath
 
 var defaultAlgorithm = 'Min Cost Flow (Google OR tools)'
@@ -325,6 +326,25 @@ function minCostFlow(input, callback) {
     })
 }
 
+function minCostFlowPlus(input, callback) {
+    console.log('**************** Input ******************')
+    console.dir(input, 2)
+    console.log('**********************************')
+    console.log()
+
+    childProcess.execFile(minCostFlowPlusPath, [JSON.stringify(input)], function(error, output, stderr){
+        if (error) {
+            throw error
+        }
+        
+        console.log('**************** Output ******************')
+        console.log(output)
+        console.log('**********************************')
+
+        callback(error, JSON.parse(output))
+    })
+}
+
 function cplex(input, callback) {
     console.log('**************** Input ******************')
     console.dir(input, 2)
@@ -353,6 +373,10 @@ function callAlgorithm(algorithm, input, callback) {
 
         case 'Min Cost Flow (Google OR tools)':
             minCostFlow(input, callback)
+            break
+
+        case 'Min Cost Flow ++':
+            minCostFlowPlus(input, callback)
             break
 
         case 'CPLEX Network Optimizer':
@@ -570,6 +594,7 @@ fs.readFile(configFilePath, function (err, data) {
     serverPort = configData.serverPort
     dummyNetworkPath = configData.dummyNetworkPath
     minCostFlowPath = configData.minCostFlowPath
+    minCostFlowPlusPath = configData.minCostFlowPlusPath
     cplexPath = configData.cplexPath
 
     //Then, start the server

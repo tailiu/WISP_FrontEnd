@@ -36,32 +36,37 @@ class State extends React.Component {
 
 class Algorithms extends React.Component {
 	render () {
-		var a1 = {}
-		a1.name = 'Dummy Network'
-		a1.invokeEvent = true
+		var dummyNetwork = {}
+		dummyNetwork.name = 'Dummy Network'
+		dummyNetwork.invokeEvent = true
 
-		var a2 = {}
-		a2.name = 'Min Cost Flow (Google OR tools)'
-		a2.invokeEvent = true
+		var minCostFlow = {}
+		minCostFlow.name = 'Min Cost Flow (Google OR tools)'
+		minCostFlow.invokeEvent = true
 
-		var a3 = {}
-		a3.name = 'CPLEX Network Optimizer'
-		a3.invokeEvent = true
+		var minCostFlowPlus = {}
+		minCostFlowPlus.name = 'Min Cost Flow ++'
+		minCostFlowPlus.invokeEvent = true
 
-		var a4 = {}
-		a4.name = 'Input JSON Data Directly'
-		a4.invokeEvent = true
+		var CPLEX = {}
+		CPLEX.name = 'CPLEX Network Optimizer'
+		CPLEX.invokeEvent = true
+
+		var inputDataDirectly = {}
+		inputDataDirectly.name = 'Input JSON Data Directly'
+		inputDataDirectly.invokeEvent = true
 
 
 		return (
 			<div>
 				<h4 className='text-center'><b>Algorithms</b></h4><br/>
-				<MyButton button={a2} /><br/>
-				<MyButton button={a3} /><br/><br/>
+				<MyButton button={minCostFlow} /><br/>
+				<MyButton button={minCostFlowPlus} /><br/>
+				<MyButton button={CPLEX} /><br/><br/>
 				<State />
 				<br/><br/><br/><br/>
 				<h4 className='text-center'><b>Debugging</b></h4><br/>
-				<MyButton button={a4} />
+				<MyButton button={inputDataDirectly} />
 			</div>
 		)
 	}

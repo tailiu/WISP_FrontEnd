@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	usleep(2000000);
+	usleep(5000000);
 
 	// An example: deal with input, 
 	// and get the first node in the input
