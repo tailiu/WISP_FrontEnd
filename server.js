@@ -15,13 +15,10 @@ const configFilePath = './configuration'
 const dbPort = 28015
 const dbHost = 'localhost'
 
-//Exmaple paths
-const examplePaths = {
-    'exampleOne': 'examples/example_1_9',
-    'exampleTwo': 'examples/example_1_49',
-    'exampleThree': 'examples/example_1_19',
-    'exampleFour': 'examples/example_10_40'
-}
+//Exmaple folder paths
+const exampleFolder = 'examples/'
+
+var examples = []
 
 //Fixed port server listens to
 var serverAddr 
@@ -78,34 +75,6 @@ function logErr(req, err, errMsg) {
     console.error(err)
 }
 
-function getExamples(callback) {
-    async.parallel({
-        'example_1_9': function(callback) {
-            fs.readFile(examplePaths.exampleOne, function(err, exampleOne) {
-                callback(err, exampleOne.toString())
-            })
-        },
-        'example_1_49': function(callback) {
-            fs.readFile(examplePaths.exampleTwo, function(err, exampleTwo) {
-                callback(err, exampleTwo.toString())
-            })
-        },
-        'example_1_19': function(callback) {
-            fs.readFile(examplePaths.exampleThree, function(err, exampleThree) {
-                callback(err, exampleThree.toString())
-            })
-        },
-        'example_10_40': function(callback) {
-            fs.readFile(examplePaths.exampleFour, function(err, exampleFour) {
-                callback(err, exampleFour.toString())
-            })
-        }
-    },
-    function(err, examples) {
-        callback(err, examples)
-    })
-}
-
 //Handle the Homapage
 function handleHomePage(req, res) {
 	fs.readFile('bundlejs/index.js', function(err, bundlejs) {
@@ -120,31 +89,24 @@ function handleHomePage(req, res) {
                 return
             }
 
-            getExamples(function(err, examples) {
+            //Render the index.ejs file with bundled script file
+            var data = {}
+            var processedData = {}
+            processedData.boundary = boundary
+            processedData.serverPort = serverPort
+            processedData.serverAddr = serverAddr
+            processedData.examples = examples
+
+            data.bundlejs = preprocessBundle(bundlejs)
+            data.variable = preprocessVar(processedData)
+
+            ejs.renderFile('index.html', data, null, function(err, str){
                 if (err) {
                     logErr(req, err)
                     return
-                }
+                } 
 
-                //Render the index.ejs file with bundled script file
-                var data = {}
-                var processedData = {}
-                processedData.boundary = boundary
-                processedData.serverPort = serverPort
-                processedData.serverAddr = serverAddr
-                processedData.examples = examples
-
-                data.bundlejs = preprocessBundle(bundlejs)
-                data.variable = preprocessVar(processedData)
-
-                ejs.renderFile('index.html', data, null, function(err, str){
-                    if (err) {
-                        logErr(req, err)
-                        return
-                    } 
-
-                    res.end(str)
-                })
+                res.end(str)
             })
         })
     })
@@ -289,8 +251,7 @@ function transformCoordinatesToPixels(nodes, callback) {
 
 function dummyNetwork(input, callback) {
     console.log('**************** Input ******************')
-    console.dir(input, 2)
-    //console.log(JSON.stringify(input.nodes[0].nodeProperty))
+    console.log(JSON.stringify(input))
     console.log('**********************************')
     console.log()
 
@@ -309,7 +270,7 @@ function dummyNetwork(input, callback) {
 
 function minCostFlow(input, callback) {
     console.log('**************** Input ******************')
-    console.dir(input, 2)
+    console.log(JSON.stringify(input))
     console.log('**********************************')
     console.log()
 
@@ -328,7 +289,7 @@ function minCostFlow(input, callback) {
 
 function minCostFlowPlus(input, callback) {
     console.log('**************** Input ******************')
-    console.dir(input, 2)
+    console.log(JSON.stringify(input))
     console.log('**********************************')
     console.log()
 
@@ -347,8 +308,7 @@ function minCostFlowPlus(input, callback) {
 
 function cplex(input, callback) {
     console.log('**************** Input ******************')
-    console.dir(input, 2)
-    //console.log(JSON.stringify(input.nodes[0].nodeProperty))
+    console.log(JSON.stringify(input))
     console.log('**********************************')
     console.log()
 
@@ -465,10 +425,6 @@ function handleNetworkPlanRequest(req, res) {
     req.on('end', function(){
         var rawData = qs.parse(body)
         var nodes = JSON.parse(rawData.nodes)
-
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^')
-        console.log(rawData.nodes)
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^')
 
         //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
         async.waterfall([
@@ -587,6 +543,14 @@ function sendErrRes(socket, errMsg) {
     socket.emit('getResults', output)
 }
 
+function getExamples() {
+    var files = fs.readdirSync(exampleFolder)
+    for (var i in files) {
+        var filePath = exampleFolder + files[i]
+        examples.push(JSON.parse(fs.readFileSync(filePath).toString()))
+    }
+}
+
 //First, read Configuration file
 fs.readFile(configFilePath, function (err, data) {
     var configData = JSON.parse(data.toString())
@@ -596,6 +560,9 @@ fs.readFile(configFilePath, function (err, data) {
     minCostFlowPath = configData.minCostFlowPath
     minCostFlowPlusPath = configData.minCostFlowPlusPath
     cplexPath = configData.cplexPath
+
+    //Read examples
+    getExamples()
 
     //Then, start the server
     server.listen(serverPort, function(){

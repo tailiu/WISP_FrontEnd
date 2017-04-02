@@ -1,7 +1,7 @@
 var buttonID = undefined
 var startDragPosition
 var nodes = []
-var examples = {}
+var examples
 
 var markers = []
 var map 
@@ -56,8 +56,25 @@ var popoverForm = `<form>
                         </div>
                     </form>`
 
+var exampleList = `<select class='form-control' onchange='handleExample(this.value)'>
+                        <option value='selectPrompt'>Please select</option>
+                        <option id='clear' value='clear'>Clear</option>
+                    </select>`
+
+function renderExampleSelectList() {
+    document.getElementById('exmpleList').innerHTML = exampleList
+
+    var oneExample = '<option value="example_1_9">1 source, 9 sinks</option>'
+    var exampleSelectList = ''
+    for (var i in examples) {
+        exampleSelectList += '<option value="' + examples[i].title + '">' + examples[i].title +'</option>'
+    }
+    $('#clear').before(exampleSelectList)
+}
+
 function initMap() {
     examples = window.data.examples
+    renderExampleSelectList()
 
     var boundary = window.data.boundary
 
@@ -516,28 +533,30 @@ function drawNetwork(exampleNodes) {
     }
 }
 
+function identifyExample(exampleTitle) {
+    for (var i in examples) {
+        if (examples[i].title == exampleTitle) {
+            return i
+        }
+    }
+
+    return -1
+}
+
 function populateMap(example) {
     removeNetwork()
-    drawNetwork(JSON.parse(example))
+    drawNetwork(examples[identifyExample(example)].content)
 }
 
 function handleExample(example) {
     switch (example) {
-        case 'example_1_9':
-            populateMap(examples['example_1_9'])
-            break
-        case 'example_1_49':
-            populateMap(examples['example_1_49'])
-            break
-        case 'example_1_19':
-            populateMap(examples['example_1_19'])
-            break
-        case 'example_10_40':
-            populateMap(examples['example_10_40'])
-            break
         case 'clear':
             removeNetwork()
             break
+        case 'selectPrompt':
+            break
+        default:
+            populateMap(example)
     }
 }
 

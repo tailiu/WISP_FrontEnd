@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 				{"nodeProperty", {
 					{"capacity", 95675675},
 					{"mountingHeight", 21123},
+					{"revenue", 1222},
 					{"type", "sink"}}
 				}
 			},

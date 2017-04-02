@@ -88,30 +88,11 @@ class GoButton extends React.Component {
 }
 
 class Examples extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {value: 'selectPrompt'};
-		this.handleChange = this.handleChange.bind(this)
-	}
-
-	handleChange(event) {
-		this.setState({value: event.target.value});
-		window.handleExample(event.target.value)
-	}
-
 	render() {
 		return (
 			<div> 
 				<h4 className='text-center'><b>Examples</b></h4><br/>
-				
-	        	<select className='form-control' value={this.state.value} onChange={this.handleChange}>
-	        		<option value='selectPrompt'>Please select</option>
-					<option value='example_1_9'>1 source, 9 sinks</option>
-					<option value='example_1_19'>1 source, 19 sinks</option>
-					<option value='example_1_49'>1 source, 49 sinks</option>
-					<option value='clear'>Clear</option>
-				</select>
+				<div id='exmpleList'></div>
 			</div>
 		)
 	}

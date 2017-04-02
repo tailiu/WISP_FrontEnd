@@ -201,23 +201,13 @@ var GoButton = function (_React$Component4) {
 var Examples = function (_React$Component5) {
 	_inherits(Examples, _React$Component5);
 
-	function Examples(props) {
+	function Examples() {
 		_classCallCheck(this, Examples);
 
-		var _this5 = _possibleConstructorReturn(this, (Examples.__proto__ || Object.getPrototypeOf(Examples)).call(this, props));
-
-		_this5.state = { value: 'selectPrompt' };
-		_this5.handleChange = _this5.handleChange.bind(_this5);
-		return _this5;
+		return _possibleConstructorReturn(this, (Examples.__proto__ || Object.getPrototypeOf(Examples)).apply(this, arguments));
 	}
 
 	_createClass(Examples, [{
-		key: 'handleChange',
-		value: function handleChange(event) {
-			this.setState({ value: event.target.value });
-			window.handleExample(event.target.value);
-		}
-	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
@@ -233,35 +223,7 @@ var Examples = function (_React$Component5) {
 					)
 				),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement(
-					'select',
-					{ className: 'form-control', value: this.state.value, onChange: this.handleChange },
-					_react2.default.createElement(
-						'option',
-						{ value: 'selectPrompt' },
-						'Please select'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'example_1_9' },
-						'1 source, 9 sinks'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'example_1_19' },
-						'1 source, 19 sinks'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'example_1_49' },
-						'1 source, 49 sinks'
-					),
-					_react2.default.createElement(
-						'option',
-						{ value: 'clear' },
-						'Clear'
-					)
-				)
+				_react2.default.createElement('div', { id: 'exmpleList' })
 			);
 		}
 	}]);
