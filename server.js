@@ -30,8 +30,6 @@ var minCostFlowPath
 var minCostFlowPlusPath
 var cplexPath
 
-var defaultAlgorithm = 'Min Cost Flow (Google OR tools)'
-
 //Add script tags
 function preprocessBundle(str) {
     return '<script>' + str + '</script>'
@@ -331,7 +329,7 @@ function callAlgorithm(algorithm, input, callback) {
             dummyNetwork(input, callback)
             break
 
-        case 'Min Cost Flow (Google OR tools)':
+        case 'Min Cost Flow':
             minCostFlow(input, callback)
             break
 
@@ -425,12 +423,15 @@ function handleNetworkPlanRequest(req, res) {
     req.on('end', function(){
         var rawData = qs.parse(body)
         var nodes = JSON.parse(rawData.nodes)
+        var algorithm = rawData.algorithm
 
+        console.log(algorithm)
+        
         //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
         async.waterfall([
             function(callback) {
                 transformCoordinatesToPixels(nodes, function(err){
-                    callback(null, defaultAlgorithm)
+                    callback(null, algorithm)
                 })
             },
             function(algorithm, callback) {
@@ -438,7 +439,7 @@ function handleNetworkPlanRequest(req, res) {
                 callAlgorithm(algorithm, rawData, callback)
             },
             function(output, callback) {
-                processAlgorithmOutput(output, defaultAlgorithm, callback)
+                processAlgorithmOutput(output, algorithm, callback)
             }
         ], function (err, output) {
             if (err) {

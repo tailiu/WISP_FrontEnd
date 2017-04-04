@@ -2,16 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {FancyContainer, Map, ContainerTitle, MyButton} from './utils.jsx'
 
-class PlanToolTitle extends React.Component {
-	render() {
-		return (
-			<div className='jumbotron text-center'>
-	            <h1>Network Planning Tool</h1>
-	        </div>
-		)
-	}
-}
-
 class MapLegends extends React.Component {
 	render() {
 		return (
@@ -56,12 +46,20 @@ class GoButton extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {nodes: ''}
+		this.state = {
+			nodes: '', 
+			algorithm: ''
+		}
+
 		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	handleSubmit(event) {
-		 this.setState({nodes: JSON.stringify(window.nodes)})
+		 this.setState({
+		 	nodes: JSON.stringify(window.nodes), 
+		 	algorithm: window.algorithm
+		 })
+
 		 window.validateMapInputAndSubmit(event)
 	}
 
@@ -81,6 +79,7 @@ class GoButton extends React.Component {
 	        	</div>
 
 				<input type='hidden' name='nodes' value={this.state.nodes} />
+				<input type='hidden' name='algorithm' value={this.state.algorithm} />
 				<button className='btn btn-primary btn-block' type='submit'>GO!</button>
 			</form>
 		)
@@ -93,6 +92,34 @@ class Examples extends React.Component {
 			<div> 
 				<h4 className='text-center'><b>Examples</b></h4><br/>
 				<div id='exmpleList'></div>
+			</div>
+		)
+	}
+}
+
+class Algorithms extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {value: 'minCostFlow'};
+		this.handleChange = this.handleChange.bind(this)
+	}
+
+	handleChange(event) {
+		this.setState({value: event.target.value})
+		window.handleAlgorithmChange(event.target.value)
+	}
+
+	render() {
+		return (
+			<div> 
+				<h4 className='text-center'><b>Algorithms</b></h4><br/>
+				
+	        	<select className='form-control' value={this.state.value} onChange={this.handleChange}>
+	        		<option value='minCostFlow'>Min Cost Flow</option>
+					<option value='minCostFlowPlus'>Min Cost Flow ++</option>
+					<option value='CPLEXNetworkOptimizer'>CPLEX Network Optimizer</option>
+				</select>
 			</div>
 		)
 	}
@@ -114,6 +141,7 @@ class MarkerList extends React.Component {
 				<MyButton button={serviceProvider} /><br/>
 				<MyButton button={newUser} /><br/><br/>
 				<Examples /><br/><br/>
+				<Algorithms /><br/><br/>
 				<GoButton />
 			</div>
 		)
@@ -129,7 +157,6 @@ class PlanningToolContainer extends React.Component {
 	render() {
 		return (
 			<div>
-				<PlanToolTitle />
 				<MapContainer />
 			</div>
 		)

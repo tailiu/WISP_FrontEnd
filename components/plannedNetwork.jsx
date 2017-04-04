@@ -41,7 +41,7 @@ class Algorithms extends React.Component {
 		dummyNetwork.invokeEvent = true
 
 		var minCostFlow = {}
-		minCostFlow.name = 'Min Cost Flow (Google OR tools)'
+		minCostFlow.name = 'Min Cost Flow'
 		minCostFlow.invokeEvent = true
 
 		var minCostFlowPlus = {}

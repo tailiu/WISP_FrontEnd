@@ -21,35 +21,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PlanToolTitle = function (_React$Component) {
-	_inherits(PlanToolTitle, _React$Component);
-
-	function PlanToolTitle() {
-		_classCallCheck(this, PlanToolTitle);
-
-		return _possibleConstructorReturn(this, (PlanToolTitle.__proto__ || Object.getPrototypeOf(PlanToolTitle)).apply(this, arguments));
-	}
-
-	_createClass(PlanToolTitle, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				{ className: 'jumbotron text-center' },
-				_react2.default.createElement(
-					'h1',
-					null,
-					'Network Planning Tool'
-				)
-			);
-		}
-	}]);
-
-	return PlanToolTitle;
-}(_react2.default.Component);
-
-var MapLegends = function (_React$Component2) {
-	_inherits(MapLegends, _React$Component2);
+var MapLegends = function (_React$Component) {
+	_inherits(MapLegends, _React$Component);
 
 	function MapLegends() {
 		_classCallCheck(this, MapLegends);
@@ -100,8 +73,8 @@ var MapLegends = function (_React$Component2) {
 //Contains a map and its corresponding map legends
 
 
-var MapContainer = function (_React$Component3) {
-	_inherits(MapContainer, _React$Component3);
+var MapContainer = function (_React$Component2) {
+	_inherits(MapContainer, _React$Component2);
 
 	function MapContainer() {
 		_classCallCheck(this, MapContainer);
@@ -142,23 +115,31 @@ var MapContainer = function (_React$Component3) {
 	return MapContainer;
 }(_react2.default.Component);
 
-var GoButton = function (_React$Component4) {
-	_inherits(GoButton, _React$Component4);
+var GoButton = function (_React$Component3) {
+	_inherits(GoButton, _React$Component3);
 
 	function GoButton(props) {
 		_classCallCheck(this, GoButton);
 
-		var _this4 = _possibleConstructorReturn(this, (GoButton.__proto__ || Object.getPrototypeOf(GoButton)).call(this, props));
+		var _this3 = _possibleConstructorReturn(this, (GoButton.__proto__ || Object.getPrototypeOf(GoButton)).call(this, props));
 
-		_this4.state = { nodes: '' };
-		_this4.handleSubmit = _this4.handleSubmit.bind(_this4);
-		return _this4;
+		_this3.state = {
+			nodes: '',
+			algorithm: ''
+		};
+
+		_this3.handleSubmit = _this3.handleSubmit.bind(_this3);
+		return _this3;
 	}
 
 	_createClass(GoButton, [{
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
-			this.setState({ nodes: JSON.stringify(window.nodes) });
+			this.setState({
+				nodes: JSON.stringify(window.nodes),
+				algorithm: window.algorithm
+			});
+
 			window.validateMapInputAndSubmit(event);
 		}
 	}, {
@@ -186,6 +167,7 @@ var GoButton = function (_React$Component4) {
 					)
 				),
 				_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
+				_react2.default.createElement('input', { type: 'hidden', name: 'algorithm', value: this.state.algorithm }),
 				_react2.default.createElement(
 					'button',
 					{ className: 'btn btn-primary btn-block', type: 'submit' },
@@ -198,8 +180,8 @@ var GoButton = function (_React$Component4) {
 	return GoButton;
 }(_react2.default.Component);
 
-var Examples = function (_React$Component5) {
-	_inherits(Examples, _React$Component5);
+var Examples = function (_React$Component4) {
+	_inherits(Examples, _React$Component4);
 
 	function Examples() {
 		_classCallCheck(this, Examples);
@@ -229,6 +211,67 @@ var Examples = function (_React$Component5) {
 	}]);
 
 	return Examples;
+}(_react2.default.Component);
+
+var Algorithms = function (_React$Component5) {
+	_inherits(Algorithms, _React$Component5);
+
+	function Algorithms(props) {
+		_classCallCheck(this, Algorithms);
+
+		var _this5 = _possibleConstructorReturn(this, (Algorithms.__proto__ || Object.getPrototypeOf(Algorithms)).call(this, props));
+
+		_this5.state = { value: 'minCostFlow' };
+		_this5.handleChange = _this5.handleChange.bind(_this5);
+		return _this5;
+	}
+
+	_createClass(Algorithms, [{
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.setState({ value: event.target.value });
+			window.handleAlgorithmChange(event.target.value);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'h4',
+					{ className: 'text-center' },
+					_react2.default.createElement(
+						'b',
+						null,
+						'Algorithms'
+					)
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'select',
+					{ className: 'form-control', value: this.state.value, onChange: this.handleChange },
+					_react2.default.createElement(
+						'option',
+						{ value: 'minCostFlow' },
+						'Min Cost Flow'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'minCostFlowPlus' },
+						'Min Cost Flow ++'
+					),
+					_react2.default.createElement(
+						'option',
+						{ value: 'CPLEXNetworkOptimizer' },
+						'CPLEX Network Optimizer'
+					)
+				)
+			);
+		}
+	}]);
+
+	return Algorithms;
 }(_react2.default.Component);
 
 var MarkerList = function (_React$Component6) {
@@ -272,6 +315,9 @@ var MarkerList = function (_React$Component6) {
 				_react2.default.createElement(Examples, null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
+				_react2.default.createElement(Algorithms, null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(GoButton, null)
 			);
 		}
@@ -298,7 +344,6 @@ var PlanningToolContainer = function (_React$Component7) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement(PlanToolTitle, null),
 				_react2.default.createElement(MapContainer, null)
 			);
 		}

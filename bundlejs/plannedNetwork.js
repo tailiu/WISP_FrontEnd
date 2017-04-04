@@ -109,7 +109,7 @@ var Algorithms = function (_React$Component3) {
 			dummyNetwork.invokeEvent = true;
 
 			var minCostFlow = {};
-			minCostFlow.name = 'Min Cost Flow (Google OR tools)';
+			minCostFlow.name = 'Min Cost Flow';
 			minCostFlow.invokeEvent = true;
 
 			var minCostFlowPlus = {};

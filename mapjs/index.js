@@ -2,6 +2,7 @@ var buttonID = undefined
 var startDragPosition
 var nodes = []
 var examples
+var algorithm = 'Min Cost Flow'
 
 var markers = []
 var map 
@@ -557,6 +558,20 @@ function handleExample(example) {
             break
         default:
             populateMap(example)
+    }
+}
+
+function handleAlgorithmChange(selectedAlgorithm) {
+    switch (selectedAlgorithm) {
+        case 'minCostFlow':
+            algorithm = 'Min Cost Flow'
+            break
+        case 'minCostFlowPlus':
+            algorithm = 'Min Cost Flow ++'
+            break
+        case 'CPLEXNetworkOptimizer':
+            algorithm = 'CPLEX Network Optimizer'
+            break
     }
 }
 
