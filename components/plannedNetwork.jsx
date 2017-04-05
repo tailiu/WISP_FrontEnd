@@ -14,6 +14,10 @@ class NetworkParameters extends React.Component {
 								<td>Costs</td>
 								<td id='costs'></td>
 							</tr>
+							<tr className='text-center'>
+	    						<td>Revenues</td>
+	    						<td id='revenues'></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -86,6 +90,9 @@ class MapLegends extends React.Component {
             		</li>
             		<li className = 'list-group-item grey-container withoutBorder'>Sink: <br/>
             			<img src='styles/images/sink.png' className='img-responsive' />
+            		</li>
+            		<li className = 'list-group-item grey-container withoutBorder'>Pruned: <br/>
+            			<img src='styles/images/pruned.png' className='img-responsive' />
             		</li>
             	</ul>
             </div>

@@ -510,6 +510,7 @@ function handleRequest(req, res) {
         case '/styles/images/source.png':
         case '/styles/images/sink.png':
         case '/styles/images/intermediate.png':
+        case '/styles/images/pruned.png':
             handleReferencedFile(req, res)
             break
 

@@ -55,6 +55,16 @@ var NetworkParameters = function (_React$Component) {
 									'Costs'
 								),
 								_react2.default.createElement('td', { id: 'costs' })
+							),
+							_react2.default.createElement(
+								'tr',
+								{ className: 'text-center' },
+								_react2.default.createElement(
+									'td',
+									null,
+									'Revenues'
+								),
+								_react2.default.createElement('td', { id: 'revenues' })
 							)
 						)
 					)
@@ -214,6 +224,13 @@ var MapLegends = function (_React$Component4) {
 						'Sink: ',
 						_react2.default.createElement('br', null),
 						_react2.default.createElement('img', { src: 'styles/images/sink.png', className: 'img-responsive' })
+					),
+					_react2.default.createElement(
+						'li',
+						{ className: 'list-group-item grey-container withoutBorder' },
+						'Pruned: ',
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('img', { src: 'styles/images/pruned.png', className: 'img-responsive' })
 					)
 				)
 			);

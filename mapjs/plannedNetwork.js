@@ -6,6 +6,7 @@ var markers = []
 var sourceMarker = 'styles/images/source.png'
 var sinkMarker = 'styles/images/sink.png'
 var intermediateMarker = 'styles/images/intermediate.png'
+var prunedMarker = 'styles/images/pruned.png'
 var center = {lat: 38.924280, lng: -122.907255}
 var outstandingRequests = 0
 var currentAlgorithm
@@ -142,6 +143,10 @@ function drawNetwork() {
             case 'sink':
                 markerLink = sinkMarker
                 break
+
+            case 'pruned':
+                markerLink = prunedMarker
+                break
         }
         marker = new google.maps.Marker({
             position: nodes[i].node,
@@ -218,7 +223,9 @@ function removeClass(element, oldClass) {
 
 function setOrUpdateParameters() {
     var costs = document.getElementById('costs')
+    var revenues = document.getElementById('revenues')
     costs.innerHTML = data.result.costs
+    revenues.innerHTML = data.result.revenues
 }
 
 function setCachingResults() {

@@ -17,6 +17,7 @@ int main(int argc, char** argv)
 	json output;
 	output["bandwidth"] = 12323232;
 	output["costs"] = 7878;
+	output["revenues"] = 9897;
 	output["nodes"] = json::array(
 		{
 			{
@@ -42,6 +43,14 @@ int main(int argc, char** argv)
 					{"capacity", 658768768},
 					{"mountingHeight", 786549787},
 					{"type", "intermediate"}}
+				}
+			},
+			{
+				{"node", 12389},
+				{"nodeProperty", {
+					{"capacity", 323},
+					{"mountingHeight", 455},
+					{"type", "pruned"}}
 				}
 			}
 		}
