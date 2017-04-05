@@ -7,6 +7,7 @@ var r = require('rethinkdb')
 var async = require('async')
 var _ = require('underscore')
 var childProcess = require('child_process')
+var crypto = require('crypto')
 
 //Configuration file path
 const configFilePath = './configuration'
@@ -19,6 +20,8 @@ const dbHost = 'localhost'
 const exampleFolder = 'examples/'
 
 var examples = []
+
+var cachedResults = {}
 
 //Fixed port server listens to
 var serverAddr 
@@ -412,6 +415,45 @@ function addIndexToNodeProperty(output) {
     }
 }
 
+function packageOutputAndSendRes(req, res, rawData, output) {
+    fs.readFile('bundlejs/plannedNetwork.js', function(err, bundlejs) {
+        if (err) {
+            logErr(req, err)
+            return
+        }
+
+        //Get boundary coordinates from the database
+        getBoundaryCoordinates(function(err, boundary) {
+            if (err) {
+                logErr(req, err)
+                return
+            }
+
+            var processedData = {}
+            processedData.serverAddr = serverAddr
+            processedData.serverPort = serverPort
+            processedData.result = output
+            processedData.input = rawData
+            processedData.boundary = boundary
+            
+            //Render the index.ejs file with bundled script file
+            var data = {}
+
+            data.bundlejs = preprocessBundle(bundlejs)
+            data.variable = preprocessVar(processedData)
+
+            ejs.renderFile('index.html', data, null, function(err, str){
+                if (err) {
+                    logErr(req, err)
+                    return
+                }
+
+                res.end(str)
+            })
+        })
+    })
+}
+
 //Handle network planning request
 function handleNetworkPlanRequest(req, res) {
     var body = ''
@@ -420,70 +462,45 @@ function handleNetworkPlanRequest(req, res) {
         body += rawData
     })
 
-    req.on('end', function(){
+    req.on('end', function() {
         var rawData = qs.parse(body)
         var nodes = JSON.parse(rawData.nodes)
-        var algorithm = rawData.algorithm
-
-        console.log(algorithm)
         
-        //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
-        async.waterfall([
-            function(callback) {
-                transformCoordinatesToPixels(nodes, function(err){
-                    callback(null, algorithm)
-                })
-            },
-            function(algorithm, callback) {
+        var index = createHash(JSON.stringify(rawData))
+        var cached = cachedResults[index]
+        if (cached != undefined) {
+            transformCoordinatesToPixels(nodes, function(err){
                 rawData.nodes = nodes
-                callAlgorithm(algorithm, rawData, callback)
-            },
-            function(output, callback) {
-                processAlgorithmOutput(output, algorithm, callback)
-            }
-        ], function (err, output) {
-            if (err) {
-                logErr(req, err)
-                return
-            }
+                packageOutputAndSendRes(req, res, rawData, cached)
+            })
+        } else {
+            var algorithm = rawData.algorithm
 
-            fs.readFile('bundlejs/plannedNetwork.js', function(err, bundlejs) {
+            //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
+            async.waterfall([
+                function(callback) {
+                    transformCoordinatesToPixels(nodes, function(err){
+                        callback(null, algorithm)
+                    })
+                },
+                function(algorithm, callback) {
+                    rawData.nodes = nodes
+                    callAlgorithm(algorithm, rawData, callback)
+                },
+                function(output, callback) {
+                    processAlgorithmOutput(output, algorithm, callback)
+                }
+            ], function (err, output) {
                 if (err) {
                     logErr(req, err)
                     return
                 }
 
-                //Get boundary coordinates from the database
-                getBoundaryCoordinates(function(err, boundary) {
-                    if (err) {
-                        logErr(req, err)
-                        return
-                    }
+                cachedResults[index] = output
 
-                    var processedData = {}
-                    processedData.serverAddr = serverAddr
-                    processedData.serverPort = serverPort
-                    processedData.result = output
-                    processedData.input = rawData
-                    processedData.boundary = boundary
-                    
-                    //Render the index.ejs file with bundled script file
-                    var data = {}
-
-                    data.bundlejs = preprocessBundle(bundlejs)
-                    data.variable = preprocessVar(processedData)
-
-                    ejs.renderFile('index.html', data, null, function(err, str){
-                        if (err) {
-                            logErr(req, err)
-                            return
-                        }
-
-                        res.end(str)
-                    })
-                })
+                packageOutputAndSendRes(req, res, rawData, output)
             })
-        })
+        }
     })
 }
 
@@ -553,6 +570,12 @@ function getExamples() {
     }
 }
 
+function createHash(dataToHash) {
+    var hash = crypto.createHash('sha1')
+    hash.update(dataToHash)
+    return hash.digest('hex')
+}
+
 //First, read Configuration file
 fs.readFile(configFilePath, function (err, data) {
     var configData = JSON.parse(data.toString())
@@ -575,6 +598,13 @@ fs.readFile(configFilePath, function (err, data) {
     io.on('connection', function (socket) {
         socket.on('callAlgorithm', function(args) {
             if (args.algorithm != 'Input JSON Data Directly') {
+                var index = createHash(JSON.stringify(args))
+                var cached = cachedResults[index]
+                if (cached != undefined) {
+                    socket.emit('getResults', cached)
+                    return
+                }
+
                 async.waterfall([
                     function(callback) {
                         callAlgorithm(args.algorithm, args.input, callback)
@@ -587,6 +617,9 @@ fs.readFile(configFilePath, function (err, data) {
                         logErr(socket.request, err)
                         return
                     }
+
+                    cachedResults[index] = output
+
                     socket.emit('getResults', output)
                 })
             } else {
