@@ -101,7 +101,7 @@ class Algorithms extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {value: 'minCostFlow'};
+		this.state = {value: 'minCostFlowPlus'};
 		this.handleChange = this.handleChange.bind(this)
 	}
 
@@ -116,8 +116,8 @@ class Algorithms extends React.Component {
 				<h4 className='text-center'><b>Algorithms</b></h4><br/>
 				
 	        	<select className='form-control' value={this.state.value} onChange={this.handleChange}>
-	        		<option value='minCostFlow'>Min Cost Flow</option>
 					<option value='minCostFlowPlus'>Min Cost Flow ++</option>
+					<option value='minCostFlow'>Min Cost Flow</option>
 					<option value='CPLEXNetworkOptimizer'>CPLEX Network Optimizer</option>
 				</select>
 			</div>
@@ -140,8 +140,8 @@ class MarkerList extends React.Component {
 				<h4 className='text-center'><b>Markers</b></h4><br/>
 				<MyButton button={serviceProvider} /><br/>
 				<MyButton button={newUser} /><br/><br/>
-				<Examples /><br/><br/>
-				<Algorithms /><br/><br/>
+				<Examples /><br/><br/><br/><br/><br/>
+				<Algorithms />
 				<GoButton />
 			</div>
 		)

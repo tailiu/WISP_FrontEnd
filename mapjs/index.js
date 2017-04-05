@@ -2,7 +2,7 @@ var buttonID = undefined
 var startDragPosition
 var nodes = []
 var examples
-var algorithm = 'Min Cost Flow'
+var algorithm = 'Min Cost Flow ++'
 
 var markers = []
 var map 

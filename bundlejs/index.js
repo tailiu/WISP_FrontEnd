@@ -221,7 +221,7 @@ var Algorithms = function (_React$Component5) {
 
 		var _this5 = _possibleConstructorReturn(this, (Algorithms.__proto__ || Object.getPrototypeOf(Algorithms)).call(this, props));
 
-		_this5.state = { value: 'minCostFlow' };
+		_this5.state = { value: 'minCostFlowPlus' };
 		_this5.handleChange = _this5.handleChange.bind(_this5);
 		return _this5;
 	}
@@ -253,13 +253,13 @@ var Algorithms = function (_React$Component5) {
 					{ className: 'form-control', value: this.state.value, onChange: this.handleChange },
 					_react2.default.createElement(
 						'option',
-						{ value: 'minCostFlow' },
-						'Min Cost Flow'
+						{ value: 'minCostFlowPlus' },
+						'Min Cost Flow ++'
 					),
 					_react2.default.createElement(
 						'option',
-						{ value: 'minCostFlowPlus' },
-						'Min Cost Flow ++'
+						{ value: 'minCostFlow' },
+						'Min Cost Flow'
 					),
 					_react2.default.createElement(
 						'option',
@@ -315,9 +315,10 @@ var MarkerList = function (_React$Component6) {
 				_react2.default.createElement(Examples, null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
 				_react2.default.createElement(Algorithms, null),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement('br', null),
 				_react2.default.createElement(GoButton, null)
 			);
 		}
