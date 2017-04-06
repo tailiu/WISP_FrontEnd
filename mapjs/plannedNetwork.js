@@ -60,31 +60,42 @@ function callAlgorithm() {
     var args = {}
     args.algorithm = buttonID
 
-    if (buttonID != 'Input JSON Data Directly') {
-        args.input = window.data.input
-
-        addProcessingAnimation()
-
-        var cachedResults = getCachingResults(args.algorithm)
-        if(cachedResults == undefined) {
-            socket.emit('callAlgorithm', args)
-        } else {
-            window.data.result = cachedResults
-            renderResults()
-            checkAndRemoveLoader()
-        }
-    } else {
-        bootbox.prompt({
-            title: 'Please input JSON data',
-            inputType: 'textarea',
-            callback: function (data) {
-                if (data !== null && data != '') {
-                    args.input = data
-                    socket.emit('callAlgorithm', args)
-                    addProcessingAnimation()
+    switch(buttonID) {
+        case 'Input JSON Data Directly':
+            bootbox.prompt({
+                title: 'Please input JSON data',
+                inputType: 'textarea',
+                callback: function (data) {
+                    if (data !== null && data != '') {
+                        args.input = data
+                        socket.emit('callAlgorithm', args)
+                        addProcessingAnimation()
+                    }
                 }
+            })
+            break
+
+        case 'Clear the Cache of the Current Results':
+            delete cachingResults[currentAlgorithm]
+            args.currentAlgorithm = currentAlgorithm
+            args.nodes = window.data.input.nodes
+            addProcessingAnimation()
+            socket.emit('callAlgorithm', args)
+            break
+
+        default:
+            args.nodes = window.data.input.nodes
+
+            addProcessingAnimation()
+
+            var cachedResults = getCachingResults(args.algorithm)
+            if(cachedResults == undefined) {
+                socket.emit('callAlgorithm', args)
+            } else {
+                window.data.result = cachedResults
+                renderResults()
+                checkAndRemoveLoader()
             }
-        })
     }
 }
 
@@ -255,13 +266,16 @@ function initSocket() {
         if (output.errMsg != undefined) {
             bootbox.alert(output.errMsg)
         } else {
-            window.data.result = output
-            
-            if (output.algorithm != 'Input JSON Data Directly') {
-                setCachingResults()
-            }
+            if (output.algorithm != 'Clear the Cache of the Current Results') {
 
-            renderResults()
+                window.data.result = output
+            
+                if (output.algorithm != 'Input JSON Data Directly') {
+                    setCachingResults()
+                }
+
+                renderResults()
+            }
         }
         
         checkAndRemoveLoader()

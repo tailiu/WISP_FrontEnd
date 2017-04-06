@@ -66,20 +66,8 @@ class GoButton extends React.Component {
 	render() {
 		return (
 			<form className='form-horizontal' method='POST' id='requirementsForm' onSubmit={this.handleSubmit} >
-
-				<div className='form-group'>
-					<div className='col-sm-9'>
-	        			<input type='hidden' id='disabledTextInput' className='form-control' name='bandwidth' value='2342342342'/>
-	        		</div>
-	        	</div>
-	        	<div className='form-group'>
-	        		<div className='col-sm-9'>
-	        			<input type='hidden' id='disabledTextInput' className='form-control' name='costs' value='123123123' />
-	        		</div>
-	        	</div>
-
-				<input type='hidden' name='nodes' value={this.state.nodes} />
 				<input type='hidden' name='algorithm' value={this.state.algorithm} />
+				<input type='hidden' name='nodes' value={this.state.nodes} />
 				<button className='btn btn-primary btn-block' type='submit'>GO!</button>
 			</form>
 		)

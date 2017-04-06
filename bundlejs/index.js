@@ -148,26 +148,8 @@ var GoButton = function (_React$Component3) {
 			return _react2.default.createElement(
 				'form',
 				{ className: 'form-horizontal', method: 'POST', id: 'requirementsForm', onSubmit: this.handleSubmit },
-				_react2.default.createElement(
-					'div',
-					{ className: 'form-group' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'col-sm-9' },
-						_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'bandwidth', value: '2342342342' })
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'form-group' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'col-sm-9' },
-						_react2.default.createElement('input', { type: 'hidden', id: 'disabledTextInput', className: 'form-control', name: 'costs', value: '123123123' })
-					)
-				),
-				_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
 				_react2.default.createElement('input', { type: 'hidden', name: 'algorithm', value: this.state.algorithm }),
+				_react2.default.createElement('input', { type: 'hidden', name: 'nodes', value: this.state.nodes }),
 				_react2.default.createElement(
 					'button',
 					{ className: 'btn btn-primary btn-block', type: 'submit' },

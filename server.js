@@ -466,41 +466,38 @@ function handleNetworkPlanRequest(req, res) {
         var rawData = qs.parse(body)
         var nodes = JSON.parse(rawData.nodes)
         
-        var index = createHash(JSON.stringify(rawData))
-        var cached = cachedResults[index]
-        if (cached != undefined) {
-            transformCoordinatesToPixels(nodes, function(err){
-                rawData.nodes = nodes
+        var algorithm = rawData.algorithm
+                
+        transformCoordinatesToPixels(nodes, function(err){
+            rawData.nodes = nodes
+
+            var index = createHash(JSON.stringify(rawData))
+            var cached = cachedResults[index]
+            delete rawData['algorithm']
+
+            if (cached != undefined) {
                 packageOutputAndSendRes(req, res, rawData, cached)
-            })
-        } else {
-            var algorithm = rawData.algorithm
+            } else {
+                async.waterfall([
+                    function(callback) {
+                        callAlgorithm(algorithm, rawData, callback)
+                    },
+                    function(output, callback) {
+                        processAlgorithmOutput(output, algorithm, callback)
+                    }
+                ], function (err, output) {
+                    if (err) {
+                        logErr(req, err)
+                        return
+                    }
 
-            //transform coordinates to pixels -> call algorithm -> transform pixels back to coordinates
-            async.waterfall([
-                function(callback) {
-                    transformCoordinatesToPixels(nodes, function(err){
-                        callback(null, algorithm)
-                    })
-                },
-                function(algorithm, callback) {
-                    rawData.nodes = nodes
-                    callAlgorithm(algorithm, rawData, callback)
-                },
-                function(output, callback) {
-                    processAlgorithmOutput(output, algorithm, callback)
-                }
-            ], function (err, output) {
-                if (err) {
-                    logErr(req, err)
-                    return
-                }
+                    cachedResults[index] = output
 
-                cachedResults[index] = output
-
-                packageOutputAndSendRes(req, res, rawData, output)
-            })
-        }
+                    packageOutputAndSendRes(req, res, rawData, output)
+                })
+            }
+            
+        })      
     })
 }
 
@@ -597,50 +594,66 @@ fs.readFile(configFilePath, function (err, data) {
     //Initialize web socket
     io.on('connection', function (socket) {
         socket.on('callAlgorithm', function(args) {
-            if (args.algorithm != 'Input JSON Data Directly') {
-                var index = createHash(JSON.stringify(args))
-                var cached = cachedResults[index]
-                if (cached != undefined) {
-                    socket.emit('getResults', cached)
-                    return
-                }
-
-                async.waterfall([
-                    function(callback) {
-                        callAlgorithm(args.algorithm, args.input, callback)
-                    },
-                    function(output, callback) {
-                        processAlgorithmOutput(output, args.algorithm, callback)
+            switch (args.algorithm) {
+                case 'Input JSON Data Directly':
+                    try {
+                        var data = JSON.parse(args.input)
                     }
-                ], function (err, output) {
-                    if (err) {
-                        logErr(socket.request, err)
-                        return
-                    }
-
-                    cachedResults[index] = output
-
-                    socket.emit('getResults', output)
-                })
-            } else {
-                try {
-                    var data = JSON.parse(args.input)
-                }
-                catch (err) {
-                    var errMsg = 'Error: Invalid JSON data'
-                    logErr(socket.request, err, errMsg)
-                    sendErrRes(socket, errMsg)
-                    return
-                }
-                processAlgorithmOutput(data, args.algorithm, function(err, output) {
-                    if (err) {
+                    catch (err) {
                         var errMsg = 'Error: Invalid JSON data'
                         logErr(socket.request, err, errMsg)
                         sendErrRes(socket, errMsg)
                         return
                     }
+                    processAlgorithmOutput(data, args.algorithm, function(err, output) {
+                        if (err) {
+                            var errMsg = 'Error: Invalid JSON data'
+                            logErr(socket.request, err, errMsg)
+                            sendErrRes(socket, errMsg)
+                            return
+                        }
+                        socket.emit('getResults', output)
+                    })
+                    break
+
+                case 'Clear the Cache of the Current Results':
+                    var output = {
+                        'algorithm': args.algorithm
+                    }
+                    args.algorithm = args.currentAlgorithm
+                    delete args.currentAlgorithm
+                    var index = createHash(JSON.stringify(args))
+                    delete cachedResults[index]
                     socket.emit('getResults', output)
-                })
+                    break
+
+                default:
+                    var index = createHash(JSON.stringify(args))
+                    var cached = cachedResults[index]
+                    if (cached != undefined) {
+                        socket.emit('getResults', cached)
+                        return
+                    }
+
+                    var algorithm = args.algorithm
+                    delete args[algorithm]
+                    async.waterfall([
+                        function(callback) {
+                            callAlgorithm(algorithm, args, callback)
+                        },
+                        function(output, callback) {
+                            processAlgorithmOutput(output, algorithm, callback)
+                        }
+                    ], function (err, output) {
+                        if (err) {
+                            logErr(socket.request, err)
+                            return
+                        }
+
+                        cachedResults[index] = output
+
+                        socket.emit('getResults', output)
+                    })
             }
         })
     })

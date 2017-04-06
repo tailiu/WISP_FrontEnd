@@ -26,6 +26,20 @@ class NetworkParameters extends React.Component {
 	}
 }
 
+class ClearCache extends React.Component {
+	render () {
+		var clearCacheButton = {}
+		clearCacheButton.name = 'Clear the Cache of the Current Results'
+		clearCacheButton.invokeEvent = true
+
+		return (
+			<div>
+				<MyButton button={clearCacheButton} />
+			</div>
+		)
+	}
+}
+
 class State extends React.Component {
 	render () {
 		return (
@@ -66,9 +80,10 @@ class Algorithms extends React.Component {
 				<h4 className='text-center'><b>Algorithms</b></h4><br/>
 				<MyButton button={minCostFlow} /><br/>
 				<MyButton button={minCostFlowPlus} /><br/>
-				<MyButton button={CPLEX} /><br/><br/>
-				<State />
-				<br/><br/><br/><br/>
+				<MyButton button={CPLEX} /><br/>
+				<State /><br/>
+				<ClearCache />
+				<br/><br/>
 				<h4 className='text-center'><b>Debugging</b></h4><br/>
 				<MyButton button={inputDataDirectly} />
 			</div>

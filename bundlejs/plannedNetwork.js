@@ -76,8 +76,35 @@ var NetworkParameters = function (_React$Component) {
 	return NetworkParameters;
 }(_react2.default.Component);
 
-var State = function (_React$Component2) {
-	_inherits(State, _React$Component2);
+var ClearCache = function (_React$Component2) {
+	_inherits(ClearCache, _React$Component2);
+
+	function ClearCache() {
+		_classCallCheck(this, ClearCache);
+
+		return _possibleConstructorReturn(this, (ClearCache.__proto__ || Object.getPrototypeOf(ClearCache)).apply(this, arguments));
+	}
+
+	_createClass(ClearCache, [{
+		key: 'render',
+		value: function render() {
+			var clearCacheButton = {};
+			clearCacheButton.name = 'Clear the Cache of the Current Results';
+			clearCacheButton.invokeEvent = true;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_utils.MyButton, { button: clearCacheButton })
+			);
+		}
+	}]);
+
+	return ClearCache;
+}(_react2.default.Component);
+
+var State = function (_React$Component3) {
+	_inherits(State, _React$Component3);
 
 	function State() {
 		_classCallCheck(this, State);
@@ -102,8 +129,8 @@ var State = function (_React$Component2) {
 	return State;
 }(_react2.default.Component);
 
-var Algorithms = function (_React$Component3) {
-	_inherits(Algorithms, _React$Component3);
+var Algorithms = function (_React$Component4) {
+	_inherits(Algorithms, _React$Component4);
 
 	function Algorithms() {
 		_classCallCheck(this, Algorithms);
@@ -153,10 +180,9 @@ var Algorithms = function (_React$Component3) {
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_utils.MyButton, { button: CPLEX }),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement('br', null),
 				_react2.default.createElement(State, null),
 				_react2.default.createElement('br', null),
-				_react2.default.createElement('br', null),
+				_react2.default.createElement(ClearCache, null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(
@@ -177,8 +203,8 @@ var Algorithms = function (_React$Component3) {
 	return Algorithms;
 }(_react2.default.Component);
 
-var MapLegends = function (_React$Component4) {
-	_inherits(MapLegends, _React$Component4);
+var MapLegends = function (_React$Component5) {
+	_inherits(MapLegends, _React$Component5);
 
 	function MapLegends() {
 		_classCallCheck(this, MapLegends);
@@ -240,8 +266,8 @@ var MapLegends = function (_React$Component4) {
 	return MapLegends;
 }(_react2.default.Component);
 
-var PlannedNetworkContainer = function (_React$Component5) {
-	_inherits(PlannedNetworkContainer, _React$Component5);
+var PlannedNetworkContainer = function (_React$Component6) {
+	_inherits(PlannedNetworkContainer, _React$Component6);
 
 	function PlannedNetworkContainer() {
 		_classCallCheck(this, PlannedNetworkContainer);
